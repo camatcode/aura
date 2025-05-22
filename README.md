@@ -7,7 +7,7 @@
 </p>
 
 <p align="center" id="top">
-  Search hex packages globally
+  An ergonomic library for investigating Hex packages
 </p>
 
 <p align="center">
