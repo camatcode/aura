@@ -1,0 +1,69 @@
+name: ci
+
+on:
+  push:
+    paths-ignore:
+      - 'guides/**'
+  pull_request:
+    paths-ignore:
+      - 'guides/**'
+
+jobs:
+  ci:
+    env:
+      MIX_ENV: test
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - pair:
+              elixir: '1.18.3-otp-27'
+              otp: '27.3.1'
+
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{matrix.pair.otp}}
+          elixir-version: ${{matrix.pair.elixir}}
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-mix-${{matrix.pair.elixir}}-${{matrix.pair.otp}}-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-${{matrix.pair.elixir}}-${{matrix.pair.otp}}-
+
+      - name: Run mix deps.get
+        run: mix deps.get --only test
+
+      - name: Run mix format
+        run: mix format --check-formatted
+
+      #- name: Run mix deps.unlock
+      #  run: mix deps.unlock --check-unused
+      #  if: ${{ matrix.lint }}
+
+      - name: Run mix deps.compile
+        run: mix deps.compile
+
+      - name: Run mix compile
+        run: mix compile --warnings-as-errors
+
+      - name: Run credo
+        run: mix credo --strict
+
+      - name: Run tests
+        run: mix coveralls.github
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run dialyzer
+        run: mix dialyzer
+        if: ${{ matrix.lint }}
+
