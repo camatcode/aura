@@ -1,10 +1,13 @@
-defmodule Aura.MixProject do
+defmodule ExFTP.MixProject do
   use Mix.Project
+
+  @source_url "https://github.com/camatcode/aura"
+  @version "0.9.0"
 
   def project do
     [
       app: :aura,
-      version: "0.1.0",
+      version: @version,
       elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -15,16 +18,61 @@ defmodule Aura.MixProject do
         "coveralls.post": :test,
         "coveralls.html": :test,
         "coveralls.cobertura": :test
+      ],
+      # Hex
+      package: package(),
+      description: """
+      Easy, global hex package search via the hex API
+      """,
+
+      # Docs
+      name: "Aura",
+      docs: [
+        main: "Aura",
+        api_reference: false,
+        logo: "assets/aura-logo.png",
+        source_ref: "v#{@version}",
+        source_url: @source_url,
+        extra_section: "GUIDES",
+        formatters: ["html"],
+        extras: extras(),
+        groups_for_modules: groups_for_modules(),
+        skip_undefined_reference_warnings_on: ["CHANGELOG.md"]
       ]
     ]
   end
 
+  defp groups_for_modules do
+    []
+  end
+
+  def package do
+    [
+      maintainers: ["Cam Cook"],
+      licenses: ["Apache-2.0"],
+      files: ~w(lib .formatter.exs mix.exs README* CHANGELOG* LICENSE*),
+      links: %{
+        Website: @source_url,
+        Changelog: "#{@source_url}/blob/master/CHANGELOG.md",
+        GitHub: @source_url
+      }
+    ]
+  end
+
+  def extras do
+    [
+      "README.md"
+    ]
+  end
+
+  # Run "mix help compile.app" to learn about applications.
   def application do
     [
       extra_applications: [:logger]
     ]
   end
 
+  # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
       {:ex_doc, "~> 0.37", only: :dev, runtime: false},
@@ -34,6 +82,7 @@ defmodule Aura.MixProject do
       {:excoveralls, "~> 0.18", only: [:test]},
       {:ex_machina, "~> 2.8.0", only: :test},
       {:faker, "~> 0.18.0", only: :test},
+      {:junit_formatter, "~> 3.1", only: [:test]},
       {:req, "~> 0.5.10"}
     ]
   end
