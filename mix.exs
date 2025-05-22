@@ -1,4 +1,4 @@
-defmodule ExFTP.MixProject do
+defmodule Aura.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/camatcode/aura"
@@ -11,6 +11,7 @@ defmodule ExFTP.MixProject do
       elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+      elixirc_paths: elixirc_paths(Mix.env()),
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
         coveralls: :test,
@@ -83,7 +84,13 @@ defmodule ExFTP.MixProject do
       {:ex_machina, "~> 2.8.0", only: :test},
       {:faker, "~> 0.18.0", only: :test},
       {:junit_formatter, "~> 3.1", only: [:test]},
-      {:req, "~> 0.5.10"}
+      {:req, "~> 0.5.10"},
+      {:cachex, "~> 4.0"},
+      {:proper_case, "~> 1.3"},
+      {:date_time_parser, "~> 1.2.0"}
     ]
   end
+
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
 end
