@@ -72,7 +72,7 @@ defmodule Aura.Requester do
   end
 
   defp otp_version do
-    major = :erlang.system_info(:otp_release) |> List.to_string()
+    major = :otp_release |> :erlang.system_info() |> List.to_string()
     vsn_file = Path.join([:code.root_dir(), "releases", major, "OTP_VERSION"])
 
     try do

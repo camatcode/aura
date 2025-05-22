@@ -3,7 +3,8 @@ defmodule Aura.Model.Common do
 
   @spec prepare(m :: map()) :: map()
   def prepare(m) when is_map(m) do
-    prepare_keys(m)
+    m
+    |> prepare_keys()
     |> prepare_values()
     |> Enum.reject(fn {_k, v} -> v == nil end)
     |> Enum.map(fn {key, val} ->
