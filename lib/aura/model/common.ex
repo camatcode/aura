@@ -6,10 +6,6 @@ defmodule Aura.Model.Common do
     m
     |> prepare_keys()
     |> prepare_values()
-    |> Enum.reject(fn {_k, v} -> v == nil end)
-    |> Enum.map(fn {key, val} ->
-      {key, serialize(key, val)}
-    end)
   end
 
   defp prepare_keys(m) do
@@ -38,6 +34,4 @@ defmodule Aura.Model.Common do
       {key, val}
     end)
   end
-
-  defp serialize(_k, v), do: v
 end
