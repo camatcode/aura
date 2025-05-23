@@ -7,7 +7,7 @@ defmodule Aura.Factory.HexPackageFactory do
         inserted_at = Faker.DateTime.backward(40)
         meta = build(:package_meta)
         downloads = build(:package_downloads)
-        releases = build_list(5, :package_release)
+        releases = build_list(5, :hex_release)
 
         %Aura.Model.HexPackage{
           name: Faker.Internet.user_name(),
@@ -51,12 +51,12 @@ defmodule Aura.Factory.HexPackageFactory do
         |> evaluate_lazy_attributes()
       end
 
-      def package_release_factory(attrs) do
+      def hex_release_factory(attrs) do
         day = Faker.random_between(10, 100)
         week = day + Faker.random_between(10, 100)
         all = week + Faker.random_between(10, 100)
 
-        %Aura.Model.Release{
+        %Aura.Model.HexRelease{
           version: Faker.App.semver(),
           url: Faker.Internet.url()
         }
