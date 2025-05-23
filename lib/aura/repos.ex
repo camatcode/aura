@@ -4,11 +4,9 @@ defmodule Aura.Repos do
   alias Aura.Model.HexRepo
   alias Aura.Requester
 
-  def get_all_repos do
+  def list_repos do
     with {:ok, %{body: body}} <- Requester.request(:get, "/repos") do
-      results =
-        body
-        |> Enum.map(&HexRepo.build/1)
+      results = Enum.map(body, &HexRepo.build/1)
 
       {:ok, results}
     end

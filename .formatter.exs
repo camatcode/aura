@@ -8,5 +8,5 @@
     assert_style: 1,
     assert_style: 2
   ],
-  plugins: [Quokka]
+  plugins: [Styler]
 ]
