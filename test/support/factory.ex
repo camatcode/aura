@@ -3,4 +3,5 @@ defmodule Aura.Factory do
   use ExMachina
   use Aura.Factory.HexRepoFactory
   use Aura.Factory.HexPackageFactory
+  use Aura.Factory.HexReleaseFactory
 end

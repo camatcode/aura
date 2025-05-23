@@ -25,23 +25,25 @@ defmodule Aura.Model.HexRelease do
     fields =
       m
       |> prepare()
-      |> Enum.map(fn {k, v} -> {k, serialize(k, v)} end)
+      |> Map.new(fn {k, v} -> {k, serialize(k, v)} end)
 
     struct(Aura.Model.HexRelease, fields)
   end
 
   defp serialize(_k, nil), do: nil
-  defp serialize(:meta, v), do: prepare(v)
-  defp serialize(:publisher, v), do: prepare(v)
+  defp serialize(:meta, v), do: v |> prepare() |> Map.new()
+  defp serialize(:publisher, v), do: v |> prepare() |> Map.new()
 
   defp serialize(:requirements, v) do
     v
     |> Map.values()
-    |> Enum.map(&prepare/1)
+    |> Enum.map(fn m -> m |> prepare() |> Map.new() end)
   end
 
   defp serialize(:retirement, v) do
-    v |> prepare() |> Map.new()
+    v
+    |> prepare()
+    |> Map.new(fn {k, v} -> if k == :reason, do: {k, String.to_atom(v)}, else: {k, v} end)
   end
 
   defp serialize(_k, v), do: v

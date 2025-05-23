@@ -50,19 +50,6 @@ defmodule Aura.Factory.HexPackageFactory do
         |> merge_attributes(attrs)
         |> evaluate_lazy_attributes()
       end
-
-      def hex_release_factory(attrs) do
-        day = Faker.random_between(10, 100)
-        week = day + Faker.random_between(10, 100)
-        all = week + Faker.random_between(10, 100)
-
-        %Aura.Model.HexRelease{
-          version: Faker.App.semver(),
-          url: Faker.Internet.url()
-        }
-        |> merge_attributes(attrs)
-        |> evaluate_lazy_attributes()
-      end
     end
   end
 end
