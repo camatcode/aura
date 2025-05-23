@@ -67,7 +67,7 @@ defmodule Aura.Requester do
     version = config[:version] || "0.0.0"
     e_version = System.version()
     mix_env = Mix.env()
-    user_agent = "#{app}/#{version} (Elixir/#{e_version}) (OTP/#{otp_version()})(#{mix_env})"
+    user_agent = IO.inspect("#{app}/#{version} (Elixir/#{e_version}) (OTP/#{otp_version()}) (#{mix_env})")
     {"User-Agent", user_agent}
   end
 
