@@ -5,8 +5,8 @@ defmodule Aura.Model.HexPackage do
 
   alias Aura.Model.DownloadStats
   alias Aura.Model.HexPackage
+  alias Aura.Model.HexRelease
   alias Aura.Model.PackageMeta
-  alias Aura.Model.Release
 
   DownloadStats
 
@@ -36,7 +36,7 @@ defmodule Aura.Model.HexPackage do
   defp serialize(:meta, v), do: PackageMeta.build(v)
   defp serialize(:downloads, v), do: DownloadStats.build(v)
 
-  defp serialize(:releases, v), do: Enum.map(v, &Release.build/1)
+  defp serialize(:releases, v), do: Enum.map(v, &HexRelease.build/1)
 
   defp serialize(_k, v), do: v
 end
@@ -47,7 +47,6 @@ defmodule Aura.Model.PackageMeta do
   import Aura.Model.Common
 
   defstruct [
-    #
     :maintainers,
     :links,
     :licenses,
@@ -73,21 +72,5 @@ defmodule Aura.Model.DownloadStats do
   def build(m) when is_map(m) do
     fields = prepare(m)
     struct(Aura.Model.DownloadStats, fields)
-  end
-end
-
-defmodule Aura.Model.Release do
-  @moduledoc false
-
-  import Aura.Model.Common
-
-  defstruct [
-    :version,
-    :url
-  ]
-
-  def build(m) when is_map(m) do
-    fields = prepare(m)
-    struct(Aura.Model.Release, fields)
   end
 end
