@@ -9,15 +9,17 @@ defmodule Aura.Requester do
   def request(method, path, opts \\ []) do
     qparams = opts[:qparams]
     is_retry = opts[:is_retry]
+    repo_url = find_repo_url(opts)
 
     opts =
       opts
       |> Keyword.delete(:qparams)
       |> Keyword.delete(:is_retry)
+      |> Keyword.delete(:repo_url)
       |> Keyword.put(:headers, [user_agent_header()])
 
     path =
-      @base_url
+      repo_url
       |> Path.join(path)
       |> handle_qparams(qparams)
 
@@ -42,7 +44,12 @@ defmodule Aura.Requester do
           {:error, "Rate limit exceeded"}
         else
           respect_limits(headers)
-          new_opts = Keyword.put(opts, :is_retry, true)
+
+          new_opts =
+            opts
+            |> Keyword.put(:is_retry, true)
+            |> Keyword.put(:repo_url, repo_url)
+
           request(method, path, new_opts)
         end
 
@@ -60,6 +67,12 @@ defmodule Aura.Requester do
   def patch(path, opts \\ []), do: request(:patch, path, opts)
 
   def delete(path, opts \\ []), do: request(:delete, path, opts)
+
+  defp find_repo_url(repo_url: url), do: url
+
+  defp find_repo_url(_) do
+    Application.get_env(:aura, :repo_url, @base_url)
+  end
 
   defp user_agent_header do
     config = Mix.Project.config()
