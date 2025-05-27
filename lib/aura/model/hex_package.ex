@@ -33,6 +33,7 @@ defmodule Aura.Model.HexPackage do
     struct(HexPackage, fields)
   end
 
+  defp serialize(_k, nil), do: nil
   defp serialize(:meta, v), do: PackageMeta.build(v)
   defp serialize(:downloads, v), do: DownloadStats.build(v)
 
