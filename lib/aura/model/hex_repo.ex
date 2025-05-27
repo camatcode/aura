@@ -15,8 +15,8 @@ defmodule Aura.Model.HexRepo do
   ]
 
   def build(m) when is_map(m) do
-    fields = prepare(m)
-
-    struct(HexRepo, fields)
+    m
+    |> prepare()
+    |> then(&Kernel.struct(HexRepo, &1))
   end
 end

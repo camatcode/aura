@@ -3,6 +3,8 @@ defmodule Aura.Model.HexRelease do
 
   import Aura.Model.Common
 
+  alias Aura.Model.HexRelease
+
   defstruct [
     :checksum,
     :configs,
@@ -22,12 +24,10 @@ defmodule Aura.Model.HexRelease do
   ]
 
   def build(m) when is_map(m) do
-    fields =
-      m
-      |> prepare()
-      |> Map.new(fn {k, v} -> {k, serialize(k, v)} end)
-
-    struct(Aura.Model.HexRelease, fields)
+    m
+    |> prepare()
+    |> Map.new(fn {k, v} -> {k, serialize(k, v)} end)
+    |> then(&Kernel.struct(HexRelease, &1))
   end
 
   defp serialize(_k, nil), do: nil

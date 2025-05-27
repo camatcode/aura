@@ -2,10 +2,17 @@ defmodule Aura.Packages do
   @moduledoc false
 
   alias Aura.Model.HexPackage
+  alias Aura.Model.HexPackageOwner
   alias Aura.Requester
 
   def list_packages(opts \\ []) do
     stream_paginate("/packages", opts)
+  end
+
+  def list_package_owners(name) do
+    with {:ok, %{body: body}} <- Requester.get("/packages/#{name}/owners") do
+      {:ok, Enum.map(body, &HexPackageOwner.build/1)}
+    end
   end
 
   def get_package(name) do

@@ -37,9 +37,29 @@ defmodule Aura.PackagesTest do
     end)
   end
 
+  test "list_package_owners" do
+    packages = Enum.take(Packages.list_packages(), 100)
+    refute Enum.empty?(packages)
+
+    Enum.each(packages, fn package ->
+      {:ok, owners} = Packages.list_package_owners(package.name)
+      refute Enum.empty?(owners)
+
+      Enum.each(owners, fn owner ->
+        assert owner.username
+        assert owner.level
+        assert owner.url
+      end)
+    end)
+  end
+
   test "get_package" do
-    [package | _] = Enum.take(Packages.list_packages(), 1)
-    assert {:ok, retrieved} = Packages.get_package(package.name)
-    assert package == retrieved
+    packages = Enum.take(Packages.list_packages(), 100)
+    refute Enum.empty?(packages)
+
+    Enum.each(packages, fn package ->
+      assert {:ok, retrieved} = Packages.get_package(package.name)
+      assert package == retrieved
+    end)
   end
 end
