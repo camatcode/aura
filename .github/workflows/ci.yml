@@ -12,6 +12,7 @@ jobs:
   ci:
     env:
       MIX_ENV: test
+      DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
     strategy:
       fail-fast: false
       matrix:
