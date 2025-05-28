@@ -34,4 +34,17 @@ defmodule Aura.ReleasesTest do
     Application.delete_env(:aura, :repo_url)
     Application.delete_env(:aura, :api_key)
   end
+
+  test "delete_release_docs" do
+    mock_repo = TestHelper.get_mock_repo()
+    api_key = TestHelper.get_mock_api_key()
+    Application.put_env(:aura, :api_key, api_key)
+    Application.put_env(:aura, :repo_url, mock_repo)
+    [package] = Enum.take(Packages.list_packages(), 1)
+    version = package.releases |> hd() |> Map.get(:version)
+    assert :ok = Releases.delete_release_docs(package.name, version)
+
+    Application.delete_env(:aura, :repo_url)
+    Application.delete_env(:aura, :api_key)
+  end
 end
