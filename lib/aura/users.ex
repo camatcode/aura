@@ -37,4 +37,10 @@ defmodule Aura.Users do
       {:ok, HexUser.build(body)}
     end
   end
+
+  def get_current_user(opts \\ []) do
+    with {:ok, %{body: body}} <- Requester.get("/users/me", opts) do
+      {:ok, HexUser.build(body)}
+    end
+  end
 end

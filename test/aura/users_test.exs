@@ -38,4 +38,16 @@ defmodule Aura.UsersTest do
     assert {:ok, _} = Users.create_user(username, email, password, raw: true)
     Application.delete_env(:aura, :repo_url)
   end
+
+  test "get current user" do
+    mock_repo = TestHelper.get_mock_repo()
+    api_key = TestHelper.get_mock_api_key()
+    Application.put_env(:aura, :api_key, api_key)
+    Application.put_env(:aura, :repo_url, mock_repo)
+
+    {:ok, %Aura.Model.HexUser{}} = Users.get_current_user()
+
+    Application.delete_env(:aura, :repo_url)
+    Application.delete_env(:aura, :api_key)
+  end
 end
