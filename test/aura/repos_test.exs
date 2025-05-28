@@ -32,6 +32,9 @@ defmodule Aura.ReposTest do
     assert retrieved.name == api_key.name
 
     assert :ok = Repos.delete_api_key(api_key.name)
+    allow_write = true
+    assert {:ok, new_api_key} = Repos.create_api_key("my_computer", "ericmj", "hunter42", allow_write)
+    assert new_api_key.secret
 
     Application.delete_env(:aura, :repo_url)
     Application.delete_env(:aura, :api_key)

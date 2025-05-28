@@ -31,6 +31,17 @@ defmodule Aura.Repos do
     end
   end
 
+  def create_api_key(key_name, username, password, allow_write \\ false, opts \\ []) do
+    opts = Keyword.merge([auth: {:basic, "#{username}:#{password}"}], opts)
+    read_write = if allow_write, do: [:read, :write], else: [:read]
+    permissions = Enum.map(read_write, fn action -> %{domain: :api, resource: action} end)
+    opts = Keyword.merge([json: %{name: key_name, permissions: permissions}], opts)
+
+    with {:ok, %{body: body}} <- Requester.post("/keys/", opts) do
+      {:ok, HexAPIKey.build(body)}
+    end
+  end
+
   def delete_api_key(key_name, opts \\ []) do
     with {:ok, _} <- Requester.delete("/keys/#{key_name}", opts) do
       :ok
