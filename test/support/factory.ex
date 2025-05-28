@@ -6,4 +6,5 @@ defmodule Aura.Factory do
   use Aura.Factory.HexPackageOwnerFactory
   use Aura.Factory.HexReleaseFactory
   use Aura.Factory.HexAPIKeyFactory
+  use Aura.Factory.HexUserFactory
 end
