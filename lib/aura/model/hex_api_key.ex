@@ -5,9 +5,11 @@ defmodule Aura.Model.HexAPIKey do
 
   defstruct [
     :authing_key,
+    :secret,
     :inserted_at,
     :name,
     :permissions,
+    :revoked_at,
     :updated_at,
     :url
   ]

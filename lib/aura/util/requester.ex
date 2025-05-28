@@ -16,7 +16,7 @@ defmodule Aura.Requester do
       |> Keyword.delete(:qparams)
       |> Keyword.delete(:is_retry)
       |> Keyword.delete(:repo_url)
-      |> Keyword.put(:headers, [user_agent_header()])
+      |> handle_headers()
 
     path =
       repo_url
@@ -84,6 +84,13 @@ defmodule Aura.Requester do
     {"User-Agent", user_agent}
   end
 
+  defp api_key_header(current_opts) do
+    if !current_opts[:auth] do
+      api_key = current_opts[:api_key] || Application.get_env(:aura, :api_key, nil)
+      if api_key, do: {"Authorization", api_key}
+    end
+  end
+
   defp otp_version do
     major = :otp_release |> :erlang.system_info() |> List.to_string()
     vsn_file = Path.join([:code.root_dir(), "releases", major, "OTP_VERSION"])
@@ -111,6 +118,13 @@ defmodule Aura.Requester do
     |> URI.parse()
     |> Map.put(:query, qparams)
     |> URI.to_string()
+  end
+
+  defp handle_headers(current_opts) do
+    current_headers = Keyword.get(current_opts, :headers, [])
+    new_headers = current_headers ++ [user_agent_header()] ++ [api_key_header(current_opts)]
+    new_headers = Enum.reject(new_headers, fn t -> t == nil end)
+    Keyword.put(current_opts, :headers, new_headers)
   end
 
   defp make_request(:get, path, opts), do: Req.get(path, opts)
