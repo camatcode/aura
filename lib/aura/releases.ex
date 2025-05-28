@@ -20,6 +20,12 @@ defmodule Aura.Releases do
     end
   end
 
+  def delete_release_docs(package_name, version) do
+    with {:ok, _} <- Requester.delete("/packages/#{package_name}/releases/#{version}/docs") do
+      :ok
+    end
+  end
+
   def undo_retire_release(package_name, version, opts \\ []) do
     with {:ok, _} <- Requester.delete("/packages/#{package_name}/releases/#{version}/retire", opts) do
       :ok
