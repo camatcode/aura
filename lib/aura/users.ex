@@ -32,7 +32,7 @@ defmodule Aura.Users do
     end
   end
 
-  def get_user(username_or_email, opts \\ []) do
+  def get_user(username_or_email, opts \\ []) when is_bitstring(username_or_email) do
     with {:ok, %{body: body}} <- Requester.get("/users/#{username_or_email}", opts) do
       {:ok, HexUser.build(body)}
     end
@@ -41,6 +41,12 @@ defmodule Aura.Users do
   def get_current_user(opts \\ []) do
     with {:ok, %{body: body}} <- Requester.get("/users/me", opts) do
       {:ok, HexUser.build(body)}
+    end
+  end
+
+  def reset_user_password(username_or_email, opts \\ []) do
+    with {:ok, _} <- Requester.post("/users/#{username_or_email}/reset", opts) do
+      :ok
     end
   end
 end

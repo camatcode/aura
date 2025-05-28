@@ -1,6 +1,7 @@
 defmodule Aura.UsersTest do
   use ExUnit.Case
 
+  alias Aura.Model.HexUser
   alias Aura.Packages
   alias Aura.Users
 
@@ -45,7 +46,19 @@ defmodule Aura.UsersTest do
     Application.put_env(:aura, :api_key, api_key)
     Application.put_env(:aura, :repo_url, mock_repo)
 
-    {:ok, %Aura.Model.HexUser{}} = Users.get_current_user()
+    {:ok, %HexUser{}} = Users.get_current_user()
+
+    Application.delete_env(:aura, :repo_url)
+    Application.delete_env(:aura, :api_key)
+  end
+
+  test "reset user password" do
+    mock_repo = TestHelper.get_mock_repo()
+    api_key = TestHelper.get_mock_api_key()
+    Application.put_env(:aura, :api_key, api_key)
+    Application.put_env(:aura, :repo_url, mock_repo)
+
+    assert :ok = Users.reset_user_password("ericmj")
 
     Application.delete_env(:aura, :repo_url)
     Application.delete_env(:aura, :api_key)
