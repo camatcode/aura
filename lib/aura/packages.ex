@@ -21,6 +21,22 @@ defmodule Aura.Packages do
     end
   end
 
+  def add_package_owner(package_name, owner_email, opts \\ []) do
+    encoded_email = URI.encode_www_form(owner_email)
+
+    with {:ok, _} <- Requester.put("/packages/#{package_name}/owners/#{encoded_email}", opts) do
+      :ok
+    end
+  end
+
+  def remove_package_owner(package_name, owner_email, opts \\ []) do
+    encoded_email = URI.encode_www_form(owner_email)
+
+    with {:ok, _} <- Requester.delete("/packages/#{package_name}/owners/#{encoded_email}", opts) do
+      :ok
+    end
+  end
+
   defp stream_paginate(path, opts) do
     qparams =
       Keyword.merge([page: 1], opts)

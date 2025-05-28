@@ -36,6 +36,7 @@ defmodule Aura.ReleasesTest do
   end
 
   test "delete_release_docs" do
+    # use mock repo
     mock_repo = TestHelper.get_mock_repo()
     api_key = TestHelper.get_mock_api_key()
     Application.put_env(:aura, :api_key, api_key)

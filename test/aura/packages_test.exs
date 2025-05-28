@@ -62,4 +62,18 @@ defmodule Aura.PackagesTest do
       assert package == retrieved
     end)
   end
+
+  test "add / remove package owners" do
+    # use mock repo
+    mock_repo = TestHelper.get_mock_repo()
+    api_key = TestHelper.get_mock_api_key()
+    Application.put_env(:aura, :api_key, api_key)
+    Application.put_env(:aura, :repo_url, mock_repo)
+
+    assert :ok = Packages.add_package_owner("plug", "ericmj@mail.com")
+    assert :ok = Packages.remove_package_owner("plug", "ericmj@mail.com")
+
+    Application.delete_env(:aura, :repo_url)
+    Application.delete_env(:aura, :api_key)
+  end
 end
