@@ -24,4 +24,10 @@ defmodule Aura.Repos do
       {:ok, HexRepo.build(body)}
     end
   end
+
+  def get_api_key(key_name, opts \\ []) do
+    with {:ok, %{body: body}} <- Requester.get("/keys/#{key_name}", opts) do
+      {:ok, HexAPIKey.build(body)}
+    end
+  end
 end

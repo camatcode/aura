@@ -14,7 +14,7 @@ defmodule Aura.ReposTest do
     assert {:ok, [%{name: "acme"}]} = Repos.list_repos(repo_url: mock_repo)
   end
 
-  test "list_api_keys" do
+  test "list_api_keys  / get_api_key" do
     # use another repo
     mock_repo = TestHelper.get_mock_repo()
     api_key = TestHelper.get_mock_api_key()
@@ -27,6 +27,9 @@ defmodule Aura.ReposTest do
     assert api_key.updated_at
     assert api_key.name
     assert api_key.url
+
+    assert {:ok, retrieved} = Repos.get_api_key(api_key.name)
+    assert retrieved.name == api_key.name
 
     Application.delete_env(:aura, :repo_url)
     Application.delete_env(:aura, :api_key)
