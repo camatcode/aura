@@ -30,4 +30,10 @@ defmodule Aura.Repos do
       {:ok, HexAPIKey.build(body)}
     end
   end
+
+  def delete_api_key(key_name, opts \\ []) do
+    with {:ok, _} <- Requester.delete("/keys/#{key_name}", opts) do
+      :ok
+    end
+  end
 end
