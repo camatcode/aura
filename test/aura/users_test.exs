@@ -25,4 +25,17 @@ defmodule Aura.UsersTest do
       end)
     end)
   end
+
+  test "create user" do
+    # use another repo
+    mock_repo = TestHelper.get_mock_repo()
+    Application.put_env(:aura, :repo_url, mock_repo)
+    username = Faker.Internet.user_name()
+    email = Faker.Internet.email()
+    password = Faker.Internet.slug()
+
+    # See: https://github.com/hexpm/specifications/issues/41
+    assert {:ok, _} = Users.create_user(username, email, password, raw: true)
+    Application.delete_env(:aura, :repo_url)
+  end
 end

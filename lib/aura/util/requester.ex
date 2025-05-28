@@ -35,7 +35,7 @@ defmodule Aura.Requester do
         respect_limits(headers)
         resp
 
-      {:ok, %Req.Response{status: 204, body: _body, headers: headers}} = resp ->
+      {:ok, %Req.Response{status: status, body: _body, headers: headers}} = resp when status >= 200 and status < 300 ->
         respect_limits(headers)
         resp
 
