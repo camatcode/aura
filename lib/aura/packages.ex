@@ -49,7 +49,11 @@ defmodule Aura.Packages do
     qparams =
       Keyword.merge([page: 1], opts)
 
-    opts = Keyword.delete(opts, :page)
+    opts =
+      opts
+      |> Keyword.delete(:page)
+      |> Keyword.delete(:search)
+      |> Keyword.delete(:sort)
 
     start_fun = fn -> max(1, qparams[:page]) end
     end_fun = fn _ -> :ok end

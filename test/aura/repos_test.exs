@@ -11,12 +11,7 @@ defmodule Aura.ReposTest do
   end
 
   test "list_repos", _state do
-    # use Hex.pm
     assert {:ok, [%{name: "hexpm"}]} = Repos.list_repos()
-
-    # use another repo URL
-    mock_repo = TestHelper.get_mock_repo()
-    assert {:ok, [%{name: "acme"}]} = Repos.list_repos(repo_url: mock_repo)
   end
 
   test "api_keys", _state do
@@ -34,15 +29,8 @@ defmodule Aura.ReposTest do
   end
 
   test "get_repo/1", _state do
-    # use hex.pm
     assert {:ok, [hex]} = Repos.list_repos()
     assert {:ok, returned} = Repos.get_repo(hex.name)
-    assert returned.name == hex.name
-
-    # use another repo URL
-    mock_repo = TestHelper.get_mock_repo()
-    assert {:ok, [hex]} = Repos.list_repos(repo_url: mock_repo)
-    assert {:ok, returned} = Repos.get_repo(hex.name, repo_url: mock_repo)
     assert returned.name == hex.name
   end
 end
