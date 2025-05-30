@@ -23,6 +23,12 @@ jobs:
 
     runs-on: ubuntu-24.04
 
+    services:
+      # Label used to access the service container
+      hex_beefy:
+        # Docker Hub image
+        image: camatcode/hexbeefy
+
     steps:
       - uses: actions/checkout@v4
 
