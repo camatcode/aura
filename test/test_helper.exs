@@ -19,9 +19,8 @@ defmodule TestHelper do
   def setup_state do
     repo_url = Application.get_env(:aura, :repo_url)
 
-    if repo_url == nil || String.contains?(repo_url, "hex.pm") do
-      Logger.warning("Don't test against hex.pm!")
-      :err
+    if repo_url == nil || repo_url |> String.downcase() |> String.contains?("hex.pm") do
+      raise "Don't test against hex.pm!"
     else
       username = Faker.Internet.user_name()
       password = Faker.Internet.slug()
@@ -50,7 +49,10 @@ defmodule TestHelper do
       description = Faker.Lorem.sentence()
       {:ok, new_tar} = generate_release_tar(package_name, release_version, description, github_url)
 
-      {:ok, release} = Releases.publish_release(new_tar)
+      {:ok, _} = Releases.publish_release(new_tar)
+      path = Path.join("test/support/data/docs/", "nimble_parsec-1.4.2.tar.gz")
+      {:ok, _} = Releases.publish_release_docs(package_name, release_version, path)
+      {:ok, release} = Releases.get_release(package_name, release_version)
       {:ok, package} = Packages.get_package(package_name)
       %{user: user, other_users: [other_user], api_key: api_key, owned_releases: [release], owned_packages: [package]}
     end
