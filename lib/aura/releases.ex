@@ -27,7 +27,7 @@ defmodule Aura.Releases do
   def delete_release(package_name, version, opts \\ []) do
     path = Path.join(@packages_path, "#{package_name}/releases/#{version}")
 
-    with {:ok, %{body: body}} <- Requester.delete(path, opts) do
+    with {:ok, _} <- Requester.delete(path, opts) do
       :ok
     end
   end
