@@ -30,6 +30,9 @@ defmodule Aura.ReleasesTest do
       {:ok, new_tar} = TestHelper.generate_release_tar(package_name, release_version, description, github_url)
 
       {:ok, _} = Releases.publish_release(new_tar, repo: repo.name)
+
+      doc_tar = Path.join("test/support/data/docs/", "nimble_parsec-1.4.2.tar.gz")
+      {:ok, _} = Releases.publish_release_docs(package_name, release_version, doc_tar, repo: repo.name)
     end)
   end
 
