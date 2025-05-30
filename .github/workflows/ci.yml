@@ -13,7 +13,7 @@ jobs:
     env:
       MIX_ENV: test
       DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
-      AURA_REPO_URL: "http://hex_beefy:4000/api"
+#      AURA_REPO_URL: "http://hex_beefy:4000/api"
     strategy:
       fail-fast: false
       matrix:
@@ -29,6 +29,8 @@ jobs:
       hex_beefy:
         # Docker Hub image
         image: camatcode/hex_beefy:latest
+        ports:
+          - 4000:4000
 
     steps:
       - uses: actions/checkout@v4
