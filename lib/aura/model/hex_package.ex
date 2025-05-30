@@ -3,12 +3,12 @@ defmodule Aura.Model.HexPackage do
 
   import Aura.Model.Common
 
-  alias Aura.Model.DownloadStats
   alias Aura.Model.HexPackage
+  alias Aura.Model.HexPackageDownloadStats
+  alias Aura.Model.HexPackageMeta
   alias Aura.Model.HexRelease
-  alias Aura.Model.PackageMeta
 
-  DownloadStats
+  HexPackageDownloadStats
 
   defstruct [
     :name,
@@ -32,44 +32,10 @@ defmodule Aura.Model.HexPackage do
   end
 
   defp serialize(_k, nil), do: nil
-  defp serialize(:meta, v), do: PackageMeta.build(v)
-  defp serialize(:downloads, v), do: DownloadStats.build(v)
+  defp serialize(:meta, v), do: HexPackageMeta.build(v)
+  defp serialize(:downloads, v), do: HexPackageDownloadStats.build(v)
 
   defp serialize(:releases, v), do: Enum.map(v, &HexRelease.build/1)
 
   defp serialize(_k, v), do: v
-end
-
-defmodule Aura.Model.PackageMeta do
-  @moduledoc false
-
-  import Aura.Model.Common
-
-  defstruct [
-    :maintainers,
-    :links,
-    :licenses,
-    :description
-  ]
-
-  def build(m) when is_map(m) do
-    fields = prepare(m)
-
-    struct(Aura.Model.PackageMeta, fields)
-  end
-end
-
-defmodule Aura.Model.DownloadStats do
-  @moduledoc false
-
-  import Aura.Model.Common
-
-  defstruct all: 0,
-            week: 0,
-            day: 0
-
-  def build(m) when is_map(m) do
-    fields = prepare(m)
-    struct(Aura.Model.DownloadStats, fields)
-  end
 end

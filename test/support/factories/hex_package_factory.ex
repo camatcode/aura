@@ -27,7 +27,7 @@ defmodule Aura.Factory.HexPackageFactory do
       end
 
       def package_meta_factory(attrs) do
-        %Aura.Model.PackageMeta{
+        %Aura.Model.HexPackageMeta{
           maintainers: Enum.map(1..5, fn _ -> Faker.Internet.user_name() end),
           links: Enum.map(1..5, fn _ -> Faker.Internet.url() end),
           licenses: Enum.map(1..5, fn _ -> Faker.Internet.slug() end),
@@ -42,7 +42,7 @@ defmodule Aura.Factory.HexPackageFactory do
         week = day + Faker.random_between(10, 100)
         all = week + Faker.random_between(10, 100)
 
-        %Aura.Model.DownloadStats{
+        %Aura.Model.HexPackageDownloadStats{
           all: all,
           week: week,
           day: day

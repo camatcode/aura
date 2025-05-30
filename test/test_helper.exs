@@ -46,7 +46,7 @@ defmodule TestHelper do
         |> String.replace("-", "_")
         |> String.downcase()
 
-      package_name = package_name <> "#{System.os_time()}"
+      package_name = package_name <> "#{System.monotonic_time()}"
       release_version = Faker.App.semver()
       description = Faker.Lorem.sentence()
       {:ok, new_tar} = generate_release_tar(package_name, release_version, description, github_url)
