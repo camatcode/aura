@@ -4,6 +4,7 @@ defmodule Aura.Packages do
 
   import Aura.Common
 
+  alias Aura.Model.HexAuditLog
   alias Aura.Model.HexPackage
   alias Aura.Model.HexPackageOwner
   alias Aura.Requester
@@ -46,5 +47,10 @@ defmodule Aura.Packages do
     with {:ok, _} <- Requester.delete(path, opts) do
       :ok
     end
+  end
+
+  def stream_audit_logs(package_name, opts \\ []) do
+    path = Path.join(@base_path, "#{package_name}/audit-logs")
+    stream_paginate(path, &HexAuditLog.build/1, opts)
   end
 end

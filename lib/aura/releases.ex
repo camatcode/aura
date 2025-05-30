@@ -17,10 +17,18 @@ defmodule Aura.Releases do
   end
 
   def get_release_docs(package_name, version, opts \\ []) do
-    path = "/docs/#{package_name}-#{version}.tar.gz"
+    path = Path.join(@packages_path, "#{package_name}/releases/#{version}/docs")
 
     with {:ok, %{body: body}} <- Requester.get(path, opts) do
       PackageTarUtil.read_release_tar(body)
+    end
+  end
+
+  def delete_release(package_name, version, opts \\ []) do
+    path = Path.join(@packages_path, "#{package_name}/releases/#{version}")
+
+    with {:ok, _} <- Requester.delete(path, opts) do
+      :ok
     end
   end
 
@@ -73,18 +81,18 @@ defmodule Aura.Releases do
     end
   end
 
-  def delete_release_docs(package_name, version) do
-    path = Path.join(@packages_path, "#{package_name}/releases/#{version}/docs")
-
-    with {:ok, _} <- Requester.delete(path) do
-      :ok
-    end
-  end
-
   def undo_retire_release(package_name, version, opts \\ []) do
     path = Path.join(@packages_path, "#{package_name}/releases/#{version}/retire")
 
     with {:ok, _} <- Requester.delete(path, opts) do
+      :ok
+    end
+  end
+
+  def delete_release_docs(package_name, version) do
+    path = Path.join(@packages_path, "#{package_name}/releases/#{version}/docs")
+
+    with {:ok, _} <- Requester.delete(path) do
       :ok
     end
   end
