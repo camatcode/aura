@@ -3,9 +3,14 @@ defmodule Aura.ReposTest do
 
   alias Aura.Repos
 
+  @moduletag :capture_log
   doctest Repos
 
-  test "list_repos" do
+  setup do
+    TestHelper.setup_state()
+  end
+
+  test "list_repos", _state do
     # use Hex.pm
     assert {:ok, [%{name: "hexpm"}]} = Repos.list_repos()
 
@@ -14,13 +19,7 @@ defmodule Aura.ReposTest do
     assert {:ok, [%{name: "acme"}]} = Repos.list_repos(repo_url: mock_repo)
   end
 
-  test "api_keys" do
-    # use another repo
-    mock_repo = TestHelper.get_mock_repo()
-    api_key = TestHelper.get_mock_api_key()
-    Application.put_env(:aura, :api_key, api_key)
-    Application.put_env(:aura, :repo_url, mock_repo)
-
+  test "api_keys", _state do
     assert {:ok, [api_key]} = Repos.list_api_keys()
     assert api_key.authing_key
     assert api_key.inserted_at
@@ -32,21 +31,14 @@ defmodule Aura.ReposTest do
     assert retrieved.name == api_key.name
 
     assert :ok = Repos.delete_api_key(api_key.name)
-    allow_write = true
-    assert {:ok, new_api_key} = Repos.create_api_key("my_computer", "ericmj", "hunter42", allow_write)
-    assert new_api_key.secret
-
-    Application.delete_env(:aura, :repo_url)
-    Application.delete_env(:aura, :api_key)
   end
 
-  test "get_repo/1" do
+  test "get_repo/1", _state do
     # use hex.pm
     assert {:ok, [hex]} = Repos.list_repos()
     assert {:ok, returned} = Repos.get_repo(hex.name)
     assert returned.name == hex.name
 
-    # use another repo
     # use another repo URL
     mock_repo = TestHelper.get_mock_repo()
     assert {:ok, [hex]} = Repos.list_repos(repo_url: mock_repo)

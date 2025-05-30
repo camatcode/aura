@@ -9,7 +9,6 @@ defmodule Aura.Model.HexRelease do
     :checksum,
     :configs,
     :docs_html_url,
-    :downloads,
     :has_docs,
     :html_url,
     :inserted_at,
@@ -20,13 +19,15 @@ defmodule Aura.Model.HexRelease do
     :retirement,
     :updated_at,
     :version,
-    :url
+    :url,
+    downloads: []
   ]
 
   def build(m) when is_map(m) do
     m
     |> prepare()
     |> Map.new(fn {k, v} -> {k, serialize(k, v)} end)
+    |> Enum.reject(fn {_k, v} -> v == nil end)
     |> then(&Kernel.struct(HexRelease, &1))
   end
 

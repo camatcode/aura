@@ -1,0 +1,6 @@
+services:
+  hex_beefy:
+    image: camatcode/hex_beefy
+    container_name: hex_beefy
+    network_mode: host
+    restart: unless-stopped

@@ -13,6 +13,7 @@ jobs:
     env:
       MIX_ENV: test
       DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
+
     strategy:
       fail-fast: false
       matrix:
@@ -22,6 +23,14 @@ jobs:
               otp: '27.3.1'
 
     runs-on: ubuntu-24.04
+
+    services:
+      # Label used to access the service container
+      hex_beefy:
+        # Docker Hub image
+        image: camatcode/hex_beefy:latest
+        ports:
+          - 4000:4000
 
     steps:
       - uses: actions/checkout@v4
