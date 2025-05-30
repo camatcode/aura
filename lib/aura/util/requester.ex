@@ -68,9 +68,11 @@ defmodule Aura.Requester do
 
   def delete(path, opts \\ []), do: request(:delete, path, opts)
 
-  defp find_repo_url(repo_url: url), do: url
+  def hex_pm_url, do: @base_url
 
-  defp find_repo_url(_) do
+  def find_repo_url(repo_url: url), do: url
+
+  def find_repo_url(_) do
     Application.get_env(:aura, :repo_url, @base_url)
   end
 

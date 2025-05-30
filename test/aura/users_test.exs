@@ -25,6 +25,8 @@ defmodule Aura.UsersTest do
         assert user.inserted_at
         assert user.updated_at
         assert user.url
+
+        assert {:ok, ^user} = Users.get_user(owner.email)
       end)
     end)
   end
