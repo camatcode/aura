@@ -2,11 +2,22 @@ defmodule Aura.Releases do
   @moduledoc false
 
   alias Aura.Model.HexRelease
+  alias Aura.PackageTarUtil
   alias Aura.Requester
 
   def get_release(package_name, version, opts \\ []) do
     with {:ok, %{body: body}} <- Requester.get("/packages/#{package_name}/releases/#{version}", opts) do
       {:ok, HexRelease.build(body)}
+    end
+  end
+
+  def publish_release(complete_tar, opts \\ []) when is_bitstring(complete_tar) do
+    with {:ok, _streams} <- PackageTarUtil.read_tar_for_release(complete_tar) do
+      opts = Keyword.merge([body: File.read!(complete_tar)], opts)
+
+      with {:ok, %{body: body}} <- Requester.post("/publish", opts) do
+        {:ok, HexRelease.build(body)}
+      end
     end
   end
 

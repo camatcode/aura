@@ -25,12 +25,10 @@ defmodule Aura.Model.HexPackage do
   ]
 
   def build(m) when is_map(m) do
-    fields =
-      m
-      |> prepare()
-      |> Enum.map(fn {k, v} -> {k, serialize(k, v)} end)
-
-    struct(HexPackage, fields)
+    m
+    |> prepare()
+    |> Enum.map(fn {k, v} -> {k, serialize(k, v)} end)
+    |> then(&struct(HexPackage, &1))
   end
 
   defp serialize(_k, nil), do: nil

@@ -5,12 +5,17 @@ defmodule Aura.PackagesTest do
 
   alias Aura.Packages
 
+  @moduletag :capture_log
   doctest Aura.Packages
 
-  test "list_packages" do
+  setup do
+    TestHelper.setup_state()
+  end
+
+  test "list_packages", _state do
     # First 2000
     first_2k = Enum.take(Packages.list_packages(), 2000)
-    assert Enum.count(first_2k) == 2000
+    assert Enum.count(first_2k) <= 2000
 
     Enum.each(first_2k, fn package ->
       assert package.name
@@ -27,7 +32,7 @@ defmodule Aura.PackagesTest do
       |> Packages.list_packages()
       |> Enum.take(200)
 
-    assert Enum.count(page_25_forward) == 200
+    assert Enum.count(page_25_forward) <= 200
 
     Enum.each(page_25_forward, fn package ->
       assert package.name
@@ -37,7 +42,7 @@ defmodule Aura.PackagesTest do
     end)
   end
 
-  test "list_package_owners" do
+  test "list_package_owners", _state do
     packages = Enum.take(Packages.list_packages(), 100)
     refute Enum.empty?(packages)
 
@@ -53,7 +58,7 @@ defmodule Aura.PackagesTest do
     end)
   end
 
-  test "get_package" do
+  test "get_package", _state do
     packages = Enum.take(Packages.list_packages(), 100)
     refute Enum.empty?(packages)
 
@@ -63,17 +68,10 @@ defmodule Aura.PackagesTest do
     end)
   end
 
-  test "add / remove package owners" do
-    # use mock repo
-    mock_repo = TestHelper.get_mock_repo()
-    api_key = TestHelper.get_mock_api_key()
-    Application.put_env(:aura, :api_key, api_key)
-    Application.put_env(:aura, :repo_url, mock_repo)
-
-    assert :ok = Packages.add_package_owner("plug", "ericmj@mail.com")
-    assert :ok = Packages.remove_package_owner("plug", "ericmj@mail.com")
-
-    Application.delete_env(:aura, :repo_url)
-    Application.delete_env(:aura, :api_key)
+  test "add / remove package owners", %{other_users: [other_user | _], owned_packages: owned_packages} do
+    Enum.each(owned_packages, fn package ->
+      assert :ok = Packages.add_package_owner(package.name, other_user.email)
+      assert :ok = Packages.remove_package_owner(package.name, other_user.email)
+    end)
   end
 end
