@@ -24,6 +24,14 @@ defmodule Aura.Releases do
     end
   end
 
+  def delete_release(package_name, version, opts \\ []) do
+    path = Path.join(@packages_path, "#{package_name}/releases/#{version}")
+
+    with {:ok, %{body: body}} <- Requester.delete(path, opts) do
+      :ok
+    end
+  end
+
   def publish_release(code_tar, opts \\ []) when is_bitstring(code_tar) do
     if opts[:repo] do
       publish_release_impl(code_tar, "/repos/#{opts[:repo]}/publish", Keyword.delete(opts, :repo))
