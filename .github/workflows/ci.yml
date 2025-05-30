@@ -13,7 +13,7 @@ jobs:
     env:
       MIX_ENV: test
       DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
-#      AURA_REPO_URL: "http://hex_beefy:4000/api"
+
     strategy:
       fail-fast: false
       matrix:
