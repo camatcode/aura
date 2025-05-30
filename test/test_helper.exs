@@ -49,9 +49,10 @@ defmodule TestHelper do
       description = Faker.Lorem.sentence()
       {:ok, new_tar} = generate_release_tar(package_name, release_version, description, github_url)
 
-      {:ok, release} = Releases.publish_release(new_tar)
+      {:ok, _} = Releases.publish_release(new_tar)
       path = Path.join("test/support/data/docs/", "nimble_parsec-1.4.2.tar.gz")
       {:ok, _} = Releases.publish_release_docs(package_name, release_version, path)
+      {:ok, release} = Releases.get_release(package_name, release_version)
       {:ok, package} = Packages.get_package(package_name)
       %{user: user, other_users: [other_user], api_key: api_key, owned_releases: [release], owned_packages: [package]}
     end
