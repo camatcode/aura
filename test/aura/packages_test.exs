@@ -20,7 +20,7 @@ defmodule Aura.PackagesTest do
     end)
   end
 
-  test "list_packages", _state do
+  test "stream_packages", _state do
     # First 2000
     first_2k = Enum.take(Packages.stream_packages(sort: :recent_downloads), 2000)
     assert Enum.count(first_2k) <= 2000
@@ -73,6 +73,18 @@ defmodule Aura.PackagesTest do
     Enum.each(packages, fn package ->
       assert {:ok, retrieved} = Packages.get_package(package.name)
       assert package == retrieved
+    end)
+  end
+
+  test "stream_audit_logs", %{owned_packages: packages} do
+    Enum.each(packages, fn package ->
+      package.name
+      |> Packages.stream_audit_logs()
+      |> Enum.each(fn audit_log ->
+        assert audit_log.params
+        assert audit_log.action
+        assert audit_log.user_agent
+      end)
     end)
   end
 
