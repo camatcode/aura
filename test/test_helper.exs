@@ -17,48 +17,90 @@ defmodule TestHelper do
   @moduletag :capture_log
 
   def setup_state do
+    repo_url = validate_repo_url()
+    password = Faker.Internet.slug() <> "#{System.monotonic_time()}"
+    Application.delete_env(:aura, :api_key)
+    # Create a user
+    {user, other_users} = create_users(repo_url, password)
+    # Create an write API key
+    api_key = create_api_key(user, password)
+    # Generate some package and releases
+    {owned_packages, owned_releases} = create_releases()
+
+    %{
+      user: user,
+      other_users: other_users,
+      api_key: api_key,
+      owned_releases: owned_releases,
+      owned_packages: owned_packages
+    }
+  end
+
+  defp validate_repo_url do
     repo_url = Application.get_env(:aura, :repo_url)
 
     if repo_url == nil || repo_url |> String.downcase() |> String.contains?("hex.pm") do
       raise "Don't test against hex.pm!"
-    else
-      username = Faker.Internet.user_name()
-      password = Faker.Internet.slug() <> "#{System.monotonic_time()}"
-      email = Faker.Internet.email()
-      api_key_name = Faker.Internet.slug()
-      # Create a user
-      Application.delete_env(:aura, :api_key)
-      {:ok, user} = Users.create_user(username, password, email)
-      {:ok, other_user} = Users.create_user("#{username}_other", password, Faker.Internet.email())
-      :timer.sleep(10)
-      verify_email(repo_url)
-      # Create an write API key
-      {:ok, api_key} = Repos.create_api_key(api_key_name, username, password, true)
-      Application.put_env(:aura, :api_key, api_key.secret)
-
-      # Generate some package and releases
-      github_url = Faker.Internet.url()
-
-      package_name =
-        (Faker.App.name() <> "#{System.monotonic_time()}")
-        |> String.replace(" ", "_")
-        |> String.replace("-", "_")
-        |> String.downcase()
-
-      release_version = Faker.App.semver()
-      description = Faker.Lorem.sentence()
-      {:ok, new_tar} = generate_release_tar(package_name, release_version, description, github_url)
-
-      {:ok, _} = Releases.publish_release(new_tar)
-      path = Path.join("test/support/data/docs/", "nimble_parsec-1.4.2.tar.gz")
-      {:ok, _} = Releases.publish_release_docs(package_name, release_version, path)
-      {:ok, release} = Releases.get_release(package_name, release_version)
-      {:ok, package} = Packages.get_package(package_name)
-      %{user: user, other_users: [other_user], api_key: api_key, owned_releases: [release], owned_packages: [package]}
     end
+
+    repo_url
   end
 
-  def generate_release_tar(package_name, release_version, description, github_url) do
+  defp create_users(repo_url, password) do
+    username = Faker.Internet.user_name()
+    email = Faker.Internet.email()
+    {:ok, user} = Users.create_user(username, password, email)
+
+    other_users =
+      Enum.map(1..5, fn _ ->
+        {:ok, other_user} = Users.create_user("#{username}_#{System.monotonic_time()}", password, Faker.Internet.email())
+        other_user
+      end)
+
+    verify_emails(repo_url)
+    {user, other_users}
+  end
+
+  defp create_api_key(user, password) do
+    api_key_name = Faker.Internet.slug()
+    {:ok, api_key} = Repos.create_api_key(api_key_name, user.username, password, true)
+    Application.put_env(:aura, :api_key, api_key.secret)
+    api_key
+  end
+
+  defp create_releases do
+    %{packages: owned_packages, releases: owned_releases} =
+      1..5
+      |> Enum.map(fn _ ->
+        github_url = Faker.Internet.url()
+
+        package_name =
+          (Faker.App.name() <> "#{System.monotonic_time()}")
+          |> String.replace(" ", "_")
+          |> String.replace("-", "_")
+          |> String.downcase()
+
+        release_version = Faker.App.semver()
+        description = Faker.Lorem.sentence()
+        {:ok, new_tar} = generate_release_tar(package_name, release_version, description, github_url)
+
+        {:ok, _} = Releases.publish_release(new_tar)
+        path = Path.join("test/support/data/docs/", "nimble_parsec-1.4.2.tar.gz")
+        {:ok, _} = Releases.publish_release_docs(package_name, release_version, path)
+        {:ok, release} = Releases.get_release(package_name, release_version)
+        {:ok, package} = Packages.get_package(package_name)
+        {package, release}
+      end)
+      |> Enum.reduce(%{packages: [], releases: []}, fn {package, release}, acc ->
+        new_packages = Map.get(acc, :packages) ++ [package]
+        new_releases = Map.get(acc, :releases) ++ [release]
+        %{packages: new_packages, releases: new_releases}
+      end)
+
+    {owned_packages, owned_releases}
+  end
+
+  defp generate_release_tar(package_name, release_version, description, github_url) do
     path = Path.join("test/support/data/release/", "nimble_parsec-1.4.2.tar")
     {:ok, datas} = PackageTarUtil.read_release_tar(path)
     contents_tar_gz = datas[:"contents.tar.gz"]
@@ -114,7 +156,8 @@ defmodule TestHelper do
     |> String.replace("PACKAGE_DESCRIPTION", description)
   end
 
-  defp verify_email(repo_url) do
+  defp verify_emails(repo_url) do
+    :timer.sleep(10)
     base_url = String.replace(repo_url, "/api", "")
     sent_email_url = Path.join(base_url, "/sent_emails")
 
@@ -123,11 +166,8 @@ defmodule TestHelper do
 
       Enum.map(urls, fn url ->
         decoded = String.replace(url, "amp;", "")
-        Req.get(decoded)
+        Req.get(decoded, redirect: false)
       end)
     end
   end
-
-  def get_mock_repo, do: ExDoppler.get_secret_raw!("gh", "dev", "MOCK_HEX_REPO")
-  def get_mock_api_key, do: ExDoppler.get_secret_raw!("gh", "dev", "MOCK_HEX_REPO_KEY")
 end

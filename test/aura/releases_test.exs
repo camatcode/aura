@@ -21,7 +21,7 @@ defmodule Aura.ReleasesTest do
     Enum.each(owned_packages, fn package ->
       version = package.releases |> hd() |> Map.get(:version)
       assert {:ok, release} = Releases.get_release(package.name, version)
-      assert hd(owned_releases) == release
+      assert Enum.member?(owned_releases, release)
     end)
   end
 
