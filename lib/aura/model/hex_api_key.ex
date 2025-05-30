@@ -3,6 +3,8 @@ defmodule Aura.Model.HexAPIKey do
 
   import Aura.Model.Common
 
+  alias Aura.Model.HexAPIKey
+
   defstruct [
     :authing_key,
     :secret,
@@ -18,7 +20,7 @@ defmodule Aura.Model.HexAPIKey do
     m
     |> prepare()
     |> Enum.map(fn {k, v} -> {k, serialize(k, v)} end)
-    |> then(&struct(Aura.Model.HexAPIKey, &1))
+    |> then(&struct(HexAPIKey, &1))
   end
 
   defp serialize(_k, nil), do: nil

@@ -1,16 +1,10 @@
 defmodule Aura.PackageTarUtil do
   @moduledoc false
 
-  def read_tar_for_release(tar_path) do
+  def read_release_tar(tar_path) do
     with {:ok,
           %{
-            entries:
-              [
-                %{file_name: "VERSION"},
-                %{file_name: "CHECKSUM"},
-                %{file_name: "metadata.config"},
-                %{file_name: "contents.tar.gz"}
-              ] = entries
+            entries: entries
           }} <- get_entries(tar_path) do
       streams =
         entries

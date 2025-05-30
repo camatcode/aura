@@ -41,12 +41,11 @@ defmodule TestHelper do
       github_url = Faker.Internet.url()
 
       package_name =
-        Faker.App.name()
+        (Faker.App.name() <> "#{System.monotonic_time()}")
         |> String.replace(" ", "_")
         |> String.replace("-", "_")
         |> String.downcase()
 
-      package_name = package_name <> "#{System.os_time()}"
       release_version = Faker.App.semver()
       description = Faker.Lorem.sentence()
       {:ok, new_tar} = generate_release_tar(package_name, release_version, description, github_url)
@@ -59,7 +58,7 @@ defmodule TestHelper do
 
   def generate_release_tar(package_name, release_version, description, github_url) do
     path = Path.join("test/support/data/release/", "nimble_parsec-1.4.2.tar")
-    {:ok, datas} = PackageTarUtil.read_tar_for_release(path)
+    {:ok, datas} = PackageTarUtil.read_release_tar(path)
     contents_tar_gz = datas[:"contents.tar.gz"]
     tar_version = datas[:VERSION]
 

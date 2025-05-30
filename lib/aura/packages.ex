@@ -5,34 +5,42 @@ defmodule Aura.Packages do
   alias Aura.Model.HexPackageOwner
   alias Aura.Requester
 
+  @base_path "/packages"
+
   def list_packages(opts \\ []) do
-    stream_paginate("/packages", opts)
+    stream_paginate(@base_path, opts)
   end
 
   def list_package_owners(name, opts \\ []) do
-    with {:ok, %{body: body}} <- Requester.get("/packages/#{name}/owners", opts) do
+    path = Path.join(@base_path, "#{name}/owners")
+
+    with {:ok, %{body: body}} <- Requester.get(path, opts) do
       {:ok, Enum.map(body, &HexPackageOwner.build/1)}
     end
   end
 
   def get_package(name, opts \\ []) do
-    with {:ok, %{body: body}} <- Requester.get("/packages/#{name}", opts) do
+    path = Path.join(@base_path, "#{name}")
+
+    with {:ok, %{body: body}} <- Requester.get(path, opts) do
       {:ok, HexPackage.build(body)}
     end
   end
 
   def add_package_owner(package_name, owner_email, opts \\ []) do
     encoded_email = URI.encode_www_form(owner_email)
+    path = Path.join(@base_path, "#{package_name}/owners/#{encoded_email}")
 
-    with {:ok, _} <- Requester.put("/packages/#{package_name}/owners/#{encoded_email}", opts) do
+    with {:ok, _} <- Requester.put(path, opts) do
       :ok
     end
   end
 
   def remove_package_owner(package_name, owner_email, opts \\ []) do
     encoded_email = URI.encode_www_form(owner_email)
+    path = Path.join(@base_path, "#{package_name}/owners/#{encoded_email}")
 
-    with {:ok, _} <- Requester.delete("/packages/#{package_name}/owners/#{encoded_email}", opts) do
+    with {:ok, _} <- Requester.delete(path, opts) do
       :ok
     end
   end
@@ -74,7 +82,7 @@ defmodule Aura.Packages do
 
     opts = Keyword.put(opts, :qparams, qparams)
 
-    with {:ok, %{body: body}} <- Aura.Requester.get(path, opts) do
+    with {:ok, %{body: body}} <- Requester.get(path, opts) do
       {:ok, body}
     end
   end

@@ -12,7 +12,7 @@ defmodule Aura.Releases do
   end
 
   def publish_release(complete_tar, opts \\ []) when is_bitstring(complete_tar) do
-    with {:ok, _streams} <- PackageTarUtil.read_tar_for_release(complete_tar) do
+    with {:ok, _streams} <- PackageTarUtil.read_release_tar(complete_tar) do
       opts = Keyword.merge([body: File.read!(complete_tar)], opts)
 
       with {:ok, %{body: body}} <- Requester.post("/publish", opts) do
