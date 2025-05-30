@@ -27,8 +27,9 @@ defmodule Aura.Releases do
   def publish_release(code_tar, opts \\ []) when is_bitstring(code_tar) do
     with {:ok, _streams} <- PackageTarUtil.read_release_tar(code_tar) do
       opts = Keyword.merge([body: File.read!(code_tar)], opts)
+      path = if opts[:repo], do: "/repos/#{opts[:repo]}/publish", else: "/publish"
 
-      with {:ok, %{body: body}} <- Requester.post("/publish", opts) do
+      with {:ok, %{body: body}} <- Requester.post(path, opts) do
         {:ok, HexRelease.build(body)}
       end
     end
