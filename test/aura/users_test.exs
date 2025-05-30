@@ -12,7 +12,7 @@ defmodule Aura.UsersTest do
   end
 
   test "get user", _state do
-    packages = Enum.take(Packages.list_packages(), 5)
+    packages = Enum.take(Packages.list_packages(sort: :recent_downloads), 5)
     refute Enum.empty?(packages)
 
     Enum.each(packages, fn package ->

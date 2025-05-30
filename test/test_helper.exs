@@ -23,7 +23,7 @@ defmodule TestHelper do
       raise "Don't test against hex.pm!"
     else
       username = Faker.Internet.user_name()
-      password = Faker.Internet.slug()
+      password = Faker.Internet.slug() <> "#{System.monotonic_time()}"
       email = Faker.Internet.email()
       api_key_name = Faker.Internet.slug()
       # Create a user
