@@ -1,7 +1,7 @@
 defmodule Aura.PackageTarUtil do
   @moduledoc false
 
-  def read_release_tar(tar_path) do
+  def read_release_tar(tar_path) when is_bitstring(tar_path) do
     with {:ok,
           %{
             entries: entries
