@@ -25,19 +25,37 @@ defmodule Aura.Releases do
   end
 
   def publish_release(code_tar, opts \\ []) when is_bitstring(code_tar) do
+    if opts[:repo] do
+      publish_release_impl(code_tar, "/repos/#{opts[:repo]}/publish", Keyword.delete(opts, :repo))
+    else
+      publish_release_impl(code_tar, "/publish", opts)
+    end
+  end
+
+  defp publish_release_impl(code_tar, path, opts) do
     with {:ok, _streams} <- PackageTarUtil.read_release_tar(code_tar) do
       opts = Keyword.merge([body: File.read!(code_tar)], opts)
 
-      with {:ok, %{body: body}} <- Requester.post("/publish", opts) do
+      with {:ok, %{body: body}} <- Requester.post(path, opts) do
         {:ok, HexRelease.build(body)}
       end
     end
   end
 
   def publish_release_docs(package_name, release_version, doc_tar, opts \\ []) when is_bitstring(doc_tar) do
+    path = Path.join(@packages_path, "#{package_name}/releases/#{release_version}/docs")
+
+    if opts[:repo] do
+      path = Path.join("/repos/#{opts[:repo]}", path)
+      publish_release_docs_impl(doc_tar, path, Keyword.delete(opts, :repo))
+    else
+      publish_release_docs_impl(doc_tar, path, opts)
+    end
+  end
+
+  defp publish_release_docs_impl(doc_tar, path, opts) do
     with {:ok, _streams} <- PackageTarUtil.read_release_tar(doc_tar) do
       opts = Keyword.merge([body: File.read!(doc_tar)], opts)
-      path = Path.join(@packages_path, "#{package_name}/releases/#{release_version}/docs")
 
       with {:ok, %{headers: %{"location" => [location]}}} <- Requester.post(path, opts) do
         {:ok, location}

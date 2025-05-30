@@ -2,6 +2,9 @@
 defmodule Aura.Users do
   @moduledoc false
 
+  import Aura.Common
+
+  alias Aura.Model.HexAuditLog
   alias Aura.Model.HexUser
   alias Aura.Requester
 
@@ -38,6 +41,11 @@ defmodule Aura.Users do
     with {:ok, %{body: body}} <- Requester.get(path, opts) do
       {:ok, HexUser.build(body)}
     end
+  end
+
+  def stream_audit_logs(opts \\ []) do
+    path = Path.join(@base_path, "me/audit-logs")
+    stream_paginate(path, &HexAuditLog.build/1, opts)
   end
 
   def reset_user_password(username_or_email, opts \\ []) do

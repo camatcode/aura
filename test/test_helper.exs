@@ -100,7 +100,7 @@ defmodule TestHelper do
     {owned_packages, owned_releases}
   end
 
-  defp generate_release_tar(package_name, release_version, description, github_url) do
+  def generate_release_tar(package_name, release_version, description, github_url) do
     path = Path.join("test/support/data/release/", "nimble_parsec-1.4.2.tar")
     {:ok, datas} = PackageTarUtil.read_release_tar(path)
     contents_tar_gz = datas[:"contents.tar.gz"]
