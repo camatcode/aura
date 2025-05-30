@@ -14,7 +14,7 @@ defmodule Aura.PackagesTest do
 
   test "package search", _state do
     [search: "ups", sort: :recent_downloads]
-    |> Packages.list_packages()
+    |> Packages.stream_packages()
     |> Enum.each(fn package ->
       assert String.contains?(package.name, "ups")
     end)
@@ -22,7 +22,7 @@ defmodule Aura.PackagesTest do
 
   test "list_packages", _state do
     # First 2000
-    first_2k = Enum.take(Packages.list_packages(sort: :recent_downloads), 2000)
+    first_2k = Enum.take(Packages.stream_packages(sort: :recent_downloads), 2000)
     assert Enum.count(first_2k) <= 2000
 
     Enum.each(first_2k, fn package ->
@@ -37,7 +37,7 @@ defmodule Aura.PackagesTest do
     # Page 25 onward
     page_25_forward =
       [page: 25, sort: :recent_downloads]
-      |> Packages.list_packages()
+      |> Packages.stream_packages()
       |> Enum.take(200)
 
     assert Enum.count(page_25_forward) <= 200
@@ -51,7 +51,7 @@ defmodule Aura.PackagesTest do
   end
 
   test "list_package_owners", _state do
-    packages = Enum.take(Packages.list_packages(sort: :recent_downloads), 100)
+    packages = Enum.take(Packages.stream_packages(sort: :recent_downloads), 100)
     refute Enum.empty?(packages)
 
     Enum.each(packages, fn package ->
@@ -67,7 +67,7 @@ defmodule Aura.PackagesTest do
   end
 
   test "get_package", _state do
-    packages = Enum.take(Packages.list_packages(sort: :recent_downloads), 100)
+    packages = Enum.take(Packages.stream_packages(sort: :recent_downloads), 100)
     refute Enum.empty?(packages)
 
     Enum.each(packages, fn package ->

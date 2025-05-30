@@ -37,7 +37,7 @@ defmodule Aura.ReleasesTest do
   end
 
   test "get_release", %{owned_releases: owned_releases, owned_packages: owned_packages} do
-    [package] = Enum.take(Packages.list_packages(sort: :recent_downloads), 1)
+    [package] = Enum.take(Packages.stream_packages(sort: :recent_downloads), 1)
     version = package.releases |> hd() |> Map.get(:version)
     assert {:ok, release} = Releases.get_release(package.name, version)
     assert release.publisher

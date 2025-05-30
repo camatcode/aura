@@ -12,7 +12,7 @@ defmodule Aura.UsersTest do
   end
 
   test "get user", _state do
-    packages = Enum.take(Packages.list_packages(sort: :recent_downloads), 5)
+    packages = Enum.take(Packages.stream_packages(sort: :recent_downloads), 5)
     refute Enum.empty?(packages)
 
     Enum.each(packages, fn package ->
@@ -35,8 +35,14 @@ defmodule Aura.UsersTest do
     assert user
   end
 
-  test "get current user", %{user: user} do
+  test "get current user / audit", %{user: user} do
     {:ok, ^user} = Users.get_current_user()
+
+    Enum.each(Users.stream_audit_logs(), fn audit_log ->
+      assert audit_log.params
+      assert audit_log.action
+      assert audit_log.user_agent
+    end)
   end
 
   test "reset user password", %{user: user} do
