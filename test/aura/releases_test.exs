@@ -3,6 +3,7 @@ defmodule Aura.ReleasesTest do
 
   alias Aura.Packages
   alias Aura.Releases
+  alias Aura.Repos
 
   @moduletag :capture_log
 
@@ -10,6 +11,26 @@ defmodule Aura.ReleasesTest do
 
   setup do
     TestHelper.setup_state()
+  end
+
+  test "publish to particular repo", _state do
+    {:ok, repos} = Repos.list_repos()
+
+    Enum.each(repos, fn repo ->
+      github_url = Faker.Internet.url()
+
+      package_name =
+        (Faker.App.name() <> "#{System.monotonic_time()}")
+        |> String.replace(" ", "_")
+        |> String.replace("-", "_")
+        |> String.downcase()
+
+      release_version = Faker.App.semver()
+      description = Faker.Lorem.sentence()
+      {:ok, new_tar} = TestHelper.generate_release_tar(package_name, release_version, description, github_url)
+
+      {:ok, _} = Releases.publish_release(new_tar, repo: repo.name)
+    end)
   end
 
   test "get_release", %{owned_releases: owned_releases, owned_packages: owned_packages} do
