@@ -47,7 +47,8 @@ defmodule Aura.MixProject do
     [
       Model: [
         Aura.Model.Common,
-        Aura.Model.HexAPIKey
+        Aura.Model.HexAPIKey,
+        Aura.Model.HexAuditLog
       ]
     ]
   end

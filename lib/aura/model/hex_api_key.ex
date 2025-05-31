@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Model.HexAPIKey do
   @moduledoc """
-  Model describing an API key coming from a Hex-compliant API.
+  A struct describing an API key record coming from a Hex-compliant API.
   """
 
   import Aura.Model.Common
@@ -30,7 +30,7 @@ defmodule Aura.Model.HexAPIKey do
   <!-- tabs-open -->
   ### 🏷️ Keys
     * **domain** :: A domain for which this API key is valid
-      * (e.g `"api"`, `"repository"`, `"repositories"`)
+      * (e.g `"api"`, `"repository"`, `"repositories"`, `"package"`)
     * **resource** :: What kind of operations this API key can do within its domain
       * (e.g `"read"`, `"write"`)
 
@@ -58,7 +58,7 @@ defmodule Aura.Model.HexAPIKey do
     * **updated_at** :: `t:Aura.Model.Common.updated_at/0`
     * **url** :: `t:Aura.Model.Common.url/0`
 
-  <!-- tabs-open -->
+  <!-- tabs-close -->
   """
   @type t() :: %HexAPIKey{
           authing_key: authing_key(),
