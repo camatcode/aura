@@ -50,6 +50,14 @@ defmodule Aura.Repos do
     end
   end
 
+  def delete_all_api_keys(opts \\ []) do
+    path = @keys_path
+
+    with {:ok, _} <- Requester.delete(path, opts) do
+      :ok
+    end
+  end
+
   def delete_api_key(key_name, opts \\ []) do
     path = Path.join(@keys_path, "#{key_name}")
 
