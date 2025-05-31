@@ -35,7 +35,7 @@ defmodule Aura.Model.HexPackageMeta do
 
   <!-- tabs-close -->
   """
-  @type t() :: %HexPackageMeta{
+  @type t :: %HexPackageMeta{
           maintainers: [Aura.Model.Common.username()],
           links: [meta_url()],
           licenses: [software_license()],

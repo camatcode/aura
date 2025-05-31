@@ -28,16 +28,6 @@ defmodule Aura.Model.HexPackage do
   @type private? :: boolean
 
   @typedoc """
-  Human-readable page for package information
-  """
-  @type html_url :: URI.t()
-
-  @typedoc """
-  Human-readable page for package documentation
-  """
-  @type docs_html_url :: URI.t()
-
-  @typedoc """
   Type describing a package from a Hex-compliant API
 
   <!-- tabs-open -->
@@ -51,12 +41,12 @@ defmodule Aura.Model.HexPackage do
     * **inserted_at** :: `t:Aura.Model.Common.inserted_at/0`
     * **updated_at** :: `t:Aura.Model.Common.updated_at/0`
     * **url** :: `t:Aura.Model.Common.url/0`
-    * **html_url** :: `t:html_url/0`
-    * **docs_html_url** :: `t:docs_html_url/0`
+    * **html_url** :: `t:Aura.Model.Common.html_url/0`
+    * **docs_html_url** :: `t:Aura.Model.Common.docs_html_url/0`
 
   <!-- tabs-close -->
   """
-  @type t() :: %HexPackage{
+  @type t :: %HexPackage{
           name: package_name(),
           repository: repository(),
           private: private?(),
@@ -66,8 +56,8 @@ defmodule Aura.Model.HexPackage do
           inserted_at: Common.inserted_at(),
           updated_at: Common.updated_at(),
           url: Common.url(),
-          html_url: html_url(),
-          docs_html_url: docs_html_url()
+          html_url: Common.html_url(),
+          docs_html_url: Common.docs_html_url()
         }
 
   defstruct [

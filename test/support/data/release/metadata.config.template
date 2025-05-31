@@ -12,5 +12,6 @@
   <<".formatter.exs">>,<<"mix.exs">>,<<"README.md">>,<<"CHANGELOG.md">>]}.
 {<<"app">>,<<"PACKAGE_NAME">>}.
 {<<"licenses">>,[<<"Apache-2.0">>]}.
-{<<"requirements">>,[]}.
+{<<"requirements">>,
+ [REQUIREMENTS]}.
 {<<"build_tools">>,[<<"mix">>]}.

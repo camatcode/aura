@@ -46,7 +46,7 @@ defmodule Aura.Model.HexPackageOwner do
 
   <!-- tabs-close -->
   """
-  @type t() :: %HexPackageOwner{
+  @type t :: %HexPackageOwner{
           email: Common.email(),
           full_name: full_name(),
           handles: social_handles(),

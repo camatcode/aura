@@ -11,17 +11,17 @@ defmodule Aura.Model.HexPackageDownloadStats do
   @typedoc """
   Number of downloads since the first release
   """
-  @type all_time :: pos_integer()
+  @type all_time :: non_neg_integer()
 
   @typedoc """
   Number of downloads this week
   """
-  @type this_week :: pos_integer()
+  @type this_week :: non_neg_integer()
 
   @typedoc """
   Number of downloads today
   """
-  @type today :: pos_integer()
+  @type today :: non_neg_integer()
 
   @typedoc """
   Type describing the number of downloads for a `Aura.Model.HexPackage`
@@ -34,7 +34,7 @@ defmodule Aura.Model.HexPackageDownloadStats do
 
   <!-- tabs-close -->
   """
-  @type t() :: %HexPackageDownloadStats{
+  @type t :: %HexPackageDownloadStats{
           all: all_time(),
           week: this_week(),
           day: today()

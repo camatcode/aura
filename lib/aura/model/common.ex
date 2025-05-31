@@ -10,6 +10,16 @@ defmodule Aura.Model.Common do
   @type inserted_at :: DateTime.t()
 
   @typedoc """
+  URL with human-readable package/release documentation
+  """
+  @type docs_html_url :: URI.t()
+
+  @typedoc """
+  URL with human-readable package/release information
+  """
+  @type html_url :: URI.t()
+
+  @typedoc """
   An email address associated with this user
   """
   @type email :: String.t()

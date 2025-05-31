@@ -1,10 +1,84 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Model.HexRelease do
-  @moduledoc false
+  @moduledoc """
+  A struct describing a single release of a `Aura.Model.HexPackage`
+  """
 
   import Aura.Model.Common
 
+  alias Aura.Model.Common
   alias Aura.Model.HexRelease
+
+  @typedoc """
+  SHA-256 checksum of the associated release **tar.gz**
+  """
+  @type release_checksum :: String.t()
+
+  @typedoc """
+  A mapping between a build-tool config (e.g `"mix.exs"`), and the configuration needed to grab this release
+  (e.g `"{:plug, "~> 0.8.3"}"`)
+  """
+  @type build_tool_declarations :: map()
+
+  @typedoc """
+  Whether this release has associated docs
+  """
+  @type docs? :: boolean()
+
+  @typedoc """
+  Number of all time downloads of this release
+  """
+  @type release_downloads :: non_neg_integer()
+
+  @typedoc """
+  URI reference to the `Aura.Model.HexPackage` this release belongs to
+  """
+  @type package_reference_url :: URI.t()
+
+  @typedoc """
+  The version of this release
+  """
+  @type release_version :: String.t()
+
+  @typedoc """
+  Additional information relevant to the release
+  (e.g `%{elixir: nil, app: "decimal", build_tools: ["mix"]}`)
+  """
+  @type release_meta :: map()
+
+  @typedoc """
+  Information about the user which published this release
+    (e.g `%{url: (users url), username: "eric", email: "eric@example.com"}`)
+  """
+  @type release_publisher :: map()
+
+  @typedoc """
+  A dependency of this release (e.g `%{optional: false, app: "my_package", requirement: "~> 2.11.52"}`
+  """
+  @type release_requirement :: map()
+
+  @typedoc """
+  Whether this release is considered retired
+  """
+  @type retired? :: boolean()
+
+  @type t :: %HexRelease{
+          checksum: release_checksum(),
+          configs: build_tool_declarations(),
+          docs_html_url: Common.docs_html_url(),
+          has_docs: docs?(),
+          meta: release_meta(),
+          publisher: release_publisher(),
+          html_url: Common.html_url(),
+          downloads: release_downloads(),
+          inserted_at: Common.inserted_at(),
+          retirement: retired?(),
+          package_url: package_reference_url(),
+          requirements: [release_requirement()],
+          updated_at: Common.updated_at(),
+          url: Common.url(),
+          version: release_version()
+        }
 
   defstruct [
     :checksum,
@@ -21,9 +95,13 @@ defmodule Aura.Model.HexRelease do
     :updated_at,
     :version,
     :url,
-    downloads: []
+    downloads: 0
   ]
 
+  @doc """
+  Builds a `HexRelease` from a map
+  """
+  @spec build(m :: map) :: HexRelease.t()
   def build(m) when is_map(m) do
     m
     |> prepare()
@@ -35,6 +113,7 @@ defmodule Aura.Model.HexRelease do
   defp serialize(_k, nil), do: nil
   defp serialize(:meta, v), do: v |> prepare() |> Map.new()
   defp serialize(:publisher, v), do: v |> prepare() |> Map.new()
+  defp serialize(:downloads, []), do: 0
 
   defp serialize(:requirements, v) do
     v

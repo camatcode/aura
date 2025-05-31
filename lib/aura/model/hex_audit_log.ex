@@ -34,7 +34,7 @@ defmodule Aura.Model.HexAuditLog do
 
   <!-- tabs-close -->
   """
-  @type t() :: %HexAuditLog{
+  @type t :: %HexAuditLog{
           action: audit_action(),
           params: audit_params(),
           user_agent: user_agent()

@@ -60,7 +60,7 @@ defmodule Aura.Model.HexAPIKey do
 
   <!-- tabs-close -->
   """
-  @type t() :: %HexAPIKey{
+  @type t :: %HexAPIKey{
           authing_key: authing_key(),
           secret: secret(),
           inserted_at: Common.inserted_at(),
