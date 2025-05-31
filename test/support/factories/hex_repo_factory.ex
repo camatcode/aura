@@ -1,3 +1,4 @@
+# coveralls-ignore-start
 defmodule Aura.Factory.HexRepoFactory do
   @moduledoc false
 
@@ -20,3 +21,5 @@ defmodule Aura.Factory.HexRepoFactory do
     end
   end
 end
+
+# coveralls-ignore-stop

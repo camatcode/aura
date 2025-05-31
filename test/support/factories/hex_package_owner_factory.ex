@@ -1,3 +1,4 @@
+# coveralls-ignore-start
 defmodule Aura.Factory.HexPackageOwnerFactory do
   @moduledoc false
 
@@ -31,3 +32,5 @@ defmodule Aura.Factory.HexPackageOwnerFactory do
     end
   end
 end
+
+# coveralls-ignore-stop

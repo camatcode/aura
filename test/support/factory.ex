@@ -1,3 +1,4 @@
+# coveralls-ignore-start
 defmodule Aura.Factory do
   @moduledoc false
   use ExMachina
@@ -8,3 +9,5 @@ defmodule Aura.Factory do
   use Aura.Factory.HexAPIKeyFactory
   use Aura.Factory.HexUserFactory
 end
+
+# coveralls-ignore-stop
