@@ -28,6 +28,10 @@ defmodule Aura.ReposTest do
     assert :ok = Repos.delete_api_key(api_key.name)
   end
 
+  test "delete all api keys", _state do
+    assert :ok = Repos.delete_all_api_keys()
+  end
+
   test "get_repo/1", _state do
     assert {:ok, [hex]} = Repos.list_repos()
     assert {:ok, returned} = Repos.get_repo(hex.name)
