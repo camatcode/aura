@@ -1,6 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Model.HexRepo do
-  @moduledoc false
+  @moduledoc """
+  A struct describing a repository from a Hex-compliant API.
+
+  The main Hex.pm public repo is named "hexpm"; though private repos do exist.
+  """
 
   import Aura.Model.Common
 
@@ -15,6 +19,12 @@ defmodule Aura.Model.HexRepo do
     :updated_at
   ]
 
+  @type t :: term()
+
+  @doc """
+  Builds a `HexRepo` from a map
+  """
+  @spec build(m :: map) :: HexRepo.t()
   def build(m) when is_map(m) do
     m
     |> prepare()

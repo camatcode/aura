@@ -27,7 +27,10 @@ defmodule Aura.ReleasesTest do
 
       release_version = Faker.App.semver()
       description = Faker.Lorem.sentence()
-      {:ok, new_tar} = TestHelper.generate_release_tar(package_name, release_version, description, github_url)
+      requirements = ""
+
+      {:ok, new_tar} =
+        TestHelper.generate_release_tar(package_name, release_version, description, requirements, github_url)
 
       {:ok, _} = Releases.publish_release(new_tar, repo: repo.name)
 
@@ -44,9 +47,14 @@ defmodule Aura.ReleasesTest do
     assert {:ok, release} = Releases.get_release(package.name, version)
     assert release.publisher
 
+    # investigating requirements
+    {:ok, postgresx} = Releases.get_release("postgrex", "0.1.0")
+    assert postgresx.requirements == [%{optional: false, app: "decimal", requirement: "0.1.0"}]
+
     Enum.each(owned_packages, fn package ->
       version = package.releases |> hd() |> Map.get(:version)
       assert {:ok, release} = Releases.get_release(package.name, version)
+      refute Enum.empty?(release.requirements)
       assert Enum.member?(owned_releases, release)
     end)
   end

@@ -82,7 +82,24 @@ defmodule TestHelper do
 
         release_version = Faker.App.semver()
         description = Faker.Lorem.sentence()
-        {:ok, new_tar} = generate_release_tar(package_name, release_version, description, github_url)
+
+        requirements =
+          Packages.stream_packages()
+          |> Enum.take(Enum.random(1..5))
+          |> Enum.map_join(",", fn package ->
+            version = package.releases |> hd() |> Map.get(:version)
+            package_name = package.name
+
+            """
+            [{<<"name">>,<<"#{package_name}">>},
+            {<<"app">>,<<"#{package_name}">>},
+            {<<"optional">>,false},
+            {<<"requirement">>,<<"~> #{version}">>},
+            {<<"repository">>,<<"hexpm">>}]
+            """
+          end)
+
+        {:ok, new_tar} = generate_release_tar(package_name, release_version, description, requirements, github_url)
 
         {:ok, _} = Releases.publish_release(new_tar)
         path = Path.join("test/support/data/docs/", "nimble_parsec-1.4.2.tar.gz")
@@ -100,14 +117,14 @@ defmodule TestHelper do
     {owned_packages, owned_releases}
   end
 
-  def generate_release_tar(package_name, release_version, description, github_url) do
+  def generate_release_tar(package_name, release_version, description, requirements, github_url) do
     path = Path.join("test/support/data/release/", "nimble_parsec-1.4.2.tar")
     {:ok, datas} = PackageTarUtil.read_release_tar(path)
     contents_tar_gz = datas[:"contents.tar.gz"]
     tar_version = datas[:VERSION]
 
     new_metadata_config =
-      :binary.bin_to_list(generate_metadata_config(package_name, release_version, description, github_url))
+      :binary.bin_to_list(generate_metadata_config(package_name, release_version, description, requirements, github_url))
 
     new_checksum =
       :sha256
@@ -145,7 +162,7 @@ defmodule TestHelper do
     {:ok, Path.join(tmp_dir, new_tar_name)}
   end
 
-  defp generate_metadata_config(package_name, release_version, description, github_url) do
+  defp generate_metadata_config(package_name, release_version, description, requirements, github_url) do
     path = Path.join("test/support/data/release/", "metadata.config.template")
     template = File.read!(path)
 
@@ -154,6 +171,7 @@ defmodule TestHelper do
     |> String.replace("PACKAGE_NAME", package_name)
     |> String.replace("RELEASE_VERSION", release_version)
     |> String.replace("PACKAGE_DESCRIPTION", description)
+    |> String.replace("REQUIREMENTS", requirements)
   end
 
   defp verify_emails(repo_url) do

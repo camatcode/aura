@@ -1,8 +1,48 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Model.Common do
-  @moduledoc false
+  @moduledoc """
+  Module covering functions common to all Aura Models
+  """
 
-  @spec prepare(m :: map()) :: map()
+  @typedoc """
+  Unix DateTime for when the record was inserted into the database
+  """
+  @type inserted_at :: DateTime.t()
+
+  @typedoc """
+  URL with human-readable package/release documentation
+  """
+  @type docs_html_url :: URI.t()
+
+  @typedoc """
+  URL with human-readable package/release information
+  """
+  @type html_url :: URI.t()
+
+  @typedoc """
+  An email address associated with this user
+  """
+  @type email :: String.t()
+
+  @typedoc """
+  Unix DateTime for when the record was last modified in the database
+  """
+  @type updated_at :: DateTime.t()
+
+  @typedoc """
+  The URL required to perform operations on this record
+  """
+  @type url :: URI.t()
+
+  @typedoc """
+  A unique, human-readable ID for a User
+  """
+  @type username :: String.t()
+
+  @doc """
+  Cleans and validates a map into something Aura models can easily build
+  """
+  @spec prepare(m :: map()) :: list()
   def prepare(m) when is_map(m) do
     m
     |> prepare_keys()
@@ -15,7 +55,7 @@ defmodule Aura.Model.Common do
     |> atomize_keys()
   end
 
-  def prepare_values(m) do
+  defp prepare_values(m) do
     Enum.map(m, fn {key, val} ->
       if val && String.ends_with?("#{key}", "_at"),
         do: {key, DateTimeParser.parse_datetime!(val)},

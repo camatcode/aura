@@ -23,7 +23,7 @@ defmodule Aura.MixProject do
       # Hex
       package: package(),
       description: """
-      Easy, global hex package search via the hex API
+      An ergonomic library for investigating Hex packages
       """,
 
       # Docs
@@ -44,14 +44,25 @@ defmodule Aura.MixProject do
   end
 
   defp groups_for_modules do
-    []
+    [
+      Model: [
+        Aura.Model.Common,
+        Aura.Model.HexAPIKey,
+        Aura.Model.HexAuditLog,
+        Aura.Model.HexPackage,
+        Aura.Model.HexPackageDownloadStats,
+        Aura.Model.HexPackageMeta,
+        Aura.Model.HexPackageOwner,
+        Aura.Model.HexRelease
+      ]
+    ]
   end
 
   def package do
     [
       maintainers: ["Cam Cook"],
       licenses: ["Apache-2.0"],
-      files: ~w(lib .formatter.exs mix.exs README* CHANGELOG* LICENSE*),
+      files: ~w(lib .formatter.exs .credo.exs mix.exs README* CHANGELOG* LICENSE*),
       links: %{
         Website: @source_url,
         Changelog: "#{@source_url}/blob/master/CHANGELOG.md",
