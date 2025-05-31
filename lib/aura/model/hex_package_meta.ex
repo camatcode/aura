@@ -9,11 +9,6 @@ defmodule Aura.Model.HexPackageMeta do
   alias Aura.Model.HexPackageMeta
 
   @typedoc """
-  A unique, human-readable ID for a User
-  """
-  @type username :: String.t()
-
-  @typedoc """
   Additional external URL relating to the package
   """
   @type meta_url :: URI.t()
@@ -33,7 +28,7 @@ defmodule Aura.Model.HexPackageMeta do
 
   <!-- tabs-open -->
   ### 🏷️ Keys
-    * **maintainers** :: [`t:username/0`]
+    * **maintainers** :: [`t:Aura.Model.Common.username/0`]
     * **links** ::  [`t:meta_url/0`]
     * **licenses** :: [`t:software_license/0`]
     * **description** :: `t:package_description/0`
@@ -41,7 +36,7 @@ defmodule Aura.Model.HexPackageMeta do
   <!-- tabs-close -->
   """
   @type t() :: %HexPackageMeta{
-          maintainers: [username()],
+          maintainers: [Aura.Model.Common.username()],
           links: [meta_url()],
           licenses: [software_license()],
           description: package_description()

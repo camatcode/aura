@@ -50,7 +50,9 @@ defmodule Aura.MixProject do
         Aura.Model.HexAPIKey,
         Aura.Model.HexAuditLog,
         Aura.Model.HexPackage,
-        Aura.Model.HexPackageDownloadStats
+        Aura.Model.HexPackageDownloadStats,
+        Aura.Model.HexPackageMeta,
+        Aura.Model.HexPackageOwner
       ]
     ]
   end
