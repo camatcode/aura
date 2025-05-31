@@ -19,6 +19,8 @@ defmodule Aura.Model.HexRepo do
     :updated_at
   ]
 
+  @type t :: term()
+
   @doc """
   Builds a `HexRepo` from a map
   """
