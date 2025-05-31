@@ -44,7 +44,12 @@ defmodule Aura.MixProject do
   end
 
   defp groups_for_modules do
-    []
+    [
+      Model: [
+        Aura.Model.Common,
+        Aura.Model.HexAPIKey
+      ]
+    ]
   end
 
   def package do
