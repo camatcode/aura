@@ -62,6 +62,8 @@ defmodule Aura.PackagesTest do
         assert owner.username
         assert owner.level
         assert owner.url
+
+        assert {:ok, ^owner} = Packages.get_package_owner(package.name, owner.username)
       end)
     end)
   end

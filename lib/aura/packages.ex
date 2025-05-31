@@ -23,6 +23,14 @@ defmodule Aura.Packages do
     end
   end
 
+  def get_package_owner(package_name, username, opts \\ []) do
+    path = Path.join(@base_path, "#{package_name}/owners/#{username}")
+
+    with {:ok, %{body: body}} <- Requester.get(path, opts) do
+      {:ok, HexPackageOwner.build(body)}
+    end
+  end
+
   def get_package(name, opts \\ []) do
     path = Path.join(@base_path, "#{name}")
 
