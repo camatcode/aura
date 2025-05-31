@@ -52,7 +52,8 @@ defmodule Aura.MixProject do
         Aura.Model.HexPackage,
         Aura.Model.HexPackageDownloadStats,
         Aura.Model.HexPackageMeta,
-        Aura.Model.HexPackageOwner
+        Aura.Model.HexPackageOwner,
+        Aura.Model.HexRelease
       ]
     ]
   end

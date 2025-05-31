@@ -40,7 +40,7 @@ defmodule Aura.Model.Common do
   @type username :: String.t()
 
   @doc """
-  Cleans and validates a map into something Aura Model's can easily build
+  Cleans and validates a map into something Aura models can easily build
   """
   @spec prepare(m :: map()) :: list()
   def prepare(m) when is_map(m) do

@@ -62,6 +62,22 @@ defmodule Aura.Model.HexRelease do
   """
   @type retired? :: boolean()
 
+  @typedoc """
+  Type describing an owner of a `Aura.Model.HexRelease`
+
+  <!-- tabs-open -->
+  ### 🏷️ Keys
+    * **checksum** :: `t:release_checksum/0`
+    * **configs** ::  `t:build_tool_declarations/0`
+    * **docs_html_url** :: `t:Aura.Model.Common.docs_html_url/0`
+    * **has_docs** :: `t:docs?/0`
+    * **meta** :: `t:release_meta/0`
+    * **publisher** :: `t:release_publisher/0`
+    * **html_url** :: `t:Aura.Model.Common.html_url/0`
+    * **downloads** :: `t:release_downloads/0`
+
+  <!-- tabs-close -->
+  """
   @type t :: %HexRelease{
           checksum: release_checksum(),
           configs: build_tool_declarations(),
