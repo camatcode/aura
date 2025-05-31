@@ -23,7 +23,7 @@ defmodule Aura.MixProject do
       # Hex
       package: package(),
       description: """
-      Easy, global hex package search via the hex API
+      An ergonomic library for investigating Hex packages
       """,
 
       # Docs
@@ -59,7 +59,7 @@ defmodule Aura.MixProject do
     [
       maintainers: ["Cam Cook"],
       licenses: ["Apache-2.0"],
-      files: ~w(lib .formatter.exs mix.exs README* CHANGELOG* LICENSE*),
+      files: ~w(lib .formatter.exs .credo.exs mix.exs README* CHANGELOG* LICENSE*),
       links: %{
         Website: @source_url,
         Changelog: "#{@source_url}/blob/master/CHANGELOG.md",

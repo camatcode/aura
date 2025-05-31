@@ -45,7 +45,7 @@ defmodule Aura.Model.HexPackage do
     * **name** :: `t:package_name/0`
     * **repository** :: `t:repository/0`
     * **private** :: `t:private?/0`
-    * **meta** :: `t:map/0`
+    * **meta** :: `t:Aura.Model.HexPackageMeta.t/0`
     * **downloads** :: `t:Aura.Model.HexPackageDownloadStats.t/0`
     * **releases** :: `t:map/0`
     * **inserted_at** :: `t:Aura.Model.Common.inserted_at/0`
@@ -60,7 +60,7 @@ defmodule Aura.Model.HexPackage do
           name: package_name(),
           repository: repository(),
           private: private?(),
-          meta: map(),
+          meta: HexPackageMeta.t(),
           downloads: HexPackageDownloadStats.t(),
           releases: map(),
           inserted_at: Common.inserted_at(),
