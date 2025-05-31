@@ -24,8 +24,6 @@ defmodule Aura.Model.HexPackageOwner do
     |> then(&Kernel.struct(HexPackageOwner, &1))
   end
 
-  defp serialize(_k, nil), do: nil
-
   defp serialize(:handles, v), do: v |> prepare() |> Map.new()
 
   defp serialize(:level, v), do: String.to_atom(v)

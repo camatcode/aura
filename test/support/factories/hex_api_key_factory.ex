@@ -1,3 +1,4 @@
+# coveralls-ignore-start
 defmodule Aura.Factory.HexAPIKeyFactory do
   @moduledoc false
 
@@ -27,3 +28,5 @@ defmodule Aura.Factory.HexAPIKeyFactory do
     end
   end
 end
+
+# coveralls-ignore-stop

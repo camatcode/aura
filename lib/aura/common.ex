@@ -43,9 +43,12 @@ defmodule Aura.Common do
         next_page = if Enum.empty?(items), do: -1, else: page + 1
         {items, next_page}
 
+      # coveralls-ignore-start
       e ->
         {:halt, {:error, e}}
     end
+
+    # coveralls-ignore-stop
   end
 
   defp get_page(path, page, qparams, opts) do

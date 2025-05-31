@@ -162,7 +162,7 @@ defmodule TestHelper do
     sent_email_url = Path.join(base_url, "/sent_emails")
 
     with {:ok, %{status: 200, body: body}} <- Req.get(sent_email_url) do
-      urls = body |> String.split("\n") |> Enum.filter(&String.starts_with?(&1, base_url))
+      urls = body |> String.split("\n") |> Enum.filter(&String.starts_with?(&1, base_url)) |> Enum.take(15)
 
       Enum.map(urls, fn url ->
         decoded = String.replace(url, "amp;", "")

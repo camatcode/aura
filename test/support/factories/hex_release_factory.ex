@@ -1,3 +1,4 @@
+# coveralls-ignore-start
 defmodule Aura.Factory.HexReleaseFactory do
   @moduledoc false
 
@@ -59,3 +60,5 @@ defmodule Aura.Factory.HexReleaseFactory do
     end
   end
 end
+
+# coveralls-ignore-stop

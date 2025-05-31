@@ -54,16 +54,32 @@ defmodule Aura.ReleasesTest do
   test "retire/un-retire release", %{owned_packages: owned_packages} do
     Enum.each(owned_packages, fn package ->
       version = package.releases |> hd() |> Map.get(:version)
-      reason = :deprecated
+      reason = :not_a_valid_reason
       message = "This package has been deprecated in favor of ecto."
       assert :ok = Releases.retire_release(package.name, version, reason, message)
+
+      {:ok, %{retirement: %{message: ^message, reason: :other}}} =
+        Releases.get_release(package.name, version)
+
       assert :ok = Releases.undo_retire_release(package.name, version)
+
+      {:ok, release} = Releases.get_release(package.name, version)
+      refute release.retirement
+
+      assert :ok = Releases.retire_release(package.name, version, :deprecated, message)
+      assert :ok = Releases.undo_retire_release(package.name, version)
+      assert :ok = Releases.retire_release(package.name, version, "deprecated", message)
+
+      {:ok, %{retirement: %{message: ^message, reason: :deprecated}}} =
+        Releases.get_release(package.name, version)
     end)
   end
 
   test "delete_release_docs", %{owned_packages: owned_packages} do
     Enum.each(owned_packages, fn package ->
       version = package.releases |> hd() |> Map.get(:version)
+      # test env will never return release docs
+      _ = Releases.get_release_docs(package.name, version)
       assert :ok = Releases.delete_release_docs(package.name, version)
     end)
   end

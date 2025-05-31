@@ -19,8 +19,6 @@ defmodule Aura.Model.HexAuditLog do
     |> then(&struct(HexAuditLog, &1))
   end
 
-  defp serialize(_k, nil), do: nil
-
   defp serialize(:params, v) do
     v
     |> prepare()

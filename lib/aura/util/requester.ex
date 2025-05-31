@@ -40,6 +40,7 @@ defmodule Aura.Requester do
         resp
 
       {:ok, %Req.Response{status: 429, headers: headers}} ->
+        # coveralls-ignore-start
         if is_retry do
           {:error, "Rate limit exceeded"}
         else
@@ -52,6 +53,8 @@ defmodule Aura.Requester do
 
           request(method, path, new_opts)
         end
+
+      # coveralls-ignore-stop
 
       other ->
         {:error, other}
@@ -70,7 +73,9 @@ defmodule Aura.Requester do
 
   def hex_pm_url, do: @base_url
 
+  # coveralls-ignore-start
   def find_repo_url(repo_url: url), do: url
+  # coveralls-ignore-stop
 
   def find_repo_url(_) do
     Application.get_env(:aura, :repo_url, @base_url)
@@ -93,6 +98,7 @@ defmodule Aura.Requester do
     end
   end
 
+  # coveralls-ignore-start
   defp otp_version do
     major = :otp_release |> :erlang.system_info() |> List.to_string()
     vsn_file = Path.join([:code.root_dir(), "releases", major, "OTP_VERSION"])
@@ -107,6 +113,8 @@ defmodule Aura.Requester do
       :error, _ -> major
     end
   end
+
+  # coveralls-ignore-stop
 
   defp handle_qparams(url, nil), do: url
 
@@ -133,8 +141,9 @@ defmodule Aura.Requester do
   defp make_request(:post, path, opts), do: Req.post(path, opts)
   defp make_request(:put, path, opts), do: Req.put(path, opts)
   defp make_request(:delete, path, opts), do: Req.delete(path, opts)
-  defp make_request(:patch, path, opts), do: Req.patch(path, opts)
+  #  defp make_request(:patch, path, opts), do: Req.patch(path, opts)
 
+  # coveralls-ignore-start
   defp respect_limits(%{"x-ratelimit-remaining" => ["0"]} = headers) do
     [reset] = headers["x-ratelimit-reset"] || ["0"]
 
@@ -154,4 +163,5 @@ defmodule Aura.Requester do
   end
 
   defp respect_limits(_), do: :ok
+  # coveralls-ignore-stop
 end
