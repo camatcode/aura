@@ -22,6 +22,14 @@ defmodule Aura.Common do
     Stream.resource(start_fun, continue_fun, end_fun)
   end
 
+  def determine_path(opts, path) do
+    if opts[:repo] do
+      {Path.join("/repos/#{opts[:repo]}", path), Keyword.delete(opts, :repo)}
+    else
+      {path, opts}
+    end
+  end
+
   defp paginate_with_page(page, _path, _qparams, _build_func, _opts) when page < 1 do
     {:halt, page}
   end
