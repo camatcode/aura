@@ -3,6 +3,8 @@ defmodule Aura.Requester do
   @moduledoc """
   Utility for making HTTP requests to a Hex-compliant API
   """
+  alias Aura.Common
+
   require Logger
 
   @dialyzer {:nowarn_function, user_agent_header: 0}
@@ -13,15 +15,11 @@ defmodule Aura.Requester do
   """
   @type http_method :: :get | :post | :put | :delete
 
-  @typedoc """
-  The path parameter of the request (e.g "/api/packages")
-  """
-  @type api_path :: String.t()
-
   @doc """
   Makes a HTTP request
   """
-  @spec request(method :: http_method, path :: api_path, opts :: list()) :: {:ok, Req.Response.t()} | {:error, term()}
+  @spec request(method :: http_method, path :: Common.api_path(), opts :: list()) ::
+          {:ok, Req.Response.t()} | {:error, term()}
   def request(method, path, opts \\ []) do
     qparams = opts[:qparams]
     is_retry = opts[:is_retry]
@@ -80,19 +78,19 @@ defmodule Aura.Requester do
   @doc """
   Makes a HTTP GET request
   """
-  @spec get(path :: api_path, opts :: list()) :: {:ok, Req.Response.t()} | {:error, term()}
+  @spec get(path :: Common.api_path(), opts :: list()) :: {:ok, Req.Response.t()} | {:error, term()}
   def get(path, opts \\ []), do: request(:get, path, opts)
 
   @doc """
   Makes a HTTP POST request
   """
-  @spec post(path :: api_path, opts :: list()) :: {:ok, Req.Response.t()} | {:error, term()}
+  @spec post(path :: Common.api_path(), opts :: list()) :: {:ok, Req.Response.t()} | {:error, term()}
   def post(path, opts \\ []), do: request(:post, path, opts)
 
   @doc """
   Makes a HTTP PUT request
   """
-  @spec put(path :: api_path, opts :: list()) :: {:ok, Req.Response.t()} | {:error, term()}
+  @spec put(path :: Common.api_path(), opts :: list()) :: {:ok, Req.Response.t()} | {:error, term()}
   def put(path, opts \\ []), do: request(:put, path, opts)
 
   # def patch(path, opts \\ []), do: request(:patch, path, opts)
@@ -100,7 +98,7 @@ defmodule Aura.Requester do
   @doc """
   Makes a HTTP DELETE request
   """
-  @spec delete(path :: api_path, opts :: list()) :: {:ok, Req.Response.t()} | {:error, term()}
+  @spec delete(path :: Common.api_path(), opts :: list()) :: {:ok, Req.Response.t()} | {:error, term()}
   def delete(path, opts \\ []), do: request(:delete, path, opts)
 
   @doc """

@@ -35,26 +35,26 @@ defmodule Aura.Model.HexPackageOwner do
 
   <!-- tabs-open -->
   ### 🏷️ Keys
-    * **email** :: `t:Aura.Model.Common.email/0`
+    * **email** :: `t:Aura.Common.email/0`
     * **full_name** ::  `t:full_name/0`
     * **handles** :: `t:social_handles/0`
     * **inserted_at** :: `t:Aura.Model.Common.inserted_at/0`
     * **level** :: `t:level/0`
     * **updated_at** :: `t:Aura.Model.Common.updated_at/0`
     * **url** :: `t:Aura.Model.Common.url/0`
-   * **username** :: `t:Aura.Model.Common.username/0`
+   * **username** :: `t:Aura.Common.username/0`
 
   <!-- tabs-close -->
   """
   @type t :: %HexPackageOwner{
-          email: Common.email(),
+          email: Aura.Common.email(),
           full_name: full_name(),
           handles: social_handles(),
           inserted_at: Common.inserted_at(),
           level: level(),
           updated_at: Common.updated_at(),
           url: Common.url(),
-          username: Common.username()
+          username: Aura.Common.username()
         }
 
   defstruct [

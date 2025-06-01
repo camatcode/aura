@@ -20,11 +20,6 @@ defmodule Aura.Model.Common do
   @type html_url :: URI.t()
 
   @typedoc """
-  An email address associated with this record
-  """
-  @type email :: String.t()
-
-  @typedoc """
   UTC `DateTime` for when the record was last modified in the database
   """
   @type updated_at :: DateTime.t()
@@ -33,11 +28,6 @@ defmodule Aura.Model.Common do
   The URL required to perform operations on this record
   """
   @type url :: URI.t()
-
-  @typedoc """
-  A unique, human-readable ID for a user
-  """
-  @type username :: String.t()
 
   @doc """
   Cleans and validates a map into something Aura models can easily build

@@ -13,11 +13,6 @@ defmodule Aura.Model.HexPackage do
   alias Aura.Model.HexRelease
 
   @typedoc """
-  Name of the package (e.g `"plug"`)
-  """
-  @type package_name :: String.t()
-
-  @typedoc """
   The repository the package belongs to (e.g `"hexpm"`)
   """
   @type repository :: String.t()
@@ -32,7 +27,7 @@ defmodule Aura.Model.HexPackage do
 
   <!-- tabs-open -->
   ### 🏷️ Keys
-    * **name** :: `t:package_name/0`
+    * **name** :: `t:Aura.Common.package_name/0`
     * **repository** :: `t:repository/0`
     * **private** :: `t:private?/0`
     * **meta** :: `t:Aura.Model.HexPackageMeta.t/0`
@@ -47,7 +42,7 @@ defmodule Aura.Model.HexPackage do
   <!-- tabs-close -->
   """
   @type t :: %HexPackage{
-          name: package_name(),
+          name: Aura.Common.package_name(),
           repository: repository(),
           private: private?(),
           meta: HexPackageMeta.t(),
