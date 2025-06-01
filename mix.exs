@@ -45,8 +45,8 @@ defmodule Aura.MixProject do
 
   defp groups_for_modules do
     [
+      Services: [],
       Model: [
-        Aura.Model.Common,
         Aura.Model.HexAPIKey,
         Aura.Model.HexAuditLog,
         Aura.Model.HexPackage,
@@ -57,9 +57,11 @@ defmodule Aura.MixProject do
         Aura.Model.HexRepo,
         Aura.Model.HexUser
       ],
-      Util: [
+      Common: [
         Aura.PackageTarUtil,
-        Aura.Requester
+        Aura.Requester,
+        Aura.Model.Common,
+        Aura.Common
       ]
     ]
   end
