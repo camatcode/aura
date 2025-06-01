@@ -20,11 +20,6 @@ defmodule Aura.Model.HexAPIKey do
   @type authing_key :: boolean()
 
   @typedoc """
-  A human-readable name for this API key (e.g `"my_computer"`)
-  """
-  @type api_key_name :: String.t()
-
-  @typedoc """
   A permission realm that this API key has.
 
   <!-- tabs-open -->
@@ -52,7 +47,7 @@ defmodule Aura.Model.HexAPIKey do
     * **authing_key** :: `t:authing_key/0`
     * **secret** :: `t:secret/0`
     * **inserted_at** :: `t:Aura.Model.Common.inserted_at/0`
-    * **name** :: `t:api_key_name/0`
+    * **name** :: `t:Aura.Common.api_key_name/0`
     * **permissions** :: [`t:api_permission/0`]
     * **revoked_date_time** :: `t:revoked_date_time/0`
     * **updated_at** :: `t:Aura.Model.Common.updated_at/0`
@@ -64,7 +59,7 @@ defmodule Aura.Model.HexAPIKey do
           authing_key: authing_key(),
           secret: secret(),
           inserted_at: Common.inserted_at(),
-          name: api_key_name(),
+          name: Aura.Common.api_key_name(),
           permissions: [api_permission()],
           revoked_at: revoked_date_time(),
           updated_at: Common.updated_at(),

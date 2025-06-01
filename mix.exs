@@ -23,7 +23,7 @@ defmodule Aura.MixProject do
       # Hex
       package: package(),
       description: """
-      An ergonomic library for investigating Hex packages
+      An ergonomic library for investigating the Hex.pm API
       """,
 
       # Docs
@@ -47,7 +47,8 @@ defmodule Aura.MixProject do
     [
       Services: [
         Aura.Packages,
-        Aura.Releases
+        Aura.Releases,
+        Aura.Repos
       ],
       Model: [
         Aura.Model.HexAPIKey,
