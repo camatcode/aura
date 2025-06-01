@@ -45,10 +45,11 @@ defmodule Aura.MixProject do
 
   defp groups_for_modules do
     [
-      Services: [
+      Service: [
         Aura.Packages,
         Aura.Releases,
-        Aura.Repos
+        Aura.Repos,
+        Aura.Users
       ],
       Model: [
         Aura.Model.HexAPIKey,
