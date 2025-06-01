@@ -26,6 +26,11 @@ defmodule Aura.Common do
   """
   @type email :: String.t()
 
+  @typedoc """
+  The version of a release
+  """
+  @type release_version :: String.t()
+
   @doc """
   Implements Hex API's pagination mechanism by returning a `Stream.resource/3`
   """

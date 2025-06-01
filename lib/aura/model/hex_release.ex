@@ -36,11 +36,6 @@ defmodule Aura.Model.HexRelease do
   @type package_reference_url :: URI.t()
 
   @typedoc """
-  The version of this release
-  """
-  @type release_version :: String.t()
-
-  @typedoc """
   Additional information relevant to the release
   (e.g `%{elixir: nil, app: "decimal", build_tools: ["mix"]}`)
   """
@@ -75,6 +70,13 @@ defmodule Aura.Model.HexRelease do
     * **publisher** :: `t:release_publisher/0`
     * **html_url** :: `t:Aura.Model.Common.html_url/0`
     * **downloads** :: `t:release_downloads/0`
+    * **inserted_at** :: `t:Aura.Model.Common.inserted_at/0`
+    * **retirement** :: `t:retired?/0`
+    * **package_url** :: `t:package_reference_url/0`
+    * **requirements** :: [`t:release_requirement/0`]
+    * **updated_at** :: [`t:Aura.Model.Common.updated_at/0`]
+    * **url** :: [`t:Aura.Model.Common.url/0`]
+    * **version** :: [`t:Aura.Common.release_version/0`]
 
   <!-- tabs-close -->
   """
@@ -93,7 +95,7 @@ defmodule Aura.Model.HexRelease do
           requirements: [release_requirement()],
           updated_at: Common.updated_at(),
           url: Common.url(),
-          version: release_version()
+          version: Aura.Common.release_version()
         }
 
   defstruct [

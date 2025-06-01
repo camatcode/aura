@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Model.Common do
   @moduledoc """
-  Module covering functions common to all Aura Models
+  Common capabilities across all Aura models
   """
 
   @typedoc """

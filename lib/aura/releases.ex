@@ -6,17 +6,26 @@ defmodule Aura.Releases do
 
   import Aura.Common
 
+  alias Aura.Common
   alias Aura.Model.HexRelease
   alias Aura.PackageTarUtil
   alias Aura.Requester
 
   @packages_path "/packages"
 
+  @typedoc """
+  The reason for retiring a release
+  """
+  @type retire_reason :: :renamed | :security | :invalid | :deprecated | :other
+
   @doc """
   Returns a `Aura.Model.HexRelease` for a given package / version
   """
-  @spec get_release(package_name :: Aura.Common.package_name(), version :: String.t(), opts :: list()) ::
-          {:ok, HexRelease.t()} | {:error, any()}
+  @spec get_release(
+          package_name :: Common.package_name(),
+          version :: Common.release_version(),
+          opts :: list()
+        ) :: {:ok, HexRelease.t()} | {:error, any()}
   def get_release(package_name, version, opts \\ []) do
     {path, opts} = determine_path(opts, Path.join(@packages_path, "#{package_name}/releases/#{version}"))
 
@@ -26,8 +35,13 @@ defmodule Aura.Releases do
   end
 
   @doc """
-  Returns the contents of docs **tar.gz**
+  Returns the contents of the release's docs **tar.gz**
   """
+  @spec get_release_docs(
+          package_name :: Common.package_name(),
+          version :: Common.release_version(),
+          opts :: list()
+        ) :: {:ok, PackageTarUtil.tar_contents()} | {:error, any()}
   def get_release_docs(package_name, version, opts \\ []) do
     {path, opts} = determine_path(opts, Path.join(@packages_path, "#{package_name}/releases/#{version}/docs"))
 
@@ -36,6 +50,14 @@ defmodule Aura.Releases do
     end
   end
 
+  @doc """
+  Permanently deletes a release
+  """
+  @spec delete_release(
+          package_name :: Common.package_name(),
+          version :: Common.release_version(),
+          opts :: list()
+        ) :: :ok | {:error, any()}
   def delete_release(package_name, version, opts \\ []) do
     {path, opts} = determine_path(opts, Path.join(@packages_path, "#{package_name}/releases/#{version}"))
 
@@ -44,11 +66,18 @@ defmodule Aura.Releases do
     end
   end
 
-  def publish_release(code_tar, opts \\ []) when is_bitstring(code_tar) do
+  @doc """
+  Publishes a release **.tar** packaged by a build tool to a Hex-compliant repository
+  """
+  @spec publish_release(
+          release_code_tar :: String.t(),
+          opts :: list()
+        ) :: {:ok, HexRelease.t()} | {:error, any()}
+  def publish_release(release_code_tar, opts \\ []) when is_bitstring(release_code_tar) do
     {path, opts} = determine_path(opts, "/publish")
 
-    with {:ok, _streams} <- PackageTarUtil.read_release_tar(code_tar) do
-      opts = Keyword.merge([body: File.read!(code_tar)], opts)
+    with {:ok, _streams} <- PackageTarUtil.read_release_tar(release_code_tar) do
+      opts = Keyword.merge([body: File.read!(release_code_tar)], opts)
 
       with {:ok, %{body: body}} <- Requester.post(path, opts) do
         {:ok, HexRelease.build(body)}
@@ -56,6 +85,15 @@ defmodule Aura.Releases do
     end
   end
 
+  @doc """
+  Publishes associated release docs **tar.gz** to a Hex-compliant repository
+  """
+  @spec publish_release_docs(
+          package_name :: Common.package_name(),
+          release_version :: Common.release_version(),
+          doc_tar :: String.t(),
+          opts :: list
+        ) :: {:ok, URI.t()} | {:error, any()}
   def publish_release_docs(package_name, release_version, doc_tar, opts \\ []) when is_bitstring(doc_tar) do
     {path, opts} = determine_path(opts, Path.join(@packages_path, "#{package_name}/releases/#{release_version}/docs"))
 
@@ -68,6 +106,16 @@ defmodule Aura.Releases do
     end
   end
 
+  @doc """
+  Marks a release as **retired**, signaling to others that it should not be used
+  """
+  @spec retire_release(
+          package_name :: Common.package_name(),
+          version :: Common.release_version(),
+          reason :: retire_reason(),
+          message :: String.t(),
+          opts :: list()
+        ) :: :ok | {:error, any()}
   def retire_release(package_name, version, reason \\ :other, message, opts \\ []) when is_bitstring(message) do
     reason = validate_reason(reason)
     opts = Keyword.merge([json: %{reason: reason, message: message}], opts)
@@ -78,6 +126,14 @@ defmodule Aura.Releases do
     end
   end
 
+  @doc """
+  Removes the **retired** status from a release, signaling to others that it can still be used
+  """
+  @spec undo_retire_release(
+          package_name :: Common.package_name(),
+          version :: Common.release_version(),
+          opts :: list()
+        ) :: :ok | {:error, any()}
   def undo_retire_release(package_name, version, opts \\ []) do
     {path, opts} = determine_path(opts, Path.join(@packages_path, "#{package_name}/releases/#{version}/retire"))
 
@@ -86,6 +142,14 @@ defmodule Aura.Releases do
     end
   end
 
+  @doc """
+  Permanently deletes associated documentation for a release
+  """
+  @spec delete_release_docs(
+          package_name :: Common.package_name(),
+          version :: Common.release_version(),
+          opts :: list()
+        ) :: :ok | {:error, any()}
   def delete_release_docs(package_name, version, opts \\ []) do
     {path, opts} = determine_path(opts, Path.join(@packages_path, "#{package_name}/releases/#{version}/docs"))
 
