@@ -94,6 +94,7 @@ defmodule Aura.MixProject do
       {:ex_license, "~> 0.1.0", only: [:dev, :test], runtime: false},
       {:styler, "~> 1.4", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.18", only: [:test]},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_machina, "~> 2.8.0", only: :test},
       {:faker, "~> 0.18.0", only: :test},
       {:junit_formatter, "~> 3.1", only: [:test]},

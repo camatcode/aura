@@ -1,7 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.PackageTarUtil do
-  @moduledoc false
+  @moduledoc """
+  A utility to read a release tar from a Hex-compliant API
+  """
 
+  @doc """
+  Reads a release tar from a given file path
+  """
+  @spec read_release_tar(tar_path :: String.t()) :: {:ok, %{entries: %{}}} | {:error, term()}
   def read_release_tar(tar_path) when is_bitstring(tar_path) do
     with {:ok,
           %{

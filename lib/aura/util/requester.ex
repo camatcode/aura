@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Requester do
   @moduledoc false
-
   require Logger
 
+  @dialyzer {:nowarn_function, user_agent_header: 0}
   @base_url "https://hex.pm/api"
 
   def request(method, path, opts \\ []) do
@@ -67,7 +67,7 @@ defmodule Aura.Requester do
 
   def put(path, opts \\ []), do: request(:put, path, opts)
 
-  def patch(path, opts \\ []), do: request(:patch, path, opts)
+  # def patch(path, opts \\ []), do: request(:patch, path, opts)
 
   def delete(path, opts \\ []), do: request(:delete, path, opts)
 
