@@ -7,6 +7,11 @@ defmodule Aura.Common do
   alias Aura.Requester
 
   @typedoc """
+  A human-readable name for this API key (e.g `"my_computer"`)
+  """
+  @type api_key_name :: String.t()
+
+  @typedoc """
   The path parameter of the request (e.g "/api/packages")
   """
   @type api_path :: String.t()
@@ -30,6 +35,11 @@ defmodule Aura.Common do
   The version of a release
   """
   @type release_version :: String.t()
+
+  @typedoc """
+  The name of the repository (e.g `"hexpm"`)
+  """
+  @type repo_name :: String.t()
 
   @doc """
   Implements Hex API's pagination mechanism by returning a `Stream.resource/3`

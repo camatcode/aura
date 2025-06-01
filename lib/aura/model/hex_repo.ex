@@ -12,11 +12,6 @@ defmodule Aura.Model.HexRepo do
   alias Aura.Model.HexRepo
 
   @typedoc """
-  The name of the repository (e.g `"hexpm"`)
-  """
-  @type repo_name :: String.t()
-
-  @typedoc """
   Whether the repository is public
   """
   @type public? :: boolean()
@@ -45,7 +40,7 @@ defmodule Aura.Model.HexRepo do
 
   <!-- tabs-open -->
   ### 🏷️ Keys
-    * **name** :: `t:repo_name/0`
+    * **name** :: `t:Aura.Common.repo_name/0`
     * **public** ::  `t:public?/0`
     * **active** :: `t:active?/0`
     * **billing_active** :: `t:billing_active?/0`
@@ -55,7 +50,7 @@ defmodule Aura.Model.HexRepo do
   <!-- tabs-close -->
   """
   @type t :: %HexRepo{
-          name: repo_name(),
+          name: Aura.Common.repo_name(),
           public: public?(),
           active: active?(),
           billing_active: billing_active?(),
