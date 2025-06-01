@@ -56,6 +56,10 @@ defmodule Aura.MixProject do
         Aura.Model.HexRelease,
         Aura.Model.HexRepo,
         Aura.Model.HexUser
+      ],
+      Util: [
+        Aura.PackageTarUtil,
+        Aura.Requester
       ]
     ]
   end
