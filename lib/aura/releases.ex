@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Releases do
-  @moduledoc false
+  @moduledoc """
+  Service module for interacting with Hex package releases
+  """
 
   import Aura.Common
 
@@ -10,6 +12,11 @@ defmodule Aura.Releases do
 
   @packages_path "/packages"
 
+  @doc """
+  Returns a `Aura.Model.HexRelease` for a given package / version
+  """
+  @spec get_release(package_name :: Aura.Common.package_name(), version :: Aura.Common.version(), opts :: list()) ::
+          {:ok, HexRelease.t()} | {:error, any()}
   def get_release(package_name, version, opts \\ []) do
     {path, opts} = determine_path(opts, Path.join(@packages_path, "#{package_name}/releases/#{version}"))
 
@@ -18,6 +25,9 @@ defmodule Aura.Releases do
     end
   end
 
+  @doc """
+  Returns the contents of docs **tar.gz**
+  """
   def get_release_docs(package_name, version, opts \\ []) do
     {path, opts} = determine_path(opts, Path.join(@packages_path, "#{package_name}/releases/#{version}/docs"))
 

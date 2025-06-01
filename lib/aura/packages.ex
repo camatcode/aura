@@ -25,7 +25,7 @@ defmodule Aura.Packages do
   @doc """
   Returns a list of `Aura.Model.HexPackageOwner`
   """
-  @spec list_package_owners(name :: Aura.Common.package_name(), opts :: list()) :: Enumerable.t()
+  @spec list_package_owners(name :: Aura.Common.package_name(), opts :: list()) :: [HexPackageOwner.t()]
   def list_package_owners(name, opts \\ []) do
     {path, opts} = determine_path(opts, Path.join(@base_path, "#{name}/owners"))
 
@@ -92,7 +92,7 @@ defmodule Aura.Packages do
   end
 
   @doc """
-  Returns a stream of `Aura.Model.AuditLog`, scoped to a package
+  Returns a stream of `Aura.Model.HexAuditLog`, scoped to a package
   """
   @spec stream_audit_logs(package_name :: Aura.Common.package_name(), opts :: list) :: Enumerable.t()
   def stream_audit_logs(package_name, opts \\ []) do
