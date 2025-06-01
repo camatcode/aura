@@ -45,7 +45,7 @@ defmodule Aura.MixProject do
 
   defp groups_for_modules do
     [
-      Services: [
+      Service: [
         Aura.Packages,
         Aura.Releases,
         Aura.Repos,
