@@ -1,11 +1,27 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Requester do
-  @moduledoc false
-
+  @moduledoc """
+  Utility for making HTTP requests to a Hex-compliant API
+  """
   require Logger
 
+  @dialyzer {:nowarn_function, user_agent_header: 0}
   @base_url "https://hex.pm/api"
 
+  @typedoc """
+  The HTTP method to use for a given request
+  """
+  @type http_method :: :get | :post | :put | :delete
+
+  @typedoc """
+  The path parameter of the request (e.g "/api/packages")
+  """
+  @type api_path :: String.t()
+
+  @doc """
+  Makes a HTTP request
+  """
+  @spec request(method :: http_method, path :: api_path, opts :: list()) :: {:ok, Req.Response.t()} | {:error, term()}
   def request(method, path, opts \\ []) do
     qparams = opts[:qparams]
     is_retry = opts[:is_retry]
@@ -61,19 +77,43 @@ defmodule Aura.Requester do
     end
   end
 
+  @doc """
+  Makes a HTTP GET request
+  """
+  @spec get(path :: api_path, opts :: list()) :: {:ok, Req.Response.t()} | {:error, term()}
   def get(path, opts \\ []), do: request(:get, path, opts)
 
+  @doc """
+  Makes a HTTP POST request
+  """
+  @spec post(path :: api_path, opts :: list()) :: {:ok, Req.Response.t()} | {:error, term()}
   def post(path, opts \\ []), do: request(:post, path, opts)
 
+  @doc """
+  Makes a HTTP PUT request
+  """
+  @spec put(path :: api_path, opts :: list()) :: {:ok, Req.Response.t()} | {:error, term()}
   def put(path, opts \\ []), do: request(:put, path, opts)
 
-  def patch(path, opts \\ []), do: request(:patch, path, opts)
+  # def patch(path, opts \\ []), do: request(:patch, path, opts)
 
+  @doc """
+  Makes a HTTP DELETE request
+  """
+  @spec delete(path :: api_path, opts :: list()) :: {:ok, Req.Response.t()} | {:error, term()}
   def delete(path, opts \\ []), do: request(:delete, path, opts)
 
+  @doc """
+  Returns #{@base_url}
+  """
   def hex_pm_url, do: @base_url
 
+  @doc """
+  Inspects given options, or the `Application.get_env/3` for
+    a Hex-compliant API URL
+  """
   # coveralls-ignore-start
+  @spec find_repo_url(opts :: list()) :: String.t()
   def find_repo_url(repo_url: url), do: url
   # coveralls-ignore-stop
 
