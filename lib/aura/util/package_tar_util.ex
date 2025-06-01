@@ -3,11 +3,15 @@ defmodule Aura.PackageTarUtil do
   @moduledoc """
   A utility to read a release tar from a Hex-compliant API
   """
+  @typedoc """
+  A mapping between entries of a tar and their bytes
+  """
+  @type tar_contents :: %{entries: map()}
 
   @doc """
   Reads a release tar from a given file path
   """
-  @spec read_release_tar(tar_path :: String.t()) :: {:ok, %{entries: %{}}} | {:error, term()}
+  @spec read_release_tar(tar_path :: String.t()) :: {:ok, tar_contents} | {:error, term()}
   def read_release_tar(tar_path) when is_bitstring(tar_path) do
     with {:ok,
           %{
