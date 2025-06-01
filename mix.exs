@@ -48,7 +48,8 @@ defmodule Aura.MixProject do
       Services: [
         Aura.Packages,
         Aura.Releases,
-        Aura.Repos
+        Aura.Repos,
+        Aura.Users
       ],
       Model: [
         Aura.Model.HexAPIKey,
