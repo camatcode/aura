@@ -15,7 +15,7 @@ defmodule Aura.Releases do
   @doc """
   Returns a `Aura.Model.HexRelease` for a given package / version
   """
-  @spec get_release(package_name :: Aura.Common.package_name(), version :: Aura.Common.version(), opts :: list()) ::
+  @spec get_release(package_name :: Aura.Common.package_name(), version :: String.t(), opts :: list()) ::
           {:ok, HexRelease.t()} | {:error, any()}
   def get_release(package_name, version, opts \\ []) do
     {path, opts} = determine_path(opts, Path.join(@packages_path, "#{package_name}/releases/#{version}"))

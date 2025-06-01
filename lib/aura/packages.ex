@@ -25,7 +25,8 @@ defmodule Aura.Packages do
   @doc """
   Returns a list of `Aura.Model.HexPackageOwner`
   """
-  @spec list_package_owners(name :: Aura.Common.package_name(), opts :: list()) :: [HexPackageOwner.t()]
+  @spec list_package_owners(name :: Aura.Common.package_name(), opts :: list()) ::
+          {:ok, [HexPackageOwner.t()]} | {:error, any()}
   def list_package_owners(name, opts \\ []) do
     {path, opts} = determine_path(opts, Path.join(@base_path, "#{name}/owners"))
 
