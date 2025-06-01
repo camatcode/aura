@@ -54,7 +54,8 @@ defmodule Aura.MixProject do
         Aura.Model.HexPackageMeta,
         Aura.Model.HexPackageOwner,
         Aura.Model.HexRelease,
-        Aura.Model.HexRepo
+        Aura.Model.HexRepo,
+        Aura.Model.HexUser
       ]
     ]
   end

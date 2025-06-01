@@ -20,7 +20,7 @@ defmodule Aura.Model.HexAPIKey do
   @type authing_key :: boolean()
 
   @typedoc """
-  A human-readable name for this API key (e.g `my_computer`)
+  A human-readable name for this API key (e.g `"my_computer"`)
   """
   @type api_key_name :: String.t()
 
@@ -40,7 +40,7 @@ defmodule Aura.Model.HexAPIKey do
   @type api_permission :: %{domain: String.t(), resource: String.t()}
 
   @typedoc """
-  A Unix DateTime when this key became invalid
+  UTC `DateTime` when this key became invalid
   """
   @type revoked_date_time :: DateTime.t() | nil
 

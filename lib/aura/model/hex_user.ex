@@ -1,8 +1,34 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Model.HexUser do
-  @moduledoc false
+  @moduledoc """
+  A struct defining a User for a Hex-compliant API
+  """
 
   import Aura.Model.Common
+
+  alias Aura.Model.Common
+  alias Aura.Model.HexUser
+
+  @typedoc """
+  Type defining a User for a Hex-compliant API
+
+  <!-- tabs-open -->
+  ### 🏷️ Keys
+    * **username** :: `t:Aura.Model.Common.username/0`
+    * **email** ::  `t:Aura.Model.Common.email/0`
+    * **inserted_at** :: `t:Aura.Model.Common.inserted_at/0`
+    * **updated_at** :: `t:Aura.Model.Common.updated_at/0`
+    * **url** :: `t:Aura.Model.Common.url/0`
+
+  <!-- tabs-close -->
+  """
+  @type t :: %HexUser{
+          username: Common.username(),
+          email: Common.email(),
+          inserted_at: Common.inserted_at(),
+          updated_at: Common.updated_at(),
+          url: Common.url()
+        }
 
   defstruct [
     :username,
@@ -12,9 +38,13 @@ defmodule Aura.Model.HexUser do
     :url
   ]
 
+  @doc """
+  Builds a `HexUser` from a map
+  """
+  @spec build(m :: map) :: HexUser.t()
   def build(m) when is_map(m) do
     m
     |> prepare()
-    |> then(&struct(Aura.Model.HexUser, &1))
+    |> then(&struct(HexUser, &1))
   end
 end

@@ -5,7 +5,7 @@ defmodule Aura.Model.Common do
   """
 
   @typedoc """
-  Unix DateTime for when the record was inserted into the database
+  UTC `DateTime` for when the record was inserted into the database
   """
   @type inserted_at :: DateTime.t()
 
@@ -20,12 +20,12 @@ defmodule Aura.Model.Common do
   @type html_url :: URI.t()
 
   @typedoc """
-  An email address associated with this user
+  An email address associated with this record
   """
   @type email :: String.t()
 
   @typedoc """
-  Unix DateTime for when the record was last modified in the database
+  UTC `DateTime` for when the record was last modified in the database
   """
   @type updated_at :: DateTime.t()
 
@@ -35,7 +35,7 @@ defmodule Aura.Model.Common do
   @type url :: URI.t()
 
   @typedoc """
-  A unique, human-readable ID for a User
+  A unique, human-readable ID for a user
   """
   @type username :: String.t()
 

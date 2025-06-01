@@ -41,7 +41,7 @@ defmodule Aura.Model.HexRepo do
   ]
 
   @typedoc """
-  Type a repository from a Hex-compliant API.
+  Type describing a repository from a Hex-compliant API.
 
   <!-- tabs-open -->
   ### 🏷️ Keys
