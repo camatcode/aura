@@ -11,6 +11,21 @@ defmodule Aura.Common do
   """
   @type api_path :: String.t()
 
+  @typedoc """
+  Name of the package (e.g `"plug"`)
+  """
+  @type package_name :: String.t()
+
+  @typedoc """
+  A unique, human-readable ID for a user
+  """
+  @type username :: String.t()
+
+  @typedoc """
+  An email address associated with this record
+  """
+  @type email :: String.t()
+
   @doc """
   Implements Hex API's pagination mechanism by returning a `Stream.resource/3`
   """
@@ -36,7 +51,7 @@ defmodule Aura.Common do
   @doc """
   Determines a `t:api_path/0` by investigating **opts** for a `:repo` key, representing a `Aura.Model.HexRepo`.
 
-  If present, the path will be modified to scope **path** solely to that repo, otherwise the **path** is unmodified.
+  If present, **path** will be modified to scope solely to that repo, otherwise the **path** is unmodified.
   """
   @spec determine_path(opts :: [any()], path :: api_path()) :: {api_path(), [any()]}
   def determine_path(opts, path) do

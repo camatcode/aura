@@ -14,8 +14,8 @@ defmodule Aura.Model.HexUser do
 
   <!-- tabs-open -->
   ### 🏷️ Keys
-    * **username** :: `t:Aura.Model.Common.username/0`
-    * **email** ::  `t:Aura.Model.Common.email/0`
+    * **username** :: `t:Aura.Common.username/0`
+    * **email** ::  `t: Aura.Common.email/0`
     * **inserted_at** :: `t:Aura.Model.Common.inserted_at/0`
     * **updated_at** :: `t:Aura.Model.Common.updated_at/0`
     * **url** :: `t:Aura.Model.Common.url/0`
@@ -23,8 +23,8 @@ defmodule Aura.Model.HexUser do
   <!-- tabs-close -->
   """
   @type t :: %HexUser{
-          username: Common.username(),
-          email: Common.email(),
+          username: Aura.Common.username(),
+          email: Aura.Common.email(),
           inserted_at: Common.inserted_at(),
           updated_at: Common.updated_at(),
           url: Common.url()

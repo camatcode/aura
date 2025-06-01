@@ -28,7 +28,7 @@ defmodule Aura.Model.HexPackageMeta do
 
   <!-- tabs-open -->
   ### 🏷️ Keys
-    * **maintainers** :: [`t:Aura.Model.Common.username/0`]
+    * **maintainers** :: [`t:Aura.Common.username/0`]
     * **links** ::  [`t:meta_url/0`]
     * **licenses** :: [`t:software_license/0`]
     * **description** :: `t:package_description/0`
@@ -36,7 +36,7 @@ defmodule Aura.Model.HexPackageMeta do
   <!-- tabs-close -->
   """
   @type t :: %HexPackageMeta{
-          maintainers: [Aura.Model.Common.username()],
+          maintainers: [Aura.Common.username()],
           links: [meta_url()],
           licenses: [software_license()],
           description: package_description()
