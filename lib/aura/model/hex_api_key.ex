@@ -2,6 +2,14 @@
 defmodule Aura.Model.HexAPIKey do
   @moduledoc """
   A struct describing an API key record coming from a Hex-compliant API.
+
+  <!-- tabs-open -->
+
+  #{Aura.Doc.related(["`Aura.Repos`"])}
+
+  #{Aura.Doc.resources()}
+
+  <!-- tabs-close -->
   """
 
   import Aura.Model.Common
@@ -10,12 +18,36 @@ defmodule Aura.Model.HexAPIKey do
   alias Aura.Model.HexAPIKey
 
   @typedoc """
-  The API key payload - it is only provided once, upon creation; always `nil` after
+  The API key payload - it is only provided once, upon creation; always `nil` after.
+
+  > #### 🔒 Security {: .warning}
+  >
+  > Guard this secret payload with your life - **never** keep it as plain text in your code.
+
+  <!-- tabs-open -->
+
+  ### 💻 Examples
+
+  ```elixir
+  "3321e19a16017725ced9fe56a0071aa6"
+  ```
+
+  #{Aura.Doc.related(["`Aura.Repos`"])}
+
+  <!-- tabs-close -->
   """
   @type secret :: String.t() | nil
 
   @typedoc """
   ❓ Sorry, documentation from the hex specification is lacking here. ❓
+
+  <!-- tabs-open -->
+
+  #{Aura.Doc.resources()}
+
+  #{Aura.Doc.related(["`Aura.Repos`"])}
+
+  <!-- tabs-close -->
   """
   @type authing_key :: boolean()
 
@@ -25,17 +57,35 @@ defmodule Aura.Model.HexAPIKey do
   <!-- tabs-open -->
   ### 🏷️ Keys
     * **domain** :: A domain for which this API key is valid
-      * (e.g `"api"`, `"repository"`, `"repositories"`, `"package"`)
     * **resource** :: What kind of operations this API key can do within its domain
-      * (e.g `"read"`, `"write"`)
 
+  ### 💻 Examples
 
-  <!-- tabs-close -->
+  ```elixir
+  %{domain: "api", resource: "read"}
+  %{domain: "api", resource: "write"}
+  ```
+    
+  #{Aura.Doc.related(["`Aura.Repos`"])}
+
+  <!-- tabs-close -->  
   """
   @type api_permission :: %{domain: String.t(), resource: String.t()}
 
   @typedoc """
-  UTC `DateTime` when this key became invalid
+  `DateTime` when this key became invalid
+
+  <!-- tabs-open -->
+
+  ### 💻 Examples
+
+  ```elixir
+  ~U[2025-05-29 18:15:18.244790Z]
+  ```
+
+  #{Aura.Doc.related(["`Aura.Repos`"])}
+    
+  <!-- tabs-close -->
   """
   @type revoked_date_time :: DateTime.t() | nil
 
@@ -52,6 +102,26 @@ defmodule Aura.Model.HexAPIKey do
     * **revoked_date_time** :: `t:revoked_date_time/0`
     * **updated_at** :: `t:Aura.Model.Common.updated_at/0`
     * **url** :: `t:Aura.Model.Common.url/0`
+
+  ### 💻 Examples
+
+  ```elixir
+  %Aura.Model.HexAPIKey{
+    authing_key: false,
+    secret: "3321e19a16017725ced9fe56a0071aa6",
+    inserted_at: ~U[2025-06-02 04:26:33.915977Z],
+    name: "veniam.ut",
+    permissions: [
+      %{domain: "api", resource: "read"},
+      %{domain: "api", resource: "write"}
+    ],
+    revoked_at: nil,
+    updated_at: ~U[2025-06-02 04:26:33.915977Z],
+    url: "http://localhost:4000/api/keys/veniam.ut"
+  }
+  ```
+
+  #{Aura.Doc.related(["`Aura.Repos`"])}
 
   <!-- tabs-close -->
   """
@@ -79,6 +149,13 @@ defmodule Aura.Model.HexAPIKey do
 
   @doc """
   Builds a `HexAPIKey` from a map
+
+  <!-- tabs-open -->
+
+  ### 🏷️ Params
+    * **m** :: A map to build into a `t:Aura.Model.HexAPIKey.t/0`
+
+  <!-- tabs-close -->
   """
   @spec build(m :: map) :: HexAPIKey.t()
   def build(m) when is_map(m) do
