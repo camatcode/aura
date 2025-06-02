@@ -5,6 +5,24 @@ defmodule Aura.Model.HexAPIKey do
 
   <!-- tabs-open -->
 
+  ### 💻 Examples
+
+  ```elixir
+  %Aura.Model.HexAPIKey{
+    authing_key: false,
+    secret: "3321e19a16017725ced9fe56a0071aa6",
+    inserted_at: ~U[2025-06-02 04:26:33.915977Z],
+    name: "veniam.ut",
+    permissions: [
+      %{domain: "api", resource: "read"},
+      %{domain: "api", resource: "write"}
+    ],
+    revoked_at: nil,
+    updated_at: ~U[2025-06-02 04:26:33.915977Z],
+    url: "http://localhost:4000/api/keys/veniam.ut"
+  }
+  ```
+
   #{Aura.Doc.related(["`Aura.Repos`"])}
 
   #{Aura.Doc.resources()}
