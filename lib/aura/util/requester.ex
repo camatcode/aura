@@ -116,7 +116,7 @@ defmodule Aura.Requester do
   # coveralls-ignore-stop
 
   def find_repo_url(_) do
-    Application.get_env(:aura, :repo_url, @base_url)
+    Application.get_env(:aura, :repo_url, @base_url) || @base_url
   end
 
   defp user_agent_header do
