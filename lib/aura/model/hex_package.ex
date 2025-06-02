@@ -2,6 +2,48 @@
 defmodule Aura.Model.HexPackage do
   @moduledoc """
   A struct describing a package from a Hex-compliant API
+
+  <!-- tabs-open -->
+
+  ### 💻 Examples
+
+  ```elixir
+  %Aura.Model.HexPackage{
+   name: "aura",
+   repository: "hexpm",
+   private: nil,
+   meta: %Aura.Model.HexPackageMeta{
+     maintainers: [],
+     links: %{
+       "Changelog" => "https://github.com/camatcode/aura/blob/master/CHANGELOG.md",
+       "GitHub" => "https://github.com/camatcode/aura",
+       "Website" => "https://github.com/camatcode/aura"
+     },
+     licenses: ["Apache-2.0"],
+     description: "An ergonomic library for investigating the Hex.pm API"
+   },
+   downloads: %Aura.Model.HexPackageDownloadStats{all: 4, week: 4, day: 4},
+   releases: [
+     %Aura.Model.HexRelease{
+       has_docs: true,
+       inserted_at: ~U[2025-06-01 15:13:00.595681Z],
+       version: "0.9.0",
+       url: "https://hex.pm/api/packages/aura/releases/0.9.0",
+       downloads: 0
+     }
+   ],
+   inserted_at: ~U[2025-06-01 15:13:00.589838Z],
+   updated_at: ~U[2025-06-01 15:13:04.347899Z],
+   url: "https://hex.pm/api/packages/aura",
+   html_url: "https://hex.pm/packages/aura",
+   docs_html_url: "https://hexdocs.pm/aura/"
+  }
+  ```
+
+  #{Aura.Doc.related(["`Aura.Packages`", "`Aura.Releases`"])}
+
+  #{Aura.Doc.resources()}
+  <!-- tabs-close -->
   """
 
   import Aura.Model.Common
@@ -13,7 +55,19 @@ defmodule Aura.Model.HexPackage do
   alias Aura.Model.HexRelease
 
   @typedoc """
-  The repository the package belongs to (e.g `"hexpm"`)
+  The repository a package belongs to
+
+  <!-- tabs-open -->
+
+  ### 💻 Examples
+
+  ```elixir
+  "hexpm"
+  ```
+
+  #{Aura.Doc.related(["`Aura.Packages`", "`Aura.Releases`"])}
+
+  <!-- tabs-close -->
   """
   @type repository :: String.t()
 
@@ -38,6 +92,43 @@ defmodule Aura.Model.HexPackage do
     * **url** :: `t:Aura.Model.Common.url/0`
     * **html_url** :: `t:Aura.Model.Common.html_url/0`
     * **docs_html_url** :: `t:Aura.Model.Common.docs_html_url/0`
+
+  ### 💻 Examples
+
+  ```elixir
+  %Aura.Model.HexPackage{
+   name: "aura",
+   repository: "hexpm",
+   private: nil,
+   meta: %Aura.Model.HexPackageMeta{
+     maintainers: [],
+     links: %{
+       "Changelog" => "https://github.com/camatcode/aura/blob/master/CHANGELOG.md",
+       "GitHub" => "https://github.com/camatcode/aura",
+       "Website" => "https://github.com/camatcode/aura"
+     },
+     licenses: ["Apache-2.0"],
+     description: "An ergonomic library for investigating the Hex.pm API"
+   },
+   downloads: %Aura.Model.HexPackageDownloadStats{all: 4, week: 4, day: 4},
+   releases: [
+     %Aura.Model.HexRelease{
+       has_docs: true,
+       inserted_at: ~U[2025-06-01 15:13:00.595681Z],
+       version: "0.9.0",
+       url: "https://hex.pm/api/packages/aura/releases/0.9.0",
+       downloads: 0
+     }
+   ],
+   inserted_at: ~U[2025-06-01 15:13:00.589838Z],
+   updated_at: ~U[2025-06-01 15:13:04.347899Z],
+   url: "https://hex.pm/api/packages/aura",
+   html_url: "https://hex.pm/packages/aura",
+   docs_html_url: "https://hexdocs.pm/aura/"
+  }
+  ```
+
+  #{Aura.Doc.related(["`Aura.Packages`", "`Aura.Releases`"])}
 
   <!-- tabs-close -->
   """
@@ -71,6 +162,13 @@ defmodule Aura.Model.HexPackage do
 
   @doc """
   Builds a `HexPackage` from a map
+
+  <!-- tabs-open -->
+
+  ### 🏷️ Params
+    * **m** :: A map to build into a `t:Aura.Model.HexPackage.t/0`
+
+  <!-- tabs-close -->
   """
   @spec build(m :: map) :: HexPackage.t()
   def build(m) when is_map(m) do
