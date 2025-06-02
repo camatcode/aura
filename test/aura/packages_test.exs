@@ -13,7 +13,7 @@ defmodule Aura.PackagesTest do
   end
 
   test "package search", _state do
-    [search: "ups", sort: :recent_downloads]
+    [search: "ups", sort: :total_downloads]
     |> Packages.stream_packages()
     |> Enum.each(fn package ->
       assert String.contains?(package.name, "ups")

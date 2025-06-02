@@ -2,6 +2,18 @@
 defmodule Aura.Model.HexPackageDownloadStats do
   @moduledoc """
   A struct describing download stats associated to a `Aura.Model.HexPackage`
+
+  <!-- tabs-open -->
+  ### 💻 Examples
+
+  ```elixir
+  %Aura.Model.HexPackageDownloadStats{all: 196, week: 49, day: 49}
+  ```
+
+  #{Aura.Doc.related(["`Aura.Packages`", "`Aura.Releases`"])}
+
+  #{Aura.Doc.resources()}
+  <!-- tabs-close -->
   """
 
   import Aura.Model.Common
@@ -32,6 +44,14 @@ defmodule Aura.Model.HexPackageDownloadStats do
     * **week** :: `t:this_week/0`
     * **day** :: `t:today/0`
 
+  ### 💻 Examples
+
+  ```elixir
+  %Aura.Model.HexPackageDownloadStats{all: 196, week: 49, day: 49}
+  ```
+
+  #{Aura.Doc.related(["`Aura.Packages`", "`Aura.Releases`"])}
+
   <!-- tabs-close -->
   """
   @type t :: %HexPackageDownloadStats{
@@ -46,6 +66,13 @@ defmodule Aura.Model.HexPackageDownloadStats do
 
   @doc """
   Builds a `HexPackageDownloadStats` from a map
+
+  <!-- tabs-open -->
+
+  ### 🏷️ Params
+    * **m** :: A map to build into a `t:Aura.Model.HexPackageDownloadStats.t/0`
+
+  <!-- tabs-close -->
   """
   @spec build(m :: map) :: HexPackageDownloadStats.t()
   def build(m) when is_map(m) do
