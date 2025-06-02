@@ -7,7 +7,7 @@
 </p>
 
 <p align="center" id="top">
-  An ergonomic library for investigating Hex packages
+  An ergonomic library for investigating the Hex.pm API
 </p>
 
 <p align="center">
