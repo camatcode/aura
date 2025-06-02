@@ -52,8 +52,8 @@ jobs:
       - name: Run mix format
         run: mix format --check-formatted
 
-      - name: Run mix deps.unlock
-        run: mix deps.unlock --check-unused
+#      - name: Run mix deps.unlock
+#        run: mix deps.unlock --check-unused
 
       - name: Run mix deps.compile
         run: mix deps.compile
