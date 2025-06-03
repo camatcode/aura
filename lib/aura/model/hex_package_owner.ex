@@ -2,6 +2,30 @@
 defmodule Aura.Model.HexPackageOwner do
   @moduledoc """
   A struct describing an owner of a `Aura.Model.HexPackage`
+
+  <!-- tabs-open -->
+  ### 💻 Examples
+
+  ```elixir
+    %Aura.Model.HexPackageOwner{
+      email: "cam.cook.codes@gmail.com",
+      full_name: "Cam Cook",
+      handles: %{
+        elixir_forum: "https://elixirforum.com/u/camatcode",
+        git_hub: "https://github.com/camatcode"
+      },
+      inserted_at: ~U[2025-05-01 19:45:03.289458Z],
+      level: :full,
+      updated_at: ~U[2025-06-01 15:40:38.852881Z],
+      url: "https://hex.pm/api/users/camatcode",
+      username: "camatcode"
+  }
+  ```
+
+  #{Aura.Doc.related(["`Aura.Packages`", "`Aura.Releases`"])}
+
+  #{Aura.Doc.resources()}
+  <!-- tabs-close -->
   """
 
   import Aura.Model.Common
@@ -10,12 +34,42 @@ defmodule Aura.Model.HexPackageOwner do
   alias Aura.Model.HexPackageOwner
 
   @typedoc """
-  The user's full name (e.g `"Jane Smith"`)
+  The user's full name
+
+  <!-- tabs-open -->
+
+  ### 💻 Examples
+
+  ```elixir
+  "Jane Smith"
+  ```
+
+  #{Aura.Doc.related(["`Aura.Packages`", "`Aura.Releases`"])}
+
+  <!-- tabs-close -->
   """
   @type full_name :: String.t()
 
   @typedoc """
   A map of social media handles owned by this user
+
+  <!-- tabs-open -->
+
+  ### 💻 Examples
+
+  ```elixir
+  handles: %{
+      git_hub: "https://github.com/michalmuskala",
+      twitter: "https://twitter.com/michalmuskala",
+      slack: "https://elixir-slackin.herokuapp.com/",
+      libera: "irc://irc.libera.chat/elixir",
+      elixir_forum: "https://elixirforum.com/u/michalmuskala"
+  }
+  ```
+
+  #{Aura.Doc.related(["`Aura.Packages`", "`Aura.Releases`"])}
+
+  <!-- tabs-close -->
   """
   @type social_handles :: %{
           elixir_form: URI.t(),
@@ -44,6 +98,26 @@ defmodule Aura.Model.HexPackageOwner do
     * **url** :: `t:Aura.Model.Common.url/0`
    * **username** :: `t:Aura.Common.username/0`
 
+  ### 💻 Examples
+
+  ```elixir
+    %Aura.Model.HexPackageOwner{
+      email: "cam.cook.codes@gmail.com",
+      full_name: "Cam Cook",
+      handles: %{
+        elixir_forum: "https://elixirforum.com/u/camatcode",
+        git_hub: "https://github.com/camatcode"
+      },
+      inserted_at: ~U[2025-05-01 19:45:03.289458Z],
+      level: :full,
+      updated_at: ~U[2025-06-01 15:40:38.852881Z],
+      url: "https://hex.pm/api/users/camatcode",
+      username: "camatcode"
+  }
+  ```
+
+  #{Aura.Doc.related(["`Aura.Packages`", "`Aura.Releases`"])}
+
   <!-- tabs-close -->
   """
   @type t :: %HexPackageOwner{
@@ -70,6 +144,13 @@ defmodule Aura.Model.HexPackageOwner do
 
   @doc """
   Builds a `HexPackageOwner` from a map
+
+  <!-- tabs-open -->
+
+  ### 🏷️ Params
+    * **m** :: A map to build into a `t:Aura.Model.HexPackageOwner.t/0`
+
+  <!-- tabs-close -->
   """
   @spec build(m :: map) :: HexPackageOwner.t()
   def build(m) when is_map(m) do
