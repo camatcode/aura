@@ -12,8 +12,15 @@ defmodule Aura.PackagesTest do
     TestHelper.setup_state()
   end
 
+  test "connection-to-hex" do
+    Application.delete_env(:aura, :repo_url)
+    Application.delete_env(:aura, :api_key)
+    "jason" |> Packages.get_package() |> IO.inspect()
+    # "aura" |> Aura.Releases.get_release("0.9.0") |> IO.inspect()
+  end
+
   test "package search", _state do
-    [search: "ups", sort: :total_downloads]
+    [search: "ups", sort: :recent_downloads]
     |> Packages.stream_packages()
     |> Enum.each(fn package ->
       assert String.contains?(package.name, "ups")
