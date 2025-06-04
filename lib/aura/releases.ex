@@ -34,7 +34,7 @@ defmodule Aura.Releases do
     * **version** :: `t:Aura.Common.release_version/0`
     * **opts** :: option parameters used to modify requests
 
-  #{Aura.Doc.returns(success: "{:ok, HexRelease%{...}}", failure: "{:error, (some error)}")}
+  #{Aura.Doc.returns(success: "{:ok, %HexRelease{...}}", failure: "{:error, (some error)}")}
 
   ### 💻 Examples
 
@@ -144,7 +144,7 @@ defmodule Aura.Releases do
     * **release_code_tar** :: path to a code .tar file made by a build tool
     * **opts** :: option parameters used to modify requests
 
-  #{Aura.Doc.returns(success: "{:ok, HexRelease%{...}}", failure: "{:error, (some error)}")}
+  #{Aura.Doc.returns(success: "{:ok, %HexRelease{...}}", failure: "{:error, (some error)}")}
 
   <!-- tabs-close -->
   """
