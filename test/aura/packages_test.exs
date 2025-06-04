@@ -18,6 +18,7 @@ defmodule Aura.PackagesTest do
   #    "decimal" |> Packages.get_package() |> IO.inspect()
   #    # "aura" |> Packages.list_package_owners() |> IO.inspect()
   #    "aura" |> Aura.Releases.get_release("0.9.0") |> IO.inspect()
+  #    IO.inspect(Aura.Repos.list_repos())
   #  end
 
   test "package search", _state do

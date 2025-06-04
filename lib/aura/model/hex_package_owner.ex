@@ -157,7 +157,7 @@ defmodule Aura.Model.HexPackageOwner do
     m
     |> prepare()
     |> Enum.map(fn {k, v} -> {k, serialize(k, v)} end)
-    |> then(&Kernel.struct(HexPackageOwner, &1))
+    |> then(&struct(HexPackageOwner, &1))
   end
 
   defp serialize(:handles, v), do: v |> prepare() |> Map.new()
