@@ -5,6 +5,8 @@ on:
     paths-ignore:
       - 'guides/**'
 
+permissions: read-all
+
 jobs:
   ci:
     env:

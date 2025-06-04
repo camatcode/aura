@@ -33,7 +33,7 @@ defmodule Aura.Packages do
       # request packages,
         # from the local test instance
         # scoped to the repo "hexpm"
-        # starting with page 2,
+        # starting with page 2
         # sorted by total downloads
       iex> alias Aura.Packages
       iex> packages = Packages.stream_packages(
