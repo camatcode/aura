@@ -86,8 +86,7 @@ defmodule Aura.ReleasesTest do
   test "delete_release_docs", %{owned_packages: owned_packages} do
     Enum.each(owned_packages, fn package ->
       version = package.releases |> hd() |> Map.get(:version)
-      # test env will never return release docs
-      _ = Releases.get_release_docs(package.name, version)
+      {:ok, _tar_contents} = Releases.get_release_docs(package.name, version)
       assert :ok = Releases.delete_release_docs(package.name, version)
     end)
   end
