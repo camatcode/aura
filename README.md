@@ -29,6 +29,9 @@
   <a href="https://scorecard.dev/viewer/?uri=github.com/camatcode/aura" target="_blank" rel="noopener noreferrer">
     <img alt="OpenSSF Scorecard" src="https://api.scorecard.dev/projects/github.com/camatcode/aura/badge">
   </a>
+  <a href="https://www.bestpractices.dev/projects/10689">
+    <img src="https://www.bestpractices.dev/projects/10689/badge">
+  </a> 
   <a href="https://mastodon.social/@scrum_log" target="_blank" rel="noopener noreferrer">
     <img alt="Mastodon Follow" src="https://img.shields.io/badge/mastodon-%40scrum__log%40mastodon.social-purple?color=6364ff">
   </a>
