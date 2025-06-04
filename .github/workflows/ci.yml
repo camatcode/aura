@@ -78,3 +78,14 @@ jobs:
 
       - name: Run dialyzer
         run: mix dialyzer
+
+  sobelow_job:
+    runs-on: ubuntu-latest
+    name: Sobelow Job
+    steps:
+      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
+      - id: run-action
+        uses: sobelow/action@1afd6d2cae70ae8bd900b58506f54487ed863912 # v1
+      - uses: github/codeql-action/upload-sarif@231aa2c8a89117b126725a0e11897209b7118144 # v1.1.39
+        with:
+          sarif_file: results.sarif

@@ -104,6 +104,7 @@ defmodule Aura.MixProject do
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:ex_license, "~> 0.1.0", only: [:dev, :test], runtime: false},
       {:styler, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.18", only: [:test]},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_machina, "~> 2.8.0", only: :test},
