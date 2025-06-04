@@ -10,10 +10,30 @@ defmodule Aura.Doc do
 
   def resources do
     "### 📖 Resources
+  * 🐝 Hex
+    * #{see_hex_spec()}
+    * #{see_hex_core()}
+    * #{see_hex_pm()}
   * #{contact_maintainer()}
     * #{maintainer_github()}
     * #{maintainer_fediverse()}
     "
+  end
+
+  defp see_hex_spec do
+    see_link("Hex API Specifications", "https://github.com/hexpm/specifications")
+  end
+
+  defp see_hex_core do
+    see_link("hexpm/hex_core", "https://github.com/hexpm/hex_core", "👾")
+  end
+
+  defp see_hex_pm do
+    see_link("hexpm/hexpm", "https://github.com/hexpm/hexpm", "👾")
+  end
+
+  def see_link(title, url, emoji \\ "📖") do
+    "#{emoji} [#{title}](#{url}){:target=\"_blank\"}"
   end
 
   def related(related_list) do
