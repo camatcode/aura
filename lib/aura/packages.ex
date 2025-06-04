@@ -83,7 +83,7 @@ defmodule Aura.Packages do
   end
 
   @doc """
-  Grabs a single package owner by their user name
+  Grabs a single package owner by their username
 
   <!-- tabs-open -->
   ### 🏷️ Params
@@ -113,7 +113,23 @@ defmodule Aura.Packages do
   end
 
   @doc """
-  Returns a single `Aura.Model.HexPackage`
+  Grabs a package given its name
+
+  <!-- tabs-open -->
+  ### 🏷️ Params
+    * **package_name** :: `t:Aura.Common.package_name/0`
+    * **opts** :: option parameters used to modify requests
+
+  #{Aura.Doc.returns(success: "{:ok, %HexPackage{}}", failure: "{:error, (some failure)}")}
+
+  ### 💻 Examples
+
+      iex> alias Aura.Packages
+      iex> {:ok, pkg} = Packages.get_package("decimal", repo_url: "http://localhost:4000/api")
+      iex> pkg.name
+      "decimal"
+
+  <!-- tabs-close -->
   """
   @spec get_package(name :: Aura.Common.package_name(), opts :: list()) :: {:ok, HexPackage.t()} | {:error, any()}
   def get_package(name, opts \\ []) do
@@ -125,7 +141,17 @@ defmodule Aura.Packages do
   end
 
   @doc """
-  Adds a new `Aura.Model.HexPackageOwner` to a `Aura.Model.HexPackage`
+  Adds a new owner to the list of package owners
+
+  <!-- tabs-open -->
+  ### 🏷️ Params
+    * **package_name** :: `t:Aura.Common.package_name/0`
+    * **owner_email** :: `t:Aura.Common.email/0`
+    * **opts** :: option parameters used to modify requests
+
+  #{Aura.Doc.returns(success: ":ok", failure: "{:error, (some failure)}")}
+    
+  <!-- tabs-close -->
   """
   @spec add_package_owner(package_name :: Aura.Common.package_name(), owner_email :: Aura.Common.email(), opts :: list()) ::
           :ok | {:error, any()}
@@ -139,7 +165,17 @@ defmodule Aura.Packages do
   end
 
   @doc """
-  Removes a `Aura.Model.HexPackageOwner` from a `Aura.Model.HexPackage`
+  Removes an existing owner from the list of package owners
+
+  <!-- tabs-open -->
+  ### 🏷️ Params
+    * **package_name** :: `t:Aura.Common.package_name/0`
+    * **owner_email** :: `t:Aura.Common.email/0`
+    * **opts** :: option parameters used to modify requests
+
+  #{Aura.Doc.returns(success: ":ok", failure: "{:error, (some failure)}")}
+
+  <!-- tabs-close -->
   """
   @spec remove_package_owner(
           package_name :: Aura.Common.package_name(),
@@ -157,7 +193,22 @@ defmodule Aura.Packages do
   end
 
   @doc """
-  Returns a stream of `Aura.Model.HexAuditLog`, scoped to a package
+  Streams `Aura.Model.HexAuditLog`, scoped to a package
+
+  <!-- tabs-open -->
+  ### 🏷️ Params
+    * **package_name** :: `t:Aura.Common.package_name/0`
+    * **opts** :: option parameters used to modify requests
+
+  #{Aura.Doc.returns(success: "Stream.resource/3")}
+
+  ### 💻 Examples
+
+      iex> alias Aura.Packages
+      iex> audit_logs = Packages.stream_audit_logs("decimal", repo_url: "http://localhost:4000/api")
+      iex> _actions = Enum.map(audit_logs, fn audit_log -> audit_log.action end)
+
+  <!-- tabs-close -->
   """
   @spec stream_audit_logs(package_name :: Aura.Common.package_name(), opts :: list) :: Enumerable.t()
   def stream_audit_logs(package_name, opts \\ []) do
