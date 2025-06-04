@@ -4,6 +4,25 @@ defmodule Aura.Model.HexRepo do
   A struct describing a repository from a Hex-compliant API.
 
   The main Hex.pm public repo is named `"hexpm"`; though private repos do exist.
+
+  <!-- tabs-open -->
+  ### 💻 Examples
+
+  ```elixir
+  %Aura.Model.HexRepo{
+   name: "hexpm",
+   public: nil,
+   active: nil,
+   billing_active: nil,
+   inserted_at: ~U[2025-05-29 18:15:18.185511Z],
+   updated_at: ~U[2025-05-29 18:15:18.185511Z]
+  }
+  ```
+
+  #{Aura.Doc.related(["`Aura.Repos`"])}
+
+  #{Aura.Doc.resources()}
+  <!-- tabs-close -->
   """
 
   import Aura.Model.Common
@@ -26,6 +45,8 @@ defmodule Aura.Model.HexRepo do
   """
   @type billing_active? :: boolean()
 
+  @enforce_keys [:name]
+
   defstruct [
     :name,
     :public,
@@ -39,14 +60,28 @@ defmodule Aura.Model.HexRepo do
   Type describing a repository from a Hex-compliant API.
 
   <!-- tabs-open -->
-  ### 🏷️ Keys
+  ### 🏷️ Required Keys
     * **name** :: `t:Aura.Common.repo_name/0`
+
+  ### 🏷️ Optional Keys
     * **public** ::  `t:public?/0`
     * **active** :: `t:active?/0`
     * **billing_active** :: `t:billing_active?/0`
     * **inserted_at** :: `t:Aura.Model.Common.inserted_at/0`
     * **updated_at** :: `t:Aura.Model.Common.updated_at/0`
 
+  ### 💻 Examples
+
+  ```elixir
+  %Aura.Model.HexRepo{
+   name: "hexpm",
+   public: nil,
+   active: nil,
+   billing_active: nil,
+   inserted_at: ~U[2025-05-29 18:15:18.185511Z],
+   updated_at: ~U[2025-05-29 18:15:18.185511Z]
+  }
+  ```
   <!-- tabs-close -->
   """
   @type t :: %HexRepo{
@@ -60,11 +95,18 @@ defmodule Aura.Model.HexRepo do
 
   @doc """
   Builds a `HexRepo` from a map
+
+  <!-- tabs-open -->
+
+  ### 🏷️ Params
+    * **m** :: A map to build into a `t:Aura.Model.HexRepo.t/0`
+
+  <!-- tabs-close -->
   """
   @spec build(m :: map) :: HexRepo.t()
   def build(m) when is_map(m) do
     m
     |> prepare()
-    |> then(&Kernel.struct(HexRepo, &1))
+    |> then(&struct(HexRepo, &1))
   end
 end

@@ -2,6 +2,24 @@
 defmodule Aura.Model.HexUser do
   @moduledoc """
   A struct defining a User for a Hex-compliant API
+
+  <!-- tabs-open -->
+  ### 💻 Examples
+
+  ```elixir
+  %Aura.Model.HexUser{
+   username: "alta2001",
+   email: "morgan.gulgowski@stehr.biz",
+   inserted_at: ~U[2025-06-04 00:53:31.880685Z],
+   updated_at: ~U[2025-06-04 00:53:31.880685Z],
+   url: "http://localhost:4000/api/users/alta2001"
+  }
+  ```
+
+  #{Aura.Doc.related(["`Aura.Users`"])}
+
+  #{Aura.Doc.resources()}
+  <!-- tabs-close -->
   """
 
   import Aura.Model.Common
@@ -15,11 +33,22 @@ defmodule Aura.Model.HexUser do
   <!-- tabs-open -->
   ### 🏷️ Keys
     * **username** :: `t:Aura.Common.username/0`
-    * **email** ::  `t: Aura.Common.email/0`
+    * **email** ::  `t:Aura.Common.email/0`
     * **inserted_at** :: `t:Aura.Model.Common.inserted_at/0`
     * **updated_at** :: `t:Aura.Model.Common.updated_at/0`
     * **url** :: `t:Aura.Model.Common.url/0`
 
+  ### 💻 Examples
+
+  ```elixir
+  %Aura.Model.HexUser{
+   username: "alta2001",
+   email: "morgan.gulgowski@stehr.biz",
+   inserted_at: ~U[2025-06-04 00:53:31.880685Z],
+   updated_at: ~U[2025-06-04 00:53:31.880685Z],
+   url: "http://localhost:4000/api/users/alta2001"
+  }
+  ```
   <!-- tabs-close -->
   """
   @type t :: %HexUser{
@@ -40,6 +69,13 @@ defmodule Aura.Model.HexUser do
 
   @doc """
   Builds a `HexUser` from a map
+
+  <!-- tabs-open -->
+
+  ### 🏷️ Params
+    * **m** :: A map to build into a `t:Aura.Model.HexUser.t/0`
+
+  <!-- tabs-close -->
   """
   @spec build(m :: map) :: HexUser.t()
   def build(m) when is_map(m) do
