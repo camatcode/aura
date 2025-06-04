@@ -18,6 +18,7 @@ defmodule Aura.Releases do
   alias Aura.Requester
 
   @packages_path "/packages"
+  @dialyzer {:nowarn_function, get_release_docs: 3}
 
   @typedoc """
   The reason for retiring a release
