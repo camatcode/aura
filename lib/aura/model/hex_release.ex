@@ -2,6 +2,47 @@
 defmodule Aura.Model.HexRelease do
   @moduledoc """
   A struct describing a single release of a `Aura.Model.HexPackage`
+
+  <!-- tabs-open -->
+  ### 💻 Examples
+
+  ```elixir
+  %Aura.Model.HexRelease{
+      checksum: "4eaafe67a4b2d3a3b7f4637106ce81707cfa0977e6b3b44450cde4c4626a3c1a",
+      configs: %{
+        "erlang.mk" => "dep_aura = hex 0.9.0",
+        "mix.exs" => "{:aura, \"~> 0.9.0\"}",
+        "rebar.config" => "{aura, \"0.9.0\"}"
+      },
+      docs_html_url: "https://hexdocs.pm/aura/0.9.0/",
+      has_docs: true,
+      html_url: "https://hex.pm/packages/aura/0.9.0",
+      inserted_at: ~U[2025-06-01 15:13:00.595681Z],
+      meta: %{elixir: "~> 1.18", app: "aura", build_tools: ["mix"]},
+      package_url: "https://hex.pm/api/packages/aura",
+      publisher: %{
+        url: "https://hex.pm/api/users/camatcode",
+        username: "camatcode",
+        email: "cam.cook.codes@gmail.com"
+      },
+      requirements: [
+        %{optional: false, app: "cachex", requirement: "~> 4.0"},
+        %{optional: false, app: "date_time_parser", requirement: "~> 1.2.0"},
+        %{optional: false, app: "proper_case", requirement: "~> 1.3"},
+        %{optional: false, app: "req", requirement: "~> 0.5.10"}
+      ],
+      retirement: nil,
+      updated_at: ~U[2025-06-01 15:13:04.347130Z],
+      version: "0.9.0",
+      url: "https://hex.pm/api/packages/aura/releases/0.9.0",
+      downloads: 15
+  }
+  ```
+
+  #{Aura.Doc.related(["`Aura.Releases`"])}
+
+  #{Aura.Doc.resources()}
+  <!-- tabs-close -->
   """
 
   import Aura.Model.Common
@@ -11,12 +52,39 @@ defmodule Aura.Model.HexRelease do
 
   @typedoc """
   SHA-256 checksum of the associated release **tar.gz**
+
+  <!-- tabs-open -->
+
+  ### 💻 Examples
+
+  ```elixir
+  "4eaafe67a4b2d3a3b7f4637106ce81707cfa0977e6b3b44450cde4c4626a3c1a"
+  ```
+
+  #{Aura.Doc.related(["`Aura.Releases`"])}
+
+  <!-- tabs-close -->
   """
   @type release_checksum :: String.t()
 
   @typedoc """
-  A mapping between a build-tool config (e.g `"mix.exs"`), and the configuration needed to grab this release
-  (e.g `"{:plug, "~> 0.8.3"}"`)
+  A mapping between a build-tool config and the configuration needed to grab this release
+
+  <!-- tabs-open -->
+
+  ### 💻 Examples
+
+  ```elixir
+  %{
+     "erlang.mk" => "dep_aura = hex 0.9.0",
+     "mix.exs" => "{:aura, \"~> 0.9.0\"}",
+     "rebar.config" => "{aura, \"0.9.0\"}"
+  }
+  ```
+
+  #{Aura.Doc.related(["`Aura.Releases`"])}
+
+  <!-- tabs-close -->
   """
   @type build_tool_declarations :: map()
 
@@ -32,23 +100,73 @@ defmodule Aura.Model.HexRelease do
 
   @typedoc """
   URI reference to the `Aura.Model.HexPackage` this release belongs to
+
+  <!-- tabs-open -->
+
+  ### 💻 Examples
+
+  ```elixir
+  "https://hex.pm/api/packages/aura/releases/0.9.0"
+  ```
+
+  #{Aura.Doc.related(["`Aura.Releases`"])}
+
+  <!-- tabs-close -->
   """
   @type package_reference_url :: URI.t()
 
   @typedoc """
   Additional information relevant to the release
-  (e.g `%{elixir: nil, app: "decimal", build_tools: ["mix"]}`)
+
+  <!-- tabs-open -->
+
+  ### 💻 Examples
+
+  ```elixir
+  %{elixir: "~> 1.18", app: "aura", build_tools: ["mix"]}
+  ```
+
+  #{Aura.Doc.related(["`Aura.Releases`"])}
+
+  <!-- tabs-close -->
   """
   @type release_meta :: map()
 
   @typedoc """
   Information about the user which published this release
-    (e.g `%{url: (users url), username: "eric", email: "eric@example.com"}`)
+
+  <!-- tabs-open -->
+
+  ### 💻 Examples
+
+  ```elixir
+  %{
+     url: "https://hex.pm/api/users/camatcode",
+     username: "camatcode",
+     email: "cam.cook.codes@gmail.com"
+   }
+  ```
+
+  #{Aura.Doc.related(["`Aura.Releases`"])}
+
+  <!-- tabs-close -->
   """
   @type release_publisher :: map()
 
   @typedoc """
-  A dependency of this release (e.g `%{optional: false, app: "my_package", requirement: "~> 2.11.52"}`
+  A dependency of this release
+
+  <!-- tabs-open -->
+
+  ### 💻 Examples
+
+  ```elixir
+  %{optional: false, app: "req", requirement: "~> 0.5.10"}
+  ```
+
+  #{Aura.Doc.related(["`Aura.Releases`"])}
+
+  <!-- tabs-close -->
   """
   @type release_requirement :: map()
 
@@ -58,7 +176,7 @@ defmodule Aura.Model.HexRelease do
   @type retired? :: boolean()
 
   @typedoc """
-  Type describing an owner of a `Aura.Model.HexRelease`
+  Type describing a `Aura.Model.HexRelease`
 
   <!-- tabs-open -->
   ### 🏷️ Keys
@@ -77,6 +195,43 @@ defmodule Aura.Model.HexRelease do
     * **updated_at** :: [`t:Aura.Model.Common.updated_at/0`]
     * **url** :: [`t:Aura.Model.Common.url/0`]
     * **version** :: [`t:Aura.Common.release_version/0`]
+
+  ### 💻 Examples
+
+  ```elixir
+  %Aura.Model.HexRelease{
+      checksum: "4eaafe67a4b2d3a3b7f4637106ce81707cfa0977e6b3b44450cde4c4626a3c1a",
+      configs: %{
+        "erlang.mk" => "dep_aura = hex 0.9.0",
+        "mix.exs" => "{:aura, \"~> 0.9.0\"}",
+        "rebar.config" => "{aura, \"0.9.0\"}"
+      },
+      docs_html_url: "https://hexdocs.pm/aura/0.9.0/",
+      has_docs: true,
+      html_url: "https://hex.pm/packages/aura/0.9.0",
+      inserted_at: ~U[2025-06-01 15:13:00.595681Z],
+      meta: %{elixir: "~> 1.18", app: "aura", build_tools: ["mix"]},
+      package_url: "https://hex.pm/api/packages/aura",
+      publisher: %{
+        url: "https://hex.pm/api/users/camatcode",
+        username: "camatcode",
+        email: "cam.cook.codes@gmail.com"
+      },
+      requirements: [
+        %{optional: false, app: "cachex", requirement: "~> 4.0"},
+        %{optional: false, app: "date_time_parser", requirement: "~> 1.2.0"},
+        %{optional: false, app: "proper_case", requirement: "~> 1.3"},
+        %{optional: false, app: "req", requirement: "~> 0.5.10"}
+      ],
+      retirement: nil,
+      updated_at: ~U[2025-06-01 15:13:04.347130Z],
+      version: "0.9.0",
+      url: "https://hex.pm/api/packages/aura/releases/0.9.0",
+      downloads: 15
+  }
+  ```
+
+  #{Aura.Doc.related(["`Aura.Releases`"])}
 
   <!-- tabs-close -->
   """
@@ -118,6 +273,13 @@ defmodule Aura.Model.HexRelease do
 
   @doc """
   Builds a `HexRelease` from a map
+
+  <!-- tabs-open -->
+
+  ### 🏷️ Params
+    * **m** :: A map to build into a `t:Aura.Model.HexRelease.t/0`
+
+  <!-- tabs-close -->
   """
   @spec build(m :: map) :: HexRelease.t()
   def build(m) when is_map(m) do
