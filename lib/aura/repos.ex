@@ -2,6 +2,12 @@
 defmodule Aura.Repos do
   @moduledoc """
   Service module for interacting with `Aura.Model.HexRepo`
+
+  <!-- tabs-open -->
+
+  #{Aura.Doc.resources()}
+
+  <!-- tabs-close -->
   """
 
   alias Aura.Common
@@ -13,19 +19,49 @@ defmodule Aura.Repos do
   @keys_path "/keys"
 
   @doc """
-  Returns all visible `Aura.Model.HexRepo`s available
+  Grabs all visible hex repos available
+
+  <!-- tabs-open -->
+  ### 🏷️ Params
+    * **opts** :: option parameters used to modify requests
+
+  #{Aura.Doc.returns(success: "{:ok, [%HexRepo{...}]}", failure: "{:error, (some error)}")}
+
+  ### 💻 Examples
+
+      iex> alias Aura.Repos
+      iex> repo_url = "http://localhost:4000/api"
+      iex> {:ok, [hexpm]} = Repos.list_repos(repo_url: repo_url)
+      iex> hexpm.name
+      "hexpm"
+
+  <!-- tabs-close -->
   """
   @spec list_repos(opts :: list()) :: {:ok, [HexRepo.t()]} | {:error, any()}
   def list_repos(opts \\ []) do
     with {:ok, %{body: body}} <- Requester.get(@repos_path, opts) do
-      results = Enum.map(body, &HexRepo.build/1)
-
-      {:ok, results}
+      {:ok, Enum.map(body, &HexRepo.build/1)}
     end
   end
 
   @doc """
-  Returns a list of `Aura.Model.HexAPIKey`, given the requester's authentication
+  Grabs API key(s) information, given the requester's authentication
+
+  <!-- tabs-open -->
+  ### 🏷️ Params
+    * **opts** :: option parameters used to modify requests
+
+  #{Aura.Doc.returns(success: "{:ok, [%HexAPIKey{...}]}", failure: "{:error, (some error)}")}
+
+  ### 💻 Examples
+
+      iex> alias Aura.Repos
+      iex> repo_url = "http://localhost:4000/api"
+      iex> {:ok, keys} = Repos.list_api_keys(repo_url: repo_url)
+      iex> Enum.empty?(keys)
+      false
+    
+  <!-- tabs-close -->
   """
   @spec list_api_keys(opts :: list()) :: {:ok, [HexAPIKey.t()]} | {:error, any()}
   def list_api_keys(opts \\ []) do
@@ -35,7 +71,24 @@ defmodule Aura.Repos do
   end
 
   @doc """
-  Returns a `Aura.Model.HexRepo` associated with a given **repo_name**
+  Grabs a hex repo associated with a given **repo_name**
+
+  <!-- tabs-open -->
+  ### 🏷️ Params
+    * **repo_name** :: `t:Aura.Common.repo_name/0`
+    * **opts** :: option parameters used to modify requests
+
+  #{Aura.Doc.returns(success: "{:ok, %HexRepo{...}}", failure: "{:error, (some error)}")}
+
+  ### 💻 Examples
+
+      iex> alias Aura.Repos
+      iex> repo_url = "http://localhost:4000/api"
+      iex> {:ok, hexpm} = Repos.get_repo("hexpm", repo_url: repo_url)
+      iex> hexpm.name
+      "hexpm"
+
+  <!-- tabs-close -->
   """
   @spec get_repo(repo_name :: Common.repo_name(), opts :: list()) :: {:ok, HexRepo.t()} | {:error, any()}
   def get_repo(repo_name, opts \\ []) when is_bitstring(repo_name) do
@@ -47,7 +100,23 @@ defmodule Aura.Repos do
   end
 
   @doc """
-  Returns a `Aura.Model.HexAPIKey` associated with a given **key_name**
+  Grabs API key information associated with a given **key_name**
+
+  <!-- tabs-open -->
+  ### 🏷️ Params
+    * **key_name** :: `t:Aura.Common.api_key_name/0`
+    * **opts** :: option parameters used to modify requests
+
+  #{Aura.Doc.returns(success: "{:ok, %HexAPIKey{...}}", failure: "{:error, (some error)}")}
+
+  ### 💻 Examples
+
+      iex> alias Aura.Repos
+      iex> opts = [repo_url: "http://localhost:4000/api"]
+      iex> {:ok, keys} = Repos.list_api_keys(opts)
+      iex> keys |> Enum.map(fn key ->  {:ok, _k} = Repos.get_api_key(key.name, opts) end)
+
+  <!-- tabs-close -->
   """
   @spec get_api_key(key_name :: Common.api_key_name(), opts :: list()) :: {:ok, HexAPIKey.t()} | {:error, any()}
   def get_api_key(key_name, opts \\ []) do
@@ -59,7 +128,19 @@ defmodule Aura.Repos do
   end
 
   @doc """
-  Creates a new `Aura.Model.HexAPIKey`
+  Creates a new API key
+
+  <!-- tabs-open -->
+  ### 🏷️ Params
+    * **key_name** :: `t:Aura.Common.api_key_name/0`
+    * **username**  :: `t:Aura.Common.username/0`
+    * **password**  :: password for this user
+    * **allow_write**  :: whether the key has `write` permissions on the `api` domain. Default: `false`
+    * **opts** :: option parameters used to modify requests
+
+  #{Aura.Doc.returns(success: "{:ok, %HexAPIKey{...}}", failure: "{:error, (some error)}")}
+    
+  <!-- tabs-close -->
   """
   @spec create_api_key(
           key_name :: Common.api_key_name(),
@@ -80,11 +161,28 @@ defmodule Aura.Repos do
   end
 
   @doc """
-  Deletes **all** API keys for the authenticated requester
+  Deletes an API key for the authenticated requester, given a **key_name**
+
+  <!-- tabs-open -->
+  ### 🏷️ Params
+    * **key_name** :: `t:Aura.Common.api_key_name/0`
+    * **opts** :: option parameters used to modify requests
+
+  #{Aura.Doc.returns(success: ":ok", failure: "{:error, (some error)}")}
+
+  ### 💻 Examples
+
+      iex> alias Aura.Repos
+      iex> opts = [repo_url: "http://localhost:4000/api"]
+      iex> {:ok, [key | _]} = Repos.list_api_keys(opts)
+      iex> Repos.delete_api_key(key.name, opts)
+      :ok
+
+  <!-- tabs-close -->
   """
-  @spec delete_all_api_keys(opts :: list()) :: :ok | {:error, any()}
-  def delete_all_api_keys(opts \\ []) do
-    path = @keys_path
+  @spec delete_api_key(key_name :: Common.api_key_name(), opts :: list()) :: :ok | {:error, any()}
+  def delete_api_key(key_name, opts \\ []) do
+    path = Path.join(@keys_path, "#{key_name}")
 
     with {:ok, _} <- Requester.delete(path, opts) do
       :ok
@@ -92,11 +190,26 @@ defmodule Aura.Repos do
   end
 
   @doc """
-  Deletes an API key for the authenticated requester, given a **key_name**
+  Deletes **all** API keys for the authenticated requester
+
+  <!-- tabs-open -->
+  ### 🏷️ Params
+    * **opts** :: option parameters used to modify requests
+
+  #{Aura.Doc.returns(success: ":ok", failure: "{:error, (some error)}")}
+
+  ### 💻 Examples
+
+      iex> alias Aura.Repos
+      iex> opts = [repo_url: "http://localhost:4000/api"]
+      iex> Repos.delete_all_api_keys(opts)
+      :ok
+
+  <!-- tabs-close -->
   """
-  @spec delete_api_key(key_name :: Common.api_key_name(), opts :: list()) :: :ok | {:error, any()}
-  def delete_api_key(key_name, opts \\ []) do
-    path = Path.join(@keys_path, "#{key_name}")
+  @spec delete_all_api_keys(opts :: list()) :: :ok | {:error, any()}
+  def delete_all_api_keys(opts \\ []) do
+    path = @keys_path
 
     with {:ok, _} <- Requester.delete(path, opts) do
       :ok
