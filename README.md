@@ -44,6 +44,7 @@
 - [Smoke Test](#smoke-test)
 - [Implementation Overview](#implementation-overview)
 - [Testing](#testing)
+- [FAQ](#faq)
 
 ## Installation
 
@@ -121,14 +122,14 @@ latest_version = package.releases |> hd() |> Map.get(:version)
 You should be very mindful about issuing requests against a production hex API.
 
 To make this easy, you can `docker compose up -d` from the root of this repository to launch a local instance
-of [hexpm/hexpm](https://github.com/camatcode/hex_tiny?tab=readme-ov-file#hex_beefy) and set your `repo_url`
-to http://localhost:4000/api .
+of [hexpm/hexpm](https://github.com/camatcode/hex_tiny?tab=readme-ov-file#hex_beefy) and set the `repo_url`
+to http://localhost:4000/api in [Configuration](#configuration).
 
 ```bash
-➜  aura git:(work/readme) ✗ docker compose up -d
+➜  docker compose up -d
 [+] Running 1/1
  ✔ Container hex_beefy  Started                                                                                  0.1s 
-➜  aura git:(work/readme) ✗ curl http://localhost:4000/api |jq
+➜  curl http://localhost:4000/api |jq
 {
   "documentation_url": "http://docs.hexpm.apiary.io",
   "key_url": "http://localhost:4000/api/keys/{name}",
@@ -140,5 +141,20 @@ to http://localhost:4000/api .
 }
 ```
 
-All Aura tests expect to connect to a local hex instance and will purposely crash if it discovers it's connecting
-to hex.pm.
+All Aura tests expect to connect to a local hex instance and will **purposely crash** if it discovers it's testing
+against hex.pm.
+
+## FAQ
+
+> Why not use hex_core?
+
+Fantastic question! I'd say for most cases, you should just use hex_core, or the associated Mix tasks to interact with
+Hex. But here are a couple of motivations for using Aura.
+
+1. hex_core can be intimidating to folks without a strong erlang background.
+2. Aura is meant to be friendly to Elixir folks.
+3. Aura's first aim is to be documented **from hell and back**.
+4. The maintainer has larger plans that would use Aura as a base.
+
+
+
