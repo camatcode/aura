@@ -2,6 +2,12 @@
 defmodule Aura.Packages do
   @moduledoc """
   Service module for interacting with Hex Packages
+
+  <!-- tabs-open -->
+
+  #{Aura.Doc.resources()}
+
+  <!-- tabs-close -->
   """
 
   import Aura.Common
@@ -14,7 +20,31 @@ defmodule Aura.Packages do
   @base_path "/packages"
 
   @doc """
-  Returns a stream of `Aura.Model.HexPackage`s
+  Grabs a stream of packages, given optional criteria
+
+  <!-- tabs-open -->
+  ### 🏷️ Params
+    * **opts** :: option parameters used to modify requests
+
+  #{Aura.Doc.returns(success: "Stream.resource/3")}
+
+  ### 💻 Examples
+    
+      # request packages,
+        # from the local test instance
+        # scoped to the repo "hexpm"
+        # starting with page 2,
+        # sorted by total downloads
+      iex> alias Aura.Packages
+      iex> packages = Packages.stream_packages(
+      ...>  repo_url: "http://localhost:4000/api",
+      ...>  repo: "hexpm",
+      ...>  page: 2,
+      ...>  sort: :total_downloads)
+      iex> Enum.empty?(packages)
+      false
+
+  <!-- tabs-close -->
   """
   @spec stream_packages(opts :: list()) :: Enumerable.t()
   def stream_packages(opts \\ []) do
@@ -23,7 +53,24 @@ defmodule Aura.Packages do
   end
 
   @doc """
-  Returns a list of `Aura.Model.HexPackageOwner`
+  Grabs all owners of a given package
+
+  <!-- tabs-open -->
+  ### 🏷️ Params
+    * **name** :: `t:Aura.Common.package_name/0`
+    * **opts** :: option parameters used to modify requests
+
+  #{Aura.Doc.returns(success: "{:ok, [%HexPackageOwner{}...]}", failure: "{:error, (some failure)}")}
+
+  ### 💻 Examples
+    
+      iex> alias Aura.Packages
+      iex> {:ok, [owner | _]} =
+      ...>   Packages.list_package_owners("decimal", repo_url: "http://localhost:4000/api")
+      iex> owner.email
+      "eric@example.com"
+
+  <!-- tabs-close -->
   """
   @spec list_package_owners(name :: Aura.Common.package_name(), opts :: list()) ::
           {:ok, [HexPackageOwner.t()]} | {:error, any()}
@@ -36,7 +83,24 @@ defmodule Aura.Packages do
   end
 
   @doc """
-  Returns a `Aura.Model.HexPackageOwner` for a given username / package
+  Grabs a single package owner by their user name
+
+  <!-- tabs-open -->
+  ### 🏷️ Params
+    * **package_name** :: `t:Aura.Common.package_name/0`
+    * **username** :: `t:Aura.Common.username/0`
+    * **opts** :: option parameters used to modify requests
+
+  #{Aura.Doc.returns(success: "{:ok, %HexPackageOwner{}}", failure: "{:error, (some failure)}")}
+
+  ### 💻 Examples
+
+      iex> alias Aura.Packages
+      iex> {:ok, owner} = Packages.get_package_owner("decimal", "eric", repo_url: "http://localhost:4000/api")
+      iex> owner.email
+      "eric@example.com"
+
+  <!-- tabs-close -->
   """
   @spec get_package_owner(package_name :: Aura.Common.package_name(), username :: Aura.Common.username(), opts :: list()) ::
           {:ok, HexPackageOwner.t()} | {:error, any()}

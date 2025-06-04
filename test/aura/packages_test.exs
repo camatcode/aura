@@ -12,15 +12,6 @@ defmodule Aura.PackagesTest do
     TestHelper.setup_state()
   end
 
-  #  test "connection-to-hex" do
-  #    Application.delete_env(:aura, :repo_url)
-  #    Application.delete_env(:aura, :api_key)
-  #    "decimal" |> Packages.get_package() |> IO.inspect()
-  #    # "aura" |> Packages.list_package_owners() |> IO.inspect()
-  #    "aura" |> Aura.Releases.get_release("0.9.0") |> IO.inspect()
-  #    IO.inspect(Aura.Repos.list_repos())
-  #  end
-
   test "package search", _state do
     [search: "ups", sort: :recent_downloads]
     |> Packages.stream_packages()
