@@ -119,6 +119,10 @@ latest_version = package.releases |> hd() |> Map.get(:version)
 
 ## Testing
 
+> [!WARNING]
+> All Aura tests expect to connect to a local hex instance
+> and will **purposely crash** if it discovers it's testing against hex.pm.
+
 You should be very mindful about issuing requests against a production hex API.
 
 To make this easy, you can `docker compose up -d` from the root of this repository to launch a local instance
@@ -129,7 +133,7 @@ to http://localhost:4000/api in [Configuration](#configuration).
 ➜  docker compose up -d
 [+] Running 1/1
  ✔ Container hex_beefy  Started                                                                                  0.1s 
-➜  curl http://localhost:4000/api |jq
+➜  curl http://localhost:4000/api | jq
 {
   "documentation_url": "http://docs.hexpm.apiary.io",
   "key_url": "http://localhost:4000/api/keys/{name}",
@@ -141,9 +145,6 @@ to http://localhost:4000/api in [Configuration](#configuration).
 }
 ```
 
-All Aura tests expect to connect to a local hex instance and will **purposely crash** if it discovers it's testing
-against hex.pm.
-
 ## FAQ
 
 > Why not use hex_core?
@@ -153,7 +154,7 @@ Hex. But here are a couple of motivations for using Aura.
 
 1. hex_core can be intimidating to folks without a strong erlang background.
 2. Aura is meant to be friendly to Elixir folks.
-3. Aura's first aim is to be documented **from hell and back**.
+3. Aura's first aim is to be documented **to hell and back**.
 4. The maintainer has larger plans that would use Aura as a base.
 
 
