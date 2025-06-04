@@ -2,6 +2,12 @@
 defmodule Aura.Users do
   @moduledoc """
   Service module for interacting with a `Aura.Model.HexUser`
+
+  <!-- tabs-open -->
+
+  #{Aura.Doc.resources()}
+
+  <!-- tabs-close -->
   """
 
   import Aura.Common
@@ -16,7 +22,30 @@ defmodule Aura.Users do
   @base_path "/users"
 
   @doc """
-  Requests a Hex user be created
+  Requests a hex user be created
+
+  > #### 📄 Terms of Service {: .warning}
+  >
+  > If your service is using hex.pm as a backend, you **must** have users to agree to
+  > Hex's [Terms of Service](https://hex.pm/policies/termsofservice)
+
+  <!-- tabs-open -->
+  ### 🏷️ Params
+    * **opts** :: option parameters used to modify requests
+
+  #{Aura.Doc.returns(success: "{:ok, %HexUser{...}}", failure: "{:error, (some error)}")}
+
+  ### 💻 Examples
+
+      iex> Application.delete_env(:aura, :api_key)
+      iex> username = Faker.Internet.user_name()
+      iex> password = Faker.Internet.slug()
+      iex> email = Faker.Internet.email()
+      iex> alias Aura.Users
+      iex> opts = [repo_url: "http://localhost:4000/api"]
+      iex> {:ok, _user} =  Users.create_user(username, password, email, opts)
+
+  <!-- tabs-close -->
   """
   @spec create_user(
           username :: Common.username(),
@@ -40,7 +69,22 @@ defmodule Aura.Users do
   end
 
   @doc """
-  Returns a `Aura.Model.HexUser`, given their **username_or_email**
+  Grabs a hex user, given their **username_or_email**
+
+  <!-- tabs-open -->
+  ### 🏷️ Params
+    * **username_or_email** ::  `t:Aura.Common.username/0` |  `t:Aura.Common.email/0`
+    * **opts** :: option parameters used to modify requests
+
+  #{Aura.Doc.returns(success: "{:ok, %HexUser{...}}", failure: "{:error, (some error)}")}
+
+  ### 💻 Examples
+
+      iex> alias Aura.Users
+      iex> opts = [repo_url: "http://localhost:4000/api"]
+      iex> {:ok, _user} =  Users.get_user("eric@example.com", opts)
+
+  <!-- tabs-close -->
   """
   @spec get_user(
           username_or_email :: Common.username() | Common.email(),
@@ -55,7 +99,21 @@ defmodule Aura.Users do
   end
 
   @doc """
-  Returns a `Aura.Model.HexUser` representing the authenticated requester
+  Grabs the hex user representing the currently authenticated user
+
+  <!-- tabs-open -->
+  ### 🏷️ Params
+    * **opts** :: option parameters used to modify requests
+
+  #{Aura.Doc.returns(success: "{:ok, %HexUser{...}}", failure: "{:error, (some error)}")}
+
+  ### 💻 Examples
+
+      iex> alias Aura.Users
+      iex> opts = [repo_url: "http://localhost:4000/api"]
+      iex> {:ok, _user} =  Users.get_current_user(opts)
+
+  <!-- tabs-close -->
   """
   @spec get_current_user(opts :: list) :: {:ok, HexUser.t()} | {:error, any()}
   def get_current_user(opts \\ []) do
@@ -67,7 +125,23 @@ defmodule Aura.Users do
   end
 
   @doc """
-  Returns a stream of `Aura.Model.HexAuditLog`, scoped to the authenticated requester
+  Streams audit logs, scoped to the current authenticated user
+
+  <!-- tabs-open -->
+  ### 🏷️ Params
+    * **opts** :: option parameters used to modify requests
+
+  #{Aura.Doc.returns(success: "Stream.resource/3")}
+
+  ### 💻 Examples
+
+      iex> alias Aura.Users
+      iex> opts = [repo_url: "http://localhost:4000/api"]
+      iex> audit_logs =  Users.stream_audit_logs(opts)
+      iex> Enum.empty?(audit_logs)
+      false
+
+  <!-- tabs-close -->
   """
   @spec stream_audit_logs(opts :: list()) :: Enumerable.t()
   def stream_audit_logs(opts \\ []) do
@@ -76,7 +150,24 @@ defmodule Aura.Users do
   end
 
   @doc """
-  Resets a specified user's password  
+  Resets a specified user's password
+
+  <!-- tabs-open -->
+  ### 🏷️ Params
+    * **username_or_email** ::  `t:Aura.Common.username/0` |  `t:Aura.Common.email/0`
+    * **opts** :: option parameters used to modify requests
+
+  #{Aura.Doc.returns(success: ":ok", failure: "{:error, (some error)}")}
+
+  ### 💻 Examples
+
+      iex> alias Aura.Users
+      iex> opts = [repo_url: "http://localhost:4000/api"]
+      iex> {:ok, user} =  Users.get_current_user(opts)
+      iex> Users.reset_user_password(user.email, opts)
+      :ok
+
+  <!-- tabs-close -->
   """
   @spec reset_user_password(
           username_or_email :: Common.username() | Common.email(),
