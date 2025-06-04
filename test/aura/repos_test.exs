@@ -6,6 +6,8 @@ defmodule Aura.ReposTest do
   @moduletag :capture_log
   doctest Repos
 
+  doctest Aura.Common
+
   setup do
     TestHelper.setup_state()
   end
