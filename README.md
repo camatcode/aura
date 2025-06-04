@@ -40,6 +40,105 @@
 ## Table of Contents
 
 - [Installation](#installation)
+- [Configuration](#configuration)
+- [Smoke Test](#smoke-test)
+- [Implementation Overview](#implementation-overview)
+- [Testing](#testing)
 
+## Installation
 
-🚧 This is my daily, acive project. Documentation on the way - Cam
+Add `:aura` to your list of deps in `mix.exs`:
+
+```elixir
+{:aura, "~> 1.0"}
+```
+
+Then run `mix deps.get` to install Aura and its dependencies.
+
+## Configuration
+
+```elixir
+config :aura,
+  # The hex-compliant backend for Aura to connect to
+  # This can also be passed in as an option to all service functions
+  # Default: https://hex.pm/api
+  # See "Testing" for other options
+  repo_url: System.get_env("AURA_REPO_URL", "http://localhost:4000/api"),
+  # API secret payload to use when making requests from the hex-compliant backend
+  # This cannot be passed in as an option to service functions.
+  # Please: Don't put the actual secret payload as plain text in your code.
+  # Default: nil
+  api_key: System.get_env("HEX_API_KEY")
+
+```
+
+## Smoke Test
+
+```elixir
+# Grab aura
+{:ok, package} = Aura.Packages.get_package("aura")
+latest_version = package.releases |> hd() |> Map.get(:version)
+# Grab aura's latest release
+{:ok, release} = Aura.Releases.get_release("aura", latest_version)
+{:ok,
+ %Aura.Model.HexRelease{
+   checksum: "8fb6919a3cf545b10e09bc9b98169cca82468157a5e6b1ebd754e833934b02dd",
+   configs: %{
+     "erlang.mk" => "dep_aura = hex 0.9.1",
+     "mix.exs" => "{:aura, \"~> 0.9.1\"}",
+     "rebar.config" => "{aura, \"0.9.1\"}"
+   },
+   docs_html_url: "https://hexdocs.pm/aura/0.9.1/",
+   has_docs: true,
+   html_url: "https://hex.pm/packages/aura/0.9.1",
+   inserted_at: ~U[2025-06-04 04:51:30.142335Z],
+   meta: %{elixir: "~> 1.18", app: "aura", build_tools: ["mix"]},
+   package_url: "https://hex.pm/api/packages/aura",
+   publisher: %{
+     url: "https://hex.pm/api/users/camatcode",
+     email: "cam.cook.codes@gmail.com",
+     username: "camatcode"
+   },
+   requirements: [
+     %{app: "date_time_parser", optional: false, requirement: "~> 1.2.0"},
+     %{app: "proper_case", optional: false, requirement: "~> 1.3"},
+     %{app: "req", optional: false, requirement: "~> 0.5.10"}
+   ],
+   retirement: nil,
+   updated_at: ~U[2025-06-04 04:51:33.602905Z],
+   version: "0.9.1",
+   url: "https://hex.pm/api/packages/aura/releases/0.9.1",
+   downloads: 0
+ }}
+```
+
+## Implementation Overview
+
+🚧 TODO
+
+## Testing
+
+You should be very mindful about issuing requests against a production hex API.
+
+To make this easy, you can `docker compose up -d` from the root of this repository to launch a local instance
+of [hexpm/hexpm](https://github.com/camatcode/hex_tiny?tab=readme-ov-file#hex_beefy) and set your `repo_url`
+to http://localhost:4000/api .
+
+```bash
+➜  aura git:(work/readme) ✗ docker compose up -d
+[+] Running 1/1
+ ✔ Container hex_beefy  Started                                                                                  0.1s 
+➜  aura git:(work/readme) ✗ curl http://localhost:4000/api |jq
+{
+  "documentation_url": "http://docs.hexpm.apiary.io",
+  "key_url": "http://localhost:4000/api/keys/{name}",
+  "keys_url": "http://localhost:4000/api/keys",
+  "package_owners_url": "http://localhost:4000/api/packages/{name}/owners",
+  "package_release_url": "http://localhost:4000/api/packages/{name}/releases/{version}",
+  "package_url": "http://localhost:4000/api/packages/{name}",
+  "packages_url": "http://localhost:4000/api/packages"
+}
+```
+
+All Aura tests expect to connect to a local hex instance and will purposely crash if it discovers it's connecting
+to hex.pm.
