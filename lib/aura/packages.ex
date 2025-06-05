@@ -77,6 +77,8 @@ defmodule Aura.Packages do
       iex> owner.email
       "eric@example.com"
 
+  #{Aura.Doc.api_details([%{method: :GET, route: Path.join(@base_path, ":name/owners"), controller: "OwnerController", action: :index}, %{method: :GET, route: Path.join("/repos/`opts[:repo]`", Path.join(@base_path, ":name/owners")), controller: "OwnerController", action: :index}])}
+
   <!-- tabs-close -->
   """
   @spec list_package_owners(name :: Aura.Common.package_name(), opts :: list()) ::
@@ -107,6 +109,8 @@ defmodule Aura.Packages do
       iex> owner.email
       "eric@example.com"
 
+  #{Aura.Doc.api_details([%{method: :GET, route: Path.join(@base_path, ":package_name/owners/:username"), controller: "OwnerController", action: :show}, %{method: :GET, route: Path.join("/repos/`opts[:repo]`", Path.join(@base_path, ":package_name/owners/:username")), controller: "OwnerController", action: :show}])}
+    
   <!-- tabs-close -->
   """
   @spec get_package_owner(package_name :: Aura.Common.package_name(), username :: Aura.Common.username(), opts :: list()) ::
@@ -156,9 +160,13 @@ defmodule Aura.Packages do
   ### 🏷️ Params
     * **package_name** :: `t:Aura.Common.package_name/0`
     * **owner_email** :: `t:Aura.Common.email/0`
-    * **opts** :: option parameters used to modify requests
+    * **opts**
+      * transfer
+      * level
 
   #{Aura.Doc.returns(success: ":ok", failure: "{:error, (some failure)}")}
+
+  #{Aura.Doc.api_details([%{method: :PUT, route: Path.join(@base_path, ":package_name/owners/:owner_email"), controller: "OwnerController", action: :create}, %{method: :PUT, route: Path.join("/repos/`opts[:repo]`", Path.join(@base_path, ":package_name/owners/:owner_email")), controller: "OwnerController", action: :create}])}
     
   <!-- tabs-close -->
   """
@@ -180,9 +188,12 @@ defmodule Aura.Packages do
   ### 🏷️ Params
     * **package_name** :: `t:Aura.Common.package_name/0`
     * **owner_email** :: `t:Aura.Common.email/0`
-    * **opts** :: option parameters used to modify requests
+    * **opts**
+      * **repo** :: `t:Aura.Common.repo_name/0`
 
   #{Aura.Doc.returns(success: ":ok", failure: "{:error, (some failure)}")}
+
+  #{Aura.Doc.api_details([%{method: :DELETE, route: Path.join(@base_path, ":package_name/owners/:owner_email"), controller: "OwnerController", action: :delete}, %{method: :DELETE, route: Path.join("/repos/`opts[:repo]`", Path.join(@base_path, ":package_name/owners/:owner_email")), controller: "OwnerController", action: :delete}])}
 
   <!-- tabs-close -->
   """
