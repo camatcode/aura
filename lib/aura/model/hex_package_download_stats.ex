@@ -12,40 +12,26 @@ defmodule Aura.Model.HexPackageDownloadStats do
 
   alias Aura.Model.HexPackageDownloadStats
 
-  @typedoc """
-  Number of downloads since the first release
-  """
+  @typedoc Aura.Doc.type_doc("Number of downloads since the first release")
   @type all_time :: non_neg_integer()
 
-  @typedoc """
-  Number of downloads this week
-  """
+  @typedoc Aura.Doc.type_doc("Number of downloads this week")
   @type this_week :: non_neg_integer()
 
-  @typedoc """
-  Number of downloads today
-  """
+  @typedoc Aura.Doc.type_doc("Number of downloads today")
   @type today :: non_neg_integer()
 
-  @typedoc """
-  Type describing the number of downloads for a `Aura.Model.HexPackage`
-
-  <!-- tabs-open -->
-  ### 🏷️ Keys
-    * **all** :: `t:all_time/0`
-    * **week** :: `t:this_week/0`
-    * **day** :: `t:today/0`
-
-  ### 💻 Examples
-
-  ```elixir
-  %Aura.Model.HexPackageDownloadStats{all: 196, week: 49, day: 49}
-  ```
-
-  #{Aura.Doc.related(["`Aura.Packages`", "`Aura.Releases`"])}
-
-  <!-- tabs-close -->
-  """
+  @typedoc Aura.Doc.type_doc("Type describing the number of downloads for a `Aura.Model.HexPackage`",
+             keys: %{
+               all: {Aura.Model.HexPackageDownloadStats, :all_time},
+               week: {Aura.Model.HexPackageDownloadStats, :this_week},
+               day: {Aura.Model.HexPackageDownloadStats, :today}
+             },
+             example: """
+             %Aura.Model.HexPackageDownloadStats{all: 196, week: 49, day: 49}
+             """,
+             related: [Aura.Packages, Aura.Releases]
+           )
   @type t :: %HexPackageDownloadStats{
           all: all_time(),
           week: this_week(),
@@ -56,16 +42,9 @@ defmodule Aura.Model.HexPackageDownloadStats do
             week: 0,
             day: 0
 
-  @doc """
-  Builds a `HexPackageDownloadStats` from a map
-
-  <!-- tabs-open -->
-
-  ### 🏷️ Params
-    * **m** :: A map to build into a `t:Aura.Model.HexPackageDownloadStats.t/0`
-
-  <!-- tabs-close -->
-  """
+  @doc Aura.Doc.func_doc("Builds a `HexPackageDownloadStats` from a map",
+         params: %{m: "A map to build into a `t:Aura.Model.HexPackageDownloadStats.t/0`"}
+       )
   @spec build(m :: map) :: HexPackageDownloadStats.t()
   def build(m) when is_map(m) do
     m
