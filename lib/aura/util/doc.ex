@@ -20,6 +20,12 @@ defmodule Aura.Doc do
     "
   end
 
+  def controller_doc_link(controller_name) do
+    snaked_name = controller_name |> ProperCase.snake_case() |> String.downcase()
+    url = "https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/#{snaked_name}.ex"
+    "[#{controller_name}](#{url}){:target=\"_blank\"}"
+  end
+
   defp see_hex_spec do
     see_link("Hex API Specifications", "https://github.com/hexpm/specifications")
   end
