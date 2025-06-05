@@ -154,7 +154,7 @@ Hex. But here are a couple of motivations for using Aura.
 
 1. hex_core can be intimidating to folks without a strong erlang background.
 2. Aura is meant to be friendly to Elixir folks.
-3. Aura's first aim is to be documented **to hell and back**.
+3. Aura's aim is to be [documented](https://hexdocs.pm/aura) *to hell and back*.
 4. The maintainer has larger plans that would use Aura as a base.
 
 
