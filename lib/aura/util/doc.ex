@@ -20,6 +20,97 @@ defmodule Aura.Doc do
     """
   end
 
+  def type_doc(description, opts \\ []) do
+    description = render_description(description)
+    keys = render_keys(opts[:keys])
+    example = render_example(opts[:example])
+    related = render_related(opts[:related])
+
+    """
+    #{description}
+
+    <!-- tabs-open -->
+    #{keys}
+
+    #{example}
+
+    #{related}
+
+    <!-- tabs-close -->
+    """
+  end
+
+  def func_doc(description, opts \\ []) do
+    description = render_description(description)
+    params = render_params(opts[:params])
+    example = render_example(opts[:example])
+    related = render_related(opts[:related])
+
+    """
+    #{description}
+
+    <!-- tabs-open -->
+    #{params}
+
+    #{example}
+
+    #{related}
+
+    <!-- tabs-close -->
+    """
+  end
+
+  defp render_params(nil), do: ""
+
+  defp render_params(m) when is_map(m) do
+    header = "### 🏷️ Params"
+
+    rendered_params =
+      Enum.map_join(m, "\n", fn {k, v} ->
+        "* **#{k}** :: #{v}"
+      end)
+
+    """
+    #{header}
+
+    #{rendered_params}
+
+    """
+  end
+
+  defp render_keys(nil), do: ""
+
+  defp render_keys(m) when is_map(m) do
+    header = "### 🏷️ Keys"
+
+    rendered_keys =
+      Enum.map_join(m, "\n", fn {k, v} ->
+        render_key(k, v)
+      end)
+
+    """
+    #{header}
+
+    #{rendered_keys}
+
+    """
+  end
+
+  defp render_key(k, {mod, name, :list}) do
+    cleaned = String.replace("#{mod}", "Elixir.", "")
+    "* **#{k}** :: [`t:#{cleaned}.#{name}/0`]"
+  end
+
+  defp render_key(k, {mod, name}) do
+    cleaned = String.replace("#{mod}", "Elixir.", "")
+    "* **#{k}** :: `t:#{cleaned}.#{name}/0`"
+  end
+
+  defp render_key(k, v) do
+    cleaned = String.replace("#{v}", "Elixir.", "")
+    "* **#{k}** :: `t:#{cleaned}.#{k}/0`"
+  end
+
   defp render_example(nil), do: ""
 
   defp render_example(example) do
