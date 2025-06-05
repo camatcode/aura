@@ -24,7 +24,12 @@ defmodule Aura.Packages do
 
   <!-- tabs-open -->
   ### 🏷️ Params
-    * **opts** :: option parameters used to modify requests
+    * **opts**
+      * repo :: `t:Aura.Common.repo_name/0`
+      * page :: page to start streaming from (default: `1`)
+      * per_page :: number of results per page number (default: `1000`)
+      * sort :: sorting criteria (`:name` `:recent_downloads` `:total_downloads` `:inserted_at` `:updated_at`)
+      * search :: search term
 
   #{Aura.Doc.returns(success: "Stream.resource/3")}
 
@@ -44,6 +49,8 @@ defmodule Aura.Packages do
       iex> Enum.empty?(packages)
       false
 
+  #{Aura.Doc.api_details([%{method: :GET, route: @base_path, controller: "PackageController", action: :index}, %{method: :GET, route: Path.join("/repos/`opts[:repo]`", @base_path), controller: "PackageController", action: :index}])}
+    
   <!-- tabs-close -->
   """
   @spec stream_packages(opts :: list()) :: Enumerable.t()
@@ -129,6 +136,8 @@ defmodule Aura.Packages do
       iex> pkg.name
       "decimal"
 
+  #{Aura.Doc.api_details([%{method: :GET, route: Path.join(@base_path, ":name"), controller: "PackageController", action: :show}, %{method: :GET, route: Path.join("/repos/`opts[:repo]`", Path.join(@base_path, ":name")), controller: "PackageController", action: :show}])}
+    
   <!-- tabs-close -->
   """
   @spec get_package(name :: Aura.Common.package_name(), opts :: list()) :: {:ok, HexPackage.t()} | {:error, any()}
@@ -193,12 +202,14 @@ defmodule Aura.Packages do
   end
 
   @doc """
-  Streams `Aura.Model.HexAuditLog`, scoped to a package
+  Streams audit logs, scoped to a package
 
   <!-- tabs-open -->
   ### 🏷️ Params
     * **package_name** :: `t:Aura.Common.package_name/0`
-    * **opts** :: option parameters used to modify requests
+    * **opts**
+      * **repo** :: `t:Aura.Common.repo_name/0`
+      * **page** :: page number to start from (each page is 100 items)
 
   #{Aura.Doc.returns(success: "Stream.resource/3")}
 
@@ -207,6 +218,8 @@ defmodule Aura.Packages do
       iex> alias Aura.Packages
       iex> audit_logs = Packages.stream_audit_logs("decimal", repo_url: "http://localhost:4000/api")
       iex> _actions = Enum.map(audit_logs, fn audit_log -> audit_log.action end)
+
+  #{Aura.Doc.api_details([%{method: :GET, route: Path.join(@base_path, ":package_name/audit-logs"), controller: "PackageController", action: :audit_logs}, %{method: :GET, route: Path.join("/repos/`opts[:repo]`", Path.join(@base_path, ":package_name/audit-logs")), controller: "PackageController", action: :audit_logs}])}
 
   <!-- tabs-close -->
   """
