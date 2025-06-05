@@ -49,11 +49,13 @@ defmodule TestHelper do
   defp create_users(repo_url, password) do
     username = Faker.Internet.user_name()
     email = Faker.Internet.email()
-    {:ok, user} = Users.create_user(username, password, email)
+    {:ok, user} = Users.create_user(username, password, [email])
 
     other_users =
       Enum.map(1..5, fn _ ->
-        {:ok, other_user} = Users.create_user("#{username}_#{System.monotonic_time()}", password, Faker.Internet.email())
+        {:ok, other_user} =
+          Users.create_user("#{username}_#{System.monotonic_time()}", password, [Faker.Internet.email()])
+
         other_user
       end)
 

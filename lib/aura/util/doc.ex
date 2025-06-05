@@ -26,6 +26,33 @@ defmodule Aura.Doc do
     "[#{controller_name}](#{url}){:target=\"_blank\"}"
   end
 
+  def api_details([]), do: ""
+
+  def api_details(route_info) when is_map(route_info), do: api_details([route_info])
+
+  def api_details(route_infos) when is_list(route_infos) do
+    header = "### 👩‍💻 API Details "
+
+    table_header =
+      String.trim("""
+      | Method | Path                  | Controller                                        | Action      |
+      |--------|-----------------------|---------------------------------------------------|-------------|
+      """)
+
+    table_contents =
+      Enum.map_join(route_infos, "\n", fn info ->
+        "| #{info.method}    | #{info.route} | #{Aura.Doc.controller_doc_link("#{info.controller}")} | :#{info.action} |"
+      end)
+
+    """
+    #{header}
+
+    #{table_header}
+    #{table_contents}
+
+    """
+  end
+
   defp see_hex_spec do
     see_link("Hex API Specifications", "https://github.com/hexpm/specifications")
   end
