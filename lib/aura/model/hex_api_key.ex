@@ -57,7 +57,7 @@ defmodule Aura.Model.HexAPIKey do
   @type secret :: String.t() | nil
 
   @typedoc """
-  ❓ Sorry, documentation from the hex specification is lacking here. ❓
+  Whether this key is the one being used to make authenticated requests
 
   <!-- tabs-open -->
 
