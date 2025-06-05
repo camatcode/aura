@@ -1,20 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Model.HexPackageDownloadStats do
-  @moduledoc """
-  A struct describing download stats associated to a `Aura.Model.HexPackage`
-
-  <!-- tabs-open -->
-  ### 💻 Examples
-
-  ```elixir
-  %Aura.Model.HexPackageDownloadStats{all: 196, week: 49, day: 49}
-  ```
-
-  #{Aura.Doc.related(["`Aura.Packages`", "`Aura.Releases`"])}
-
-  #{Aura.Doc.resources()}
-  <!-- tabs-close -->
-  """
+  @moduledoc Aura.Doc.mod_doc(
+               "A struct describing download stats associated to a `Aura.Model.HexPackage`",
+               example: """
+               %Aura.Model.HexPackageDownloadStats{all: 196, week: 49, day: 49}
+               """,
+               related: [Aura.Packages, Aura.Releases]
+             )
 
   import Aura.Model.Common
 

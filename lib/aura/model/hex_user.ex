@@ -1,26 +1,17 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Model.HexUser do
-  @moduledoc """
-  A struct defining a User for a Hex-compliant API
-
-  <!-- tabs-open -->
-  ### 💻 Examples
-
-  ```elixir
-  %Aura.Model.HexUser{
-   username: "alta2001",
-   email: "morgan.gulgowski@stehr.biz",
-   inserted_at: ~U[2025-06-04 00:53:31.880685Z],
-   updated_at: ~U[2025-06-04 00:53:31.880685Z],
-   url: "http://localhost:4000/api/users/alta2001"
-  }
-  ```
-
-  #{Aura.Doc.related(["`Aura.Users`"])}
-
-  #{Aura.Doc.resources()}
-  <!-- tabs-close -->
-  """
+  @moduledoc Aura.Doc.mod_doc("A struct defining a User for a Hex-compliant API",
+               example: """
+               %Aura.Model.HexUser{
+                 username: "alta2001",
+                 email: "morgan.gulgowski@stehr.biz",
+                 inserted_at: ~U[2025-06-04 00:53:31.880685Z],
+                 updated_at: ~U[2025-06-04 00:53:31.880685Z],
+                 url: "http://localhost:4000/api/users/alta2001"
+               }
+               """,
+               related: [Aura.Users]
+             )
 
   import Aura.Model.Common
 

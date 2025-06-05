@@ -1,32 +1,24 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Model.HexPackageOwner do
-  @moduledoc """
-  A struct describing an owner of a `Aura.Model.HexPackage`
-
-  <!-- tabs-open -->
-  ### 💻 Examples
-
-  ```elixir
-    %Aura.Model.HexPackageOwner{
-      email: "cam.cook.codes@gmail.com",
-      full_name: "Cam Cook",
-      handles: %{
-        elixir_forum: "https://elixirforum.com/u/camatcode",
-        git_hub: "https://github.com/camatcode"
-      },
-      inserted_at: ~U[2025-05-01 19:45:03.289458Z],
-      level: :full,
-      updated_at: ~U[2025-06-01 15:40:38.852881Z],
-      url: "https://hex.pm/api/users/camatcode",
-      username: "camatcode"
-  }
-  ```
-
-  #{Aura.Doc.related(["`Aura.Packages`", "`Aura.Releases`"])}
-
-  #{Aura.Doc.resources()}
-  <!-- tabs-close -->
-  """
+  @moduledoc Aura.Doc.mod_doc(
+               "A struct describing an owner of a `Aura.Model.HexPackage`",
+               example: """
+               %Aura.Model.HexPackageOwner{
+                email: "cam.cook.codes@gmail.com",
+                full_name: "Cam Cook",
+                handles: %{
+                  elixir_forum: "https://elixirforum.com/u/camatcode",
+                  git_hub: "https://github.com/camatcode"
+                },
+                inserted_at: ~U[2025-05-01 19:45:03.289458Z],
+                level: :full,
+                updated_at: ~U[2025-06-01 15:40:38.852881Z],
+                url: "https://hex.pm/api/users/camatcode",
+                username: "camatcode"
+               }
+               """,
+               related: [Aura.Packages, Aura.Releases]
+             )
 
   import Aura.Model.Common
 

@@ -1,30 +1,22 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Model.HexRepo do
-  @moduledoc """
-  A struct describing a repository from a Hex-compliant API.
-
-  The main Hex.pm public repo is named `"hexpm"`; though private repos do exist.
-
-  <!-- tabs-open -->
-  ### 💻 Examples
-
-  ```elixir
-  %Aura.Model.HexRepo{
-   name: "hexpm",
-   public: nil,
-   active: nil,
-   billing_active: nil,
-   inserted_at: ~U[2025-05-29 18:15:18.185511Z],
-   updated_at: ~U[2025-05-29 18:15:18.185511Z]
-  }
-  ```
-
-  #{Aura.Doc.related(["`Aura.Repos`"])}
-
-  #{Aura.Doc.resources()}
-  <!-- tabs-close -->
-  """
-
+  @moduledoc Aura.Doc.mod_doc(
+               [
+                 "A struct describing a repository from a Hex-compliant API.",
+                 "The main Hex.pm public repo is named `\"hexpm\"`; though private repos do exist."
+               ],
+               example: """
+               %Aura.Model.HexRepo{
+                name: "hexpm",
+                public: nil,
+                active: nil,
+                billing_active: nil,
+                inserted_at: ~U[2025-05-29 18:15:18.185511Z],
+                updated_at: ~U[2025-05-29 18:15:18.185511Z]
+               }
+               """,
+               related: [Aura.Repos]
+             )
   import Aura.Model.Common
 
   alias Aura.Model.Common

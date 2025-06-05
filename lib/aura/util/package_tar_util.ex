@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.PackageTarUtil do
-  @moduledoc """
-  A utility to read a release tar from a Hex-compliant API
-  """
+  @moduledoc Aura.Doc.mod_doc("A utility to read a release tar from a Hex-compliant API")
+
   @typedoc """
   A mapping between entries of a tar and their bytes
   """

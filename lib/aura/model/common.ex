@@ -1,14 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Model.Common do
-  @moduledoc """
-  Common capabilities across all Aura models
-
-  <!-- tabs-open -->
-
-  #{Aura.Doc.resources()}
-
-  <!-- tabs-close -->
-  """
+  @moduledoc Aura.Doc.mod_doc("Common capabilities across all Aura models")
 
   @typedoc """
   `DateTime` for when the record was inserted into the database

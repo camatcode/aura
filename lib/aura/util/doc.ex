@@ -1,6 +1,57 @@
 defmodule Aura.Doc do
   @moduledoc false
 
+  def mod_doc(description, opts \\ []) do
+    description = render_description(description)
+    example = render_example(opts[:example])
+    related = render_related(opts[:related])
+
+    """
+    #{description}
+
+    <!-- tabs-open -->
+    #{example}
+
+    #{Aura.Doc.resources()}
+
+    #{related}
+
+    <!-- tabs-close -->
+    """
+  end
+
+  defp render_example(nil), do: ""
+
+  defp render_example(example) do
+    """
+    ### 💻 Examples
+
+    ```elixir
+    #{example}
+    ```
+
+    """
+  end
+
+  defp render_description(des_list) when is_list(des_list) do
+    Enum.map_join(des_list, "\n", fn line ->
+      "#{line}\n"
+    end)
+  end
+
+  defp render_description(des), do: des
+
+  defp render_related(nil), do: ""
+
+  defp render_related(related_list) do
+    related_list
+    |> Enum.map(fn rel ->
+      cleaned = String.replace("#{rel}", "Elixir.", "")
+      "`#{cleaned}`"
+    end)
+    |> related()
+  end
+
   def maintainer_github, do: "👾 [Github: camatcode](https://github.com/camatcode/){:target=\"_blank\"}"
 
   def maintainer_fediverse,

@@ -1,50 +1,41 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Model.HexPackage do
-  @moduledoc """
-  A struct describing a package from a Hex-compliant API
-
-  <!-- tabs-open -->
-
-  ### 💻 Examples
-
-  ```elixir
-  %Aura.Model.HexPackage{
-   name: "aura",
-   repository: "hexpm",
-   private: nil,
-   meta: %Aura.Model.HexPackageMeta{
-     maintainers: [],
-     links: %{
-       "Changelog" => "https://github.com/camatcode/aura/blob/master/CHANGELOG.md",
-       "GitHub" => "https://github.com/camatcode/aura",
-       "Website" => "https://github.com/camatcode/aura"
-     },
-     licenses: ["Apache-2.0"],
-     description: "An ergonomic library for investigating the Hex.pm API"
-   },
-   downloads: %Aura.Model.HexPackageDownloadStats{all: 4, week: 4, day: 4},
-   releases: [
-     %Aura.Model.HexRelease{
-       has_docs: true,
-       inserted_at: ~U[2025-06-01 15:13:00.595681Z],
-       version: "0.9.0",
-       url: "https://hex.pm/api/packages/aura/releases/0.9.0",
-       downloads: 0
-     }
-   ],
-   inserted_at: ~U[2025-06-01 15:13:00.589838Z],
-   updated_at: ~U[2025-06-01 15:13:04.347899Z],
-   url: "https://hex.pm/api/packages/aura",
-   html_url: "https://hex.pm/packages/aura",
-   docs_html_url: "https://hexdocs.pm/aura/"
-  }
-  ```
-
-  #{Aura.Doc.related(["`Aura.Packages`", "`Aura.Releases`"])}
-
-  #{Aura.Doc.resources()}
-  <!-- tabs-close -->
-  """
+  @moduledoc Aura.Doc.mod_doc(
+               "A struct describing a package from a Hex-compliant API",
+               example: """
+               %Aura.Model.HexPackage{
+                name: "aura",
+                repository: "hexpm",
+                private: nil,
+                meta: %Aura.Model.HexPackageMeta{
+                  maintainers: [],
+                  links: %{
+                    "Changelog" => "https://github.com/camatcode/aura/blob/master/CHANGELOG.md",
+                    "GitHub" => "https://github.com/camatcode/aura",
+                    "Website" => "https://github.com/camatcode/aura"
+                  },
+                  licenses: ["Apache-2.0"],
+                  description: "An ergonomic library for investigating the Hex.pm API"
+                },
+                downloads: %Aura.Model.HexPackageDownloadStats{all: 4, week: 4, day: 4},
+                releases: [
+                  %Aura.Model.HexRelease{
+                    has_docs: true,
+                    inserted_at: ~U[2025-06-01 15:13:00.595681Z],
+                    version: "0.9.0",
+                    url: "https://hex.pm/api/packages/aura/releases/0.9.0",
+                    downloads: 0
+                }
+                ],
+                inserted_at: ~U[2025-06-01 15:13:00.589838Z],
+                updated_at: ~U[2025-06-01 15:13:04.347899Z],
+                url: "https://hex.pm/api/packages/aura",
+                html_url: "https://hex.pm/packages/aura",
+                docs_html_url: "https://hexdocs.pm/aura/"
+                }
+               """,
+               related: [Aura.Packages, Aura.Releases]
+             )
 
   import Aura.Model.Common
 

@@ -1,26 +1,16 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Model.HexAuditLog do
-  @moduledoc """
-  A struct describing a single auditable action from a Hex-compliant API.
-
-  <!-- tabs-open -->
-
-  ### 💻 Examples
-
-  ```elixir
-  %Aura.Model.HexAuditLog{
-      action: "user.create",
-      params: %{id: 424, handles: nil, username: "jaqueline1935"},
-      user_agent: "aura/0.9.0 (Elixir/1.18.3) (OTP/27.3.1) (test)"
-  }
-  ```
-
-  #{Aura.Doc.related(["`Aura.Packages`", "`Aura.Users`"])}
-
-  #{Aura.Doc.resources()}
-
-  <!-- tabs-close -->
-  """
+  @moduledoc Aura.Doc.mod_doc(
+               "A struct describing a single auditable action from a Hex-compliant API.",
+               example: """
+               %Aura.Model.HexAuditLog{
+                action: "user.create",
+                params: %{id: 424, handles: nil, username: "jaqueline1935"},
+                user_agent: "aura/0.9.0 (Elixir/1.18.3) (OTP/27.3.1) (test)"
+               }
+               """,
+               related: [Aura.Packages, Aura.Users]
+             )
 
   import Aura.Model.Common
 

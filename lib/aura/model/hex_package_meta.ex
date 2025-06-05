@@ -1,25 +1,17 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Model.HexPackageMeta do
-  @moduledoc """
-  A struct describing additional metadata about a `Aura.Model.HexPackage`
-
-  <!-- tabs-open -->
-  ### 💻 Examples
-
-  ```elixir
-  %Aura.Model.HexPackageMeta{
-     maintainers: [],
-     links: %{"GitHub" => "https://github.com/michalmuskala/jason"},
-     licenses: ["Apache-2.0"],
-     description: "A blazing fast JSON parser and generator in pure Elixir."
-   }
-  ```
-
-  #{Aura.Doc.related(["`Aura.Packages`", "`Aura.Releases`"])}
-
-  #{Aura.Doc.resources()}
-  <!-- tabs-close -->
-  """
+  @moduledoc Aura.Doc.mod_doc(
+               "A struct describing additional metadata about a `Aura.Model.HexPackage`",
+               example: """
+               %Aura.Model.HexPackageMeta{
+                maintainers: [],
+                links: %{"GitHub" => "https://github.com/michalmuskala/jason"},
+                licenses: ["Apache-2.0"],
+                description: "A blazing fast JSON parser and generator in pure Elixir."
+               }
+               """,
+               related: [Aura.Packages, Aura.Releases]
+             )
 
   import Aura.Model.Common
 

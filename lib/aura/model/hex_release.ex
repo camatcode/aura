@@ -1,49 +1,41 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Model.HexRelease do
-  @moduledoc """
-  A struct describing a single release of a `Aura.Model.HexPackage`
-
-  <!-- tabs-open -->
-  ### 💻 Examples
-
-  ```elixir
-  %Aura.Model.HexRelease{
-      checksum: "4eaafe67a4b2d3a3b7f4637106ce81707cfa0977e6b3b44450cde4c4626a3c1a",
-      configs: %{
-        "erlang.mk" => "dep_aura = hex 0.9.0",
-        "mix.exs" => "{:aura, \"~> 0.9.0\"}",
-        "rebar.config" => "{aura, \"0.9.0\"}"
-      },
-      docs_html_url: "https://hexdocs.pm/aura/0.9.0/",
-      has_docs: true,
-      html_url: "https://hex.pm/packages/aura/0.9.0",
-      inserted_at: ~U[2025-06-01 15:13:00.595681Z],
-      meta: %{elixir: "~> 1.18", app: "aura", build_tools: ["mix"]},
-      package_url: "https://hex.pm/api/packages/aura",
-      publisher: %{
-        url: "https://hex.pm/api/users/camatcode",
-        username: "camatcode",
-        email: "cam.cook.codes@gmail.com"
-      },
-      requirements: [
-        %{optional: false, app: "cachex", requirement: "~> 4.0"},
-        %{optional: false, app: "date_time_parser", requirement: "~> 1.2.0"},
-        %{optional: false, app: "proper_case", requirement: "~> 1.3"},
-        %{optional: false, app: "req", requirement: "~> 0.5.10"}
-      ],
-      retirement: nil,
-      updated_at: ~U[2025-06-01 15:13:04.347130Z],
-      version: "0.9.0",
-      url: "https://hex.pm/api/packages/aura/releases/0.9.0",
-      downloads: 15
-  }
-  ```
-
-  #{Aura.Doc.related(["`Aura.Releases`"])}
-
-  #{Aura.Doc.resources()}
-  <!-- tabs-close -->
-  """
+  @moduledoc Aura.Doc.mod_doc(
+               "A struct describing a single release of a `Aura.Model.HexPackage`",
+               example: """
+               %Aura.Model.HexRelease{
+                checksum: "4eaafe67a4b2d3a3b7f4637106ce81707cfa0977e6b3b44450cde4c4626a3c1a",
+                configs: %{
+                  "erlang.mk" => "dep_aura = hex 0.9.0",
+                  "mix.exs" => "{:aura, \"~> 0.9.0\"}",
+                  "rebar.config" => "{aura, \"0.9.0\"}"
+                },
+                docs_html_url: "https://hexdocs.pm/aura/0.9.0/",
+                has_docs: true,
+                html_url: "https://hex.pm/packages/aura/0.9.0",
+                inserted_at: ~U[2025-06-01 15:13:00.595681Z],
+                meta: %{elixir: "~> 1.18", app: "aura", build_tools: ["mix"]},
+                package_url: "https://hex.pm/api/packages/aura",
+                publisher: %{
+                  url: "https://hex.pm/api/users/camatcode",
+                  username: "camatcode",
+                  email: "cam.cook.codes@gmail.com"
+                },
+                requirements: [
+                  %{optional: false, app: "cachex", requirement: "~> 4.0"},
+                  %{optional: false, app: "date_time_parser", requirement: "~> 1.2.0"},
+                  %{optional: false, app: "proper_case", requirement: "~> 1.3"},
+                  %{optional: false, app: "req", requirement: "~> 0.5.10"}
+                ],
+                retirement: nil,
+                updated_at: ~U[2025-06-01 15:13:04.347130Z],
+                version: "0.9.0",
+                url: "https://hex.pm/api/packages/aura/releases/0.9.0",
+                downloads: 15
+               }
+               """,
+               related: [Aura.Packages]
+             )
 
   import Aura.Model.Common
 

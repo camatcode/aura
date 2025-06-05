@@ -1,14 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Common do
-  @moduledoc """
-  Common capabilities across all Aura services
-
-  <!-- tabs-open -->
-
-  #{Aura.Doc.resources()}
-
-  <!-- tabs-close -->
-  """
+  @moduledoc Aura.Doc.mod_doc("Common capabilities across all Aura services")
 
   alias Aura.Requester
 
