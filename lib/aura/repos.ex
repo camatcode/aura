@@ -62,7 +62,9 @@ defmodule Aura.Repos do
       iex> {:ok, keys} = Repos.list_api_keys(repo_url: repo_url)
       iex> Enum.empty?(keys)
       false
-    
+
+  #{Aura.Doc.api_details(%{method: :GET, route: "/api/keys", controller: "KeyController", action: :index})}
+
   <!-- tabs-close -->
   """
   @spec list_api_keys(opts :: list()) :: {:ok, [HexAPIKey.t()]} | {:error, any()}
@@ -120,6 +122,8 @@ defmodule Aura.Repos do
       iex> {:ok, keys} = Repos.list_api_keys(opts)
       iex> keys |> Enum.map(fn key ->  {:ok, _k} = Repos.get_api_key(key.name, opts) end)
 
+  #{Aura.Doc.api_details(%{method: :GET, route: "/api/keys/:key_name", controller: "KeyController", action: :show})}
+
   <!-- tabs-close -->
   """
   @spec get_api_key(key_name :: Common.api_key_name(), opts :: list()) :: {:ok, HexAPIKey.t()} | {:error, any()}
@@ -143,7 +147,9 @@ defmodule Aura.Repos do
     * **opts** :: option parameters used to modify requests
 
   #{Aura.Doc.returns(success: "{:ok, %HexAPIKey{...}}", failure: "{:error, (some error)}")}
-    
+
+  #{Aura.Doc.api_details(%{method: :POST, route: @keys_path, controller: "KeyController", action: :create})}
+
   <!-- tabs-close -->
   """
   @spec create_api_key(
@@ -182,6 +188,8 @@ defmodule Aura.Repos do
       iex> Repos.delete_api_key(key.name, opts)
       :ok
 
+  #{Aura.Doc.api_details(%{method: :DELETE, route: Path.join(@keys_path, ":key_name"), controller: "KeyController", action: :delete})}
+
   <!-- tabs-close -->
   """
   @spec delete_api_key(key_name :: Common.api_key_name(), opts :: list()) :: :ok | {:error, any()}
@@ -208,6 +216,8 @@ defmodule Aura.Repos do
       iex> opts = [repo_url: "http://localhost:4000/api"]
       iex> Repos.delete_all_api_keys(opts)
       :ok
+
+  #{Aura.Doc.api_details(%{method: :DELETE, route: @keys_path, controller: "KeyController", action: :delete_all})}
 
   <!-- tabs-close -->
   """
