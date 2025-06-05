@@ -35,6 +35,8 @@ defmodule Aura.Repos do
       iex> hexpm.name
       "hexpm"
 
+  #{Aura.Doc.api_details(%{method: :GET, route: @repos_path, controller: "RepositoryController", action: :index})}
+
   <!-- tabs-close -->
   """
   @spec list_repos(opts :: list()) :: {:ok, [HexRepo.t()]} | {:error, any()}
@@ -88,7 +90,9 @@ defmodule Aura.Repos do
       iex> hexpm.name
       "hexpm"
 
-  <!-- tabs-close -->
+  #{Aura.Doc.api_details(%{method: :GET, route: Path.join(@repos_path, ":repo_name"), controller: "RepositoryController", action: :show})}
+
+    <!-- tabs-close -->
   """
   @spec get_repo(repo_name :: Common.repo_name(), opts :: list()) :: {:ok, HexRepo.t()} | {:error, any()}
   def get_repo(repo_name, opts \\ []) when is_bitstring(repo_name) do
