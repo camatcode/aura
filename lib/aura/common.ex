@@ -143,13 +143,14 @@ defmodule Aura.Common do
   @spec stream_paginate(path :: api_path(), build_func :: (map() -> map()), opts :: list()) :: Enumerable.t()
   def stream_paginate(path, build_func, opts) do
     qparams =
-      Keyword.merge([page: 1], opts)
+      Keyword.merge([page: 1, per_page: 1000], opts)
 
     opts =
       opts
       |> Keyword.delete(:page)
       |> Keyword.delete(:search)
       |> Keyword.delete(:sort)
+      |> Keyword.delete(:per_page)
 
     start_fun = fn -> max(1, qparams[:page]) end
     end_fun = fn _ -> :ok end
