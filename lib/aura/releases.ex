@@ -32,7 +32,9 @@ defmodule Aura.Releases do
   ### 🏷️ Params
     * **name** :: `t:Aura.Common.package_name/0`
     * **version** :: `t:Aura.Common.release_version/0`
-    * **opts** :: option parameters used to modify requests
+    * **opts**
+      * **repo** :: `t:Aura.Common.repo_name/0`
+      * **downloads** :: `:day`, `:month`, `:all`
 
   #{Aura.Doc.returns(success: "{:ok, %HexRelease{...}}", failure: "{:error, (some error)}")}
 
@@ -44,6 +46,13 @@ defmodule Aura.Releases do
       iex> postgrex.version
       "0.1.0"
 
+  ### 👩‍💻 API Details
+
+  | Method | Path                                                      | Controller                                           | Action |
+  |--------|-----------------------------------------------------------|------------------------------------------------------|--------|
+  | GET    | /api/packages/:package_name/releases/:version             | #{Aura.Doc.controller_doc_link("ReleaseController")} | :show  |
+  | GET    | /api/repos/:repo/packages/:package_name/releases/:version | #{Aura.Doc.controller_doc_link("ReleaseController")} | :show  |
+
   <!-- tabs-close -->
   """
   @spec get_release(
@@ -53,6 +62,7 @@ defmodule Aura.Releases do
         ) :: {:ok, HexRelease.t()} | {:error, any()}
   def get_release(package_name, version, opts \\ []) do
     {path, opts} = determine_path(opts, Path.join(@packages_path, "#{package_name}/releases/#{version}"))
+    opts = Keyword.merge([qparams: [downloads: :all]], opts)
 
     with {:ok, %{body: body}} <- Requester.get(path, opts) do
       {:ok, HexRelease.build(body)}
@@ -66,7 +76,8 @@ defmodule Aura.Releases do
   ### 🏷️ Params
     * **package_name** :: `t:Aura.Common.package_name/0`
     * **version** :: `t:Aura.Common.release_version/0`
-    * **opts** :: option parameters used to modify requests
+    * **opts**
+      * **repo** :: `t:Aura.Common.repo_name/0`
 
   #{Aura.Doc.returns(success: "{:ok, [... tar contents ...]}", failure: "{:error, (some error)}")}
 
@@ -77,6 +88,13 @@ defmodule Aura.Releases do
       iex> {:ok, contents} = Releases.get_release_docs("jason", "1.4.4", repo_url: repo_url)
       iex> Enum.empty?(contents)
       false
+
+  ### 👩‍💻 API Details
+    
+  | Method | Path                                                           | Controller                                        | Action |
+  |--------|----------------------------------------------------------------|---------------------------------------------------|--------|
+  | GET    | /api/packages/:package_name/releases/:version/docs             | #{Aura.Doc.controller_doc_link("DocsController")} | :show  |
+  | GET    | /api/repos/:repo/packages/:package_name/releases/:version/docs | #{Aura.Doc.controller_doc_link("DocsController")} | :show  |
 
   <!-- tabs-close -->
   """
@@ -106,7 +124,8 @@ defmodule Aura.Releases do
   ### 🏷️ Params
     * **package_name** :: `t:Aura.Common.package_name/0`
     * **version** :: `t:Aura.Common.release_version/0`
-    * **opts** :: option parameters used to modify requests
+    * **opts**
+      * **repo** :: `t:Aura.Common.repo_name/0`
 
   #{Aura.Doc.returns(success: ":ok", failure: "{:error, (some error)}")}
 
@@ -120,6 +139,13 @@ defmodule Aura.Releases do
       iex> # delete the release
       iex> Releases.delete_release(package.name, version, repo_url: repo_url)
       :ok
+
+  ### 👩‍💻 API Details
+    
+  | Method | Path                                                      | Controller                                           | Action  |
+  |--------|-----------------------------------------------------------|------------------------------------------------------|---------|
+  | DELETE | /api/packages/:package_name/releases/:version             | #{Aura.Doc.controller_doc_link("ReleaseController")} | :delete |
+  | DELETE | /api/repos/:repo/packages/:package_name/releases/:version | #{Aura.Doc.controller_doc_link("ReleaseController")} | :delete |
 
   <!-- tabs-close -->
   """
@@ -142,9 +168,18 @@ defmodule Aura.Releases do
   <!-- tabs-open -->
   ### 🏷️ Params
     * **release_code_tar** :: path to a code .tar file made by a build tool
-    * **opts** :: option parameters used to modify requests
+    * **opts**
+      * **repo** :: `t:Aura.Common.repo_name/0`
+      * **replace** :: whether to this request is a re-write
 
   #{Aura.Doc.returns(success: "{:ok, %HexRelease{...}}", failure: "{:error, (some error)}")}
+
+  ### 👩‍💻 API Details
+
+  | Method | Path                     | Controller                                           | Action   |
+  |--------|--------------------------|------------------------------------------------------|----------|
+  | POST   | /api/publish             | #{Aura.Doc.controller_doc_link("ReleaseController")} | :publish |
+  | POST   | /api/repos/:repo/publish | #{Aura.Doc.controller_doc_link("ReleaseController")} | :publish |
 
   <!-- tabs-close -->
   """
@@ -172,7 +207,8 @@ defmodule Aura.Releases do
     * **package_name** :: `t:Aura.Common.package_name/0`
     * **version** :: `t:Aura.Common.release_version/0`
     * **doc_tar** :: path to a tar.gz of the compiled docs
-    * **opts** :: option parameters used to modify requests
+    * **opts**
+      * **repo** :: `t:Aura.Common.repo_name/0`
 
   #{Aura.Doc.returns(success: "{:ok, doc_location_url}", failure: "{:error, (some error)}")}
 
@@ -190,6 +226,13 @@ defmodule Aura.Releases do
       ...>                 version,
       ...>                 doc_tar,
       ...>                 repo_url: repo_url)
+
+  ### 👩‍💻 API Details
+    
+  | Method | Path                                                           | Controller                                        | Action  |
+  |--------|----------------------------------------------------------------|---------------------------------------------------|---------|
+  | POST   | /api/packages/:package_name/releases/:version/docs             | #{Aura.Doc.controller_doc_link("DocsController")} | :create |
+  | POST   | /api/repos/:repo/packages/:package_name/releases/:version/docs | #{Aura.Doc.controller_doc_link("DocsController")} | :create |
 
   <!-- tabs-close -->
   """
@@ -221,7 +264,8 @@ defmodule Aura.Releases do
     * **version** :: `t:Aura.Common.release_version/0`
     * **reason** :: `t:retire_reason/0`
     * **message** :: Human-readable blurb about the retirement
-    * **opts** :: option parameters used to modify requests
+    * **opts**
+      * **repo** :: `t:Aura.Common.repo_name/0`
 
   #{Aura.Doc.returns(success: ":ok", failure: "{:error, (some error)}")}
 
@@ -243,6 +287,13 @@ defmodule Aura.Releases do
       ...>          repo_url: repo_url)
       :ok
     
+  ### 👩‍💻 API Details
+
+  | Method | Path                                                             | Controller                                              | Action  |
+  |--------|------------------------------------------------------------------|---------------------------------------------------------|---------|
+  | POST   | /api/packages/:package_name/releases/:version/retire             | #{Aura.Doc.controller_doc_link("RetirementController")} | :create |
+  | POST   | /api/repos/:repo/packages/:package_name/releases/:version/retire | #{Aura.Doc.controller_doc_link("RetirementController")} | :create |
+
   <!-- tabs-close -->
   """
   @spec retire_release(
@@ -270,7 +321,8 @@ defmodule Aura.Releases do
   ### 🏷️ Params
     * **package_name** :: `t:Aura.Common.package_name/0`
     * **version** :: `t:Aura.Common.release_version/0`
-    * **opts** :: option parameters used to modify requests
+    * **opts**
+      * **repo** :: `t:Aura.Common.repo_name/0`
 
   #{Aura.Doc.returns(success: ":ok", failure: "{:error, (some error)}")}
 
@@ -287,6 +339,13 @@ defmodule Aura.Releases do
       ...>          version,
       ...>          repo_url: repo_url)
       :ok
+
+  ### 👩‍💻 API Details
+    
+  | Method | Path                                                             | Controller                                              | Action  |
+  |--------|------------------------------------------------------------------|---------------------------------------------------------|---------|
+  | DELETE | /api/packages/:package_name/releases/:version/retire             | #{Aura.Doc.controller_doc_link("RetirementController")} | :delete |
+  | DELETE | /api/repos/:repo/packages/:package_name/releases/:version/retire | #{Aura.Doc.controller_doc_link("RetirementController")} | :delete |
 
   <!-- tabs-close -->
   """
@@ -310,7 +369,8 @@ defmodule Aura.Releases do
   ### 🏷️ Params
     * **package_name** :: `t:Aura.Common.package_name/0`
     * **version** :: `t:Aura.Common.release_version/0`
-    * **opts** :: option parameters used to modify requests
+    * **opts**
+      * **repo** :: `t:Aura.Common.repo_name/0`
 
   #{Aura.Doc.returns(success: "L:ok", failure: "{:error, (some error)}")}
 
@@ -327,6 +387,15 @@ defmodule Aura.Releases do
       ...>           version,
       ...>           repo_url: repo_url)
       :ok
+
+  ### 👩‍💻 API Details
+
+  | Method | Path                                                           | Controller                                        | Action  |
+  |--------|----------------------------------------------------------------|---------------------------------------------------|---------|
+  | DELETE | /api/packages/:package_name/releases/:version/docs             | #{Aura.Doc.controller_doc_link("DocsController")} | :delete |
+  | DELETE | /api/repos/:repo/packages/:package_name/releases/:version/docs | #{Aura.Doc.controller_doc_link("DocsController")} | :delete |
+
+  <!-- tabs-close -->
   """
   @spec delete_release_docs(
           package_name :: Common.package_name(),
