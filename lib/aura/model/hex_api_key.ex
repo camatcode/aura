@@ -17,7 +17,7 @@ defmodule Aura.Model.HexAPIKey do
                 url: "http://localhost:4000/api/keys/veniam.ut"
                }
                """,
-               related: [Aura.Repos]
+               related: [Aura.APIKeys]
              )
 
   import Aura.Model.Common
@@ -31,12 +31,12 @@ defmodule Aura.Model.HexAPIKey do
              """,
              warning:
                {"🔒 Security", "Guard this secret payload with your life - **never** keep it as plain text in your code."},
-             related: [Aura.Repos]
+             related: [Aura.APIKeys]
            )
   @type secret :: String.t() | nil
 
   @typedoc Aura.Doc.type_doc("Whether this key is the one currently being used to make authenticated requests",
-             related: [Aura.Repos]
+             related: [Aura.APIKeys]
            )
   @type authing_key :: boolean()
 
@@ -52,7 +52,7 @@ defmodule Aura.Model.HexAPIKey do
                %{domain: "api", resource: "read"}
                %{domain: "api", resource: "write"}
              """,
-             related: [Aura.Repos]
+             related: [Aura.APIKeys]
            )
   @type api_permission :: %{domain: String.t(), resource: String.t()}
 
@@ -60,7 +60,7 @@ defmodule Aura.Model.HexAPIKey do
              example: """
              ~U[2025-05-29 18:15:18.244790Z]
              """,
-             related: [Aura.Repos]
+             related: [Aura.APIKeys]
            )
   @type revoked_date_time :: DateTime.t() | nil
 
@@ -90,7 +90,7 @@ defmodule Aura.Model.HexAPIKey do
                 url: "http://localhost:4000/api/keys/veniam.ut"
              }
              """,
-             related: [Aura.Repos]
+             related: [Aura.APIKeys]
            )
   @type t :: %HexAPIKey{
           authing_key: authing_key(),
