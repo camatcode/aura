@@ -1,95 +1,47 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Model.Common do
-  @moduledoc """
-  Common capabilities across all Aura models
+  @moduledoc Aura.Doc.mod_doc("Common capabilities across all Aura models")
 
-  <!-- tabs-open -->
-
-  #{Aura.Doc.resources()}
-
-  <!-- tabs-close -->
-  """
-
-  @typedoc """
-  `DateTime` for when the record was inserted into the database
-
-  <!-- tabs-open -->
-  ### 💻 Examples
-
-  ```elixir
-  ~U[2025-05-29 18:15:18.244790Z]
-  ```
-  <!-- tabs-close -->
-  """
+  @typedoc Aura.Doc.type_doc("`DateTime` for when the record was inserted into the database",
+             example: """
+             ~U[2025-05-29 18:15:18.244790Z]
+             """
+           )
   @type inserted_at :: DateTime.t()
 
-  @typedoc """
-  URL with human-readable package/release documentation
-
-  <!-- tabs-open -->
-  ### 💻 Examples
-
-  ```elixir
-  "https://hexdocs.pm/aura/0.9.0/"
-  ```
-  <!-- tabs-close -->
-  """
+  @typedoc Aura.Doc.type_doc("URL with human-readable package/release documentation",
+             example: """
+             "https://hexdocs.pm/aura/0.9.0/"
+             """
+           )
   @type docs_html_url :: URI.t()
 
-  @typedoc """
-  URL with human-readable package/release information
-
-  <!-- tabs-open -->
-  ### 💻 Examples
-
-  ```elixir
-  "https://hex.pm/packages/aura/0.9.0"
-  ```
-
-  <!-- tabs-close -->
-  """
+  @typedoc Aura.Doc.type_doc("URL with human-readable package/release information",
+             example: """
+             "https://hex.pm/packages/aura/0.9.0"
+             """
+           )
   @type html_url :: URI.t()
 
-  @typedoc """
-  `DateTime` for when the record was last modified in the database
-
-  <!-- tabs-open -->
-  ### 💻 Examples
-
-  ```elixir
-  ~U[2025-06-01 15:13:04.347130Z]
-  ```
-
-  <!-- tabs-close -->
-  """
+  @typedoc Aura.Doc.type_doc("`DateTime` for when the record was last modified in the database",
+             example: """
+             ~U[2025-06-01 15:13:04.347130Z]
+             """
+           )
   @type updated_at :: DateTime.t()
 
-  @typedoc """
-  The URL required to perform operations on this record
-
-  <!-- tabs-open -->
-  ### 💻 Examples
-
-  ```elixir
-  "https://hex.pm/api/packages/aura/releases/0.9.0"
-  ```
-
-  <!-- tabs-close -->
-  """
+  @typedoc Aura.Doc.type_doc("The URL required to perform operations on this record",
+             example: """
+             "https://hex.pm/api/packages/aura/releases/0.9.0"
+             """
+           )
   @type url :: URI.t()
 
-  @doc """
-  Cleans and validates a map into something Aura models can easily build
-
-  <!-- tabs-open -->
-
-  ### 🏷️ Params
-    * **m** :: A map to clean and validate
-
-  #{Aura.Doc.returns(success: "[{k,v}, {k,v}...]", failure: "raises Error")}
-
-  <!-- tabs-close -->
-  """
+  @doc Aura.Doc.func_doc("Cleans and validates a map into something Aura models can easily build",
+         params: %{m: "A map to clean and validate"},
+         success: "[{k,v}, {k,v}...]",
+         failure: "raises Error"
+       )
   @spec prepare(m :: map()) :: list()
   def prepare(m) when is_map(m) do
     m

@@ -1,14 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Repos do
-  @moduledoc """
-  Service module for interacting with `Aura.Model.HexRepo`
-
-  <!-- tabs-open -->
-
-  #{Aura.Doc.resources()}
-
-  <!-- tabs-close -->
-  """
+  @moduledoc Aura.Doc.mod_doc("Service module for interacting with Hex repos")
 
   alias Aura.Common
   alias Aura.Model.HexAPIKey

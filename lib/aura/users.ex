@@ -1,14 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Users do
-  @moduledoc """
-  Service module for interacting with a `Aura.Model.HexUser`
-
-  <!-- tabs-open -->
-
-  #{Aura.Doc.resources()}
-
-  <!-- tabs-close -->
-  """
+  @moduledoc Aura.Doc.mod_doc("Service module for interacting with Hex users")
 
   import Aura.Common
 

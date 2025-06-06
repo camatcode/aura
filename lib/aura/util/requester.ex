@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Requester do
-  @moduledoc """
-  Utility for making HTTP requests to a Hex-compliant API
-  """
+  @moduledoc Aura.Doc.mod_doc("Utility for making HTTP requests to a Hex-compliant API")
+
   alias Aura.Common
 
   require Logger
