@@ -249,6 +249,7 @@ defmodule Aura.Doc do
   end
 
   def returns(success: nil, failure: nil), do: ""
+  def returns(success: success, failure: nil), do: returns(success: success)
 
   def returns(success: success, failure: failure) do
     "### ⤵️ Returns

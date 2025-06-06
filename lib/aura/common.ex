@@ -4,134 +4,72 @@ defmodule Aura.Common do
 
   alias Aura.Requester
 
-  @typedoc """
-  A human-readable name for this API key
-
-  <!-- tabs-open -->
-
-  ### 💻 Examples
-
-  ```elixir
-  "my_computer"
-  ```
-
-  <!-- tabs-close -->
-  """
+  @typedoc Aura.Doc.type_doc("A human-readable name for this API key",
+             example: """
+              "my_computer"
+             """
+           )
   @type api_key_name :: String.t()
 
-  @typedoc """
-  The path parameter of the request
-
-  <!-- tabs-open -->
-
-  ### 💻 Examples
-
-  ```elixir
-  "/packages"
-  ```
-
-  <!-- tabs-close -->
-  """
+  @typedoc Aura.Doc.type_doc("The path parameter of the request",
+             examples: """
+                 "/packages"
+             """
+           )
   @type api_path :: String.t()
 
-  @typedoc """
-  Name of the package
-
-  <!-- tabs-open -->
-
-  ### 💻 Examples
-
-  ```elixir
-  "plug"
-  ```
-
-  <!-- tabs-close -->
-  """
+  @typedoc Aura.Doc.type_doc("Name of the package",
+             example: """
+             "plug"
+             """
+           )
   @type package_name :: String.t()
 
-  @typedoc """
-  A unique, human-readable ID for a user
-
-  <!-- tabs-open -->
-
-  ### 💻 Examples
-
-  ```elixir
-  "camatcode"
-  ```
-
-  <!-- tabs-close -->
-  """
+  @typedoc Aura.Doc.type_doc("A unique, human-readable ID for a user",
+             example: """
+               "camatcode"
+             """
+           )
   @type username :: String.t()
 
-  @typedoc """
-  An email address associated with this record
-
-  <!-- tabs-open -->
-
-  ### 💻 Examples
-
-  ```elixir
-  "hello@example.com"
-  ```
-
-  <!-- tabs-close -->
-  """
+  @typedoc Aura.Doc.type_doc("An email address associated with this record",
+             example: """
+             "hello@example.com"
+             """
+           )
   @type email :: String.t()
 
-  @typedoc """
-  The version of a release
-
-  <!-- tabs-open -->
-
-  ### 💻 Examples
-
-  ```elixir
-  "1.2.3"
-  ```
-
-  <!-- tabs-close -->
-  """
+  @typedoc Aura.Doc.type_doc("The version of a release",
+             example: """
+             "1.2.3"
+             """
+           )
   @type release_version :: String.t()
 
-  @typedoc """
-  The name of the repository
-
-  <!-- tabs-open -->
-
-  ### 💻 Examples
-
-  ```elixir
-  "hexpm"
-  ```
-
-  <!-- tabs-close -->
-  """
+  @typedoc Aura.Doc.type_doc("The name of the repository",
+             example: """
+             "hexpm"
+             """
+           )
   @type repo_name :: String.t()
 
-  @doc """
-  Implements Hex API's pagination mechanism by returning a `Stream.resource/3`
-
-  <!-- tabs-open -->
-  ### 🏷️ Params
-    * **path** :: `t:api_path/0`
-    * **build_func** :: a function that takes in a map and returns a struct representing what's being paginated
-    * **opts** :: option parameters used to modify requests
-
-  #{Aura.Doc.returns(success: "a `Stream.resource/3`")}
-
-  ### 💻 Examples
-
-      iex> alias Aura.Common
-      iex> alias Aura.Model.HexPackage
-      iex> opts = [repo_url: "http://localhost:4000/api", repo: "hexpm", page: 2, sort: :total_downloads]
-      iex> {path, opts} = Common.determine_path(opts, "/packages")
-      iex> packages = Common.stream_paginate(path, &HexPackage.build/1, opts)
-      iex> Enum.empty?(packages)
-      false
-
-  <!-- tabs-close -->
-  """
+  @doc Aura.Doc.func_doc("Implements Hex API's pagination mechanism by returning a `Stream.resource/3`",
+         params: %{
+           path: "`t:api_path/0`",
+           build_func: "a function that takes in a map and returns a struct representing what's being paginated",
+           opts: "option parameters used to modify requests"
+         },
+         success: "a `Stream.resource/3`",
+         example: """
+         iex> alias Aura.Common
+         iex> alias Aura.Model.HexPackage
+         iex> opts = [repo_url: "http://localhost:4000/api", repo: "hexpm", page: 2, sort: :total_downloads]
+         iex> {path, opts} = Common.determine_path(opts, "/packages")
+         iex> packages = Common.stream_paginate(path, &HexPackage.build/1, opts)
+         iex> Enum.empty?(packages)
+         false
+         """
+       )
   @spec stream_paginate(path :: api_path(), build_func :: (map() -> map()), opts :: list()) :: Enumerable.t()
   def stream_paginate(path, build_func, opts) do
     qparams =
@@ -152,28 +90,21 @@ defmodule Aura.Common do
     Stream.resource(start_fun, continue_fun, end_fun)
   end
 
-  @doc """
-  Determines a `t:api_path/0` by investigating **opts** for a `:repo` key, representing a `Aura.Model.HexRepo`.
-
-  If present, **path** will be modified to scope solely to that repo, otherwise the **path** is unmodified.
-
-  <!-- tabs-open -->
-  ### 🏷️ Params
-    * **opts** :: option parameters used to modify requests
-    * **path** :: `t:api_path/0`
-
-  #{Aura.Doc.returns(success: "{path, opts}")}
-
-  ### 💻 Examples
-
-      iex> alias Aura.Common
-      iex> alias Aura.Model.HexPackage
-      iex> opts = [repo_url: "http://localhost:4000/api", repo: "hexpm", page: 2, sort: :total_downloads]
-      iex> {_path, _opts} = Common.determine_path(opts, "/packages")
-      {"/repos/hexpm/packages", [repo_url: "http://localhost:4000/api", page: 2, sort: :total_downloads]}
-
-  <!-- tabs-close -->
-  """
+  @doc Aura.Doc.func_doc(
+         [
+           "Determines a `t:api_path/0` by investigating **opts** for a `:repo` key, representing a `Aura.Model.HexRepo`.",
+           "If present, **path** will be modified to scope solely to that repo, otherwise the **path** is unmodified."
+         ],
+         params: %{opts: "option parameters used to modify requests", path: "`t:api_path/0`"},
+         success: "{path, opts}",
+         example: """
+         iex> alias Aura.Common
+         iex> alias Aura.Model.HexPackage
+         iex> opts = [repo_url: "http://localhost:4000/api", repo: "hexpm", page: 2, sort: :total_downloads]
+         iex> {_path, _opts} = Common.determine_path(opts, "/packages")
+         {"/repos/hexpm/packages", [repo_url: "http://localhost:4000/api", page: 2, sort: :total_downloads]}
+         """
+       )
   @spec determine_path(opts :: [any()], path :: api_path()) :: {api_path(), [any()]}
   def determine_path(opts, path) do
     if opts[:repo] do
