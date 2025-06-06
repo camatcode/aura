@@ -15,7 +15,7 @@ defmodule Aura.Doc do
     <!-- tabs-open -->
     #{example}
 
-    #{Aura.Doc.resources()}
+    #{resources()}
 
     #{related}
 
@@ -64,7 +64,7 @@ defmodule Aura.Doc do
     <!-- tabs-open -->
     #{params}
 
-    #{Aura.Doc.returns(success: success, failure: failure)}
+    #{returns(success: success, failure: failure)}
 
     #{example}
 
@@ -115,7 +115,7 @@ defmodule Aura.Doc do
 
     table_contents =
       Enum.map_join(route_infos, "\n", fn info ->
-        "| #{info.method}    | #{info.route} | #{Aura.Doc.controller_doc_link("#{info.controller}")} | :#{info.action} |"
+        "| #{info.method}    | #{info.route} | #{controller_doc_link("#{info.controller}")} | :#{info.action} |"
       end)
 
     """
@@ -220,14 +220,7 @@ defmodule Aura.Doc do
     |> related()
   end
 
-  def maintainer_github, do: "👾 [Github: camatcode](https://github.com/camatcode/){:target=\"_blank\"}"
-
-  def maintainer_fediverse,
-    do: "🐘 [Fediverse: @scrum_log@maston.social](https://mastodon.social/@scrum_log){:target=\"_blank\"}"
-
-  def contact_maintainer, do: "💬 Contact the maintainer (he's happy to help!)"
-
-  def resources do
+  defp resources do
     "### 📖 Resources
   * 🐝 Hex
     * #{see_hex_spec()}
@@ -239,37 +232,17 @@ defmodule Aura.Doc do
     "
   end
 
-  def controller_doc_link(controller_name) do
+  defp maintainer_github, do: "👾 [Github: camatcode](https://github.com/camatcode/){:target=\"_blank\"}"
+
+  defp maintainer_fediverse,
+    do: "🐘 [Fediverse: @scrum_log@maston.social](https://mastodon.social/@scrum_log){:target=\"_blank\"}"
+
+  defp contact_maintainer, do: "💬 Contact the maintainer (he's happy to help!)"
+
+  defp controller_doc_link(controller_name) do
     snaked_name = controller_name |> ProperCase.snake_case() |> String.downcase()
     url = "https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/#{snaked_name}.ex"
     "[#{controller_name}](#{url}){:target=\"_blank\"}"
-  end
-
-  def api_details([]), do: ""
-
-  def api_details(route_info) when is_map(route_info), do: api_details([route_info])
-
-  def api_details(route_infos) when is_list(route_infos) do
-    header = "### 👩‍💻 API Details "
-
-    table_header =
-      String.trim("""
-      | Method | Path                  | Controller                                        | Action      |
-      |--------|-----------------------|---------------------------------------------------|-------------|
-      """)
-
-    table_contents =
-      Enum.map_join(route_infos, "\n", fn info ->
-        "| #{info.method}    | #{info.route} | #{Aura.Doc.controller_doc_link("#{info.controller}")} | :#{info.action} |"
-      end)
-
-    """
-    #{header}
-
-    #{table_header}
-    #{table_contents}
-
-    """
   end
 
   defp see_hex_spec do
@@ -284,11 +257,11 @@ defmodule Aura.Doc do
     see_link("hexpm/hexpm", "https://github.com/hexpm/hexpm", "👾")
   end
 
-  def see_link(title, url, emoji \\ "📖") do
+  defp see_link(title, url, emoji \\ "📖") do
     "#{emoji} [#{title}](#{url}){:target=\"_blank\"}"
   end
 
-  def related(related_list) do
+  defp related(related_list) do
     header = "### 👀 See Also "
 
     related_block =
@@ -302,10 +275,10 @@ defmodule Aura.Doc do
     """
   end
 
-  def returns(success: nil, failure: nil), do: ""
-  def returns(success: success, failure: nil), do: returns(success: success)
+  defp returns(success: nil, failure: nil), do: ""
+  defp returns(success: success, failure: nil), do: returns(success: success)
 
-  def returns(success: success, failure: failure) do
+  defp returns(success: success, failure: failure) do
     "### ⤵️ Returns
 
   **✅ On Success**
@@ -320,7 +293,7 @@ defmodule Aura.Doc do
   ```"
   end
 
-  def returns(success: success) do
+  defp returns(success: success) do
     "### ⤵️ Returns
 
   **✅ On Success**
