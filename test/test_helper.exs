@@ -6,10 +6,10 @@ defmodule TestHelper do
   @moduledoc false
   use ExUnit.Case
 
+  alias Aura.APIKeys
   alias Aura.Packages
   alias Aura.PackageTarUtil
   alias Aura.Releases
-  alias Aura.Repos
   alias Aura.Users
 
   require Logger
@@ -65,7 +65,7 @@ defmodule TestHelper do
 
   defp create_api_key(user, password) do
     api_key_name = Faker.Internet.slug()
-    {:ok, api_key} = Repos.create_api_key(api_key_name, user.username, password, true)
+    {:ok, api_key} = APIKeys.create_api_key(api_key_name, user.username, password, true)
     Application.put_env(:aura, :api_key, api_key.secret)
     api_key
   end
