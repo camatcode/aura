@@ -54,6 +54,7 @@ defmodule Aura.Doc do
     warning = render_warning(opts[:warning])
     success = opts[:success]
     failure = opts[:failure]
+    api_details = render_api_details(opts[:api])
 
     """
     #{description}
@@ -67,9 +68,62 @@ defmodule Aura.Doc do
 
     #{example}
 
+    #{api_details}
+
     #{related}
 
     <!-- tabs-close -->
+    """
+  end
+
+  defp render_api_details(nil), do: ""
+
+  defp render_api_details(m) when is_map(m) do
+    #         api: %{method: :get, route: @base_path, controller: :Package, action: index, repo_scope: true},
+    method = m[:method] || :GET
+    method = String.upcase("#{method}")
+    controller = "#{m.controller}"
+
+    controller =
+      if String.ends_with?(controller, "Controller") do
+        controller
+      else
+        "#{controller}Controller"
+      end
+
+    action = m.action
+
+    route = m.route
+
+    route_infos =
+      if m[:repo_scope] do
+        [
+          %{method: method, action: action, controller: controller, route: route},
+          %{method: method, action: action, controller: controller, route: Path.join("/repos/`opts[:repo]`", route)}
+        ]
+      else
+        [%{method: method, action: action, controller: controller, route: route}]
+      end
+
+    header = "### 👩‍💻 API Details "
+
+    table_header =
+      String.trim("""
+      | Method | Path                  | Controller                                        | Action      |
+      |--------|-----------------------|---------------------------------------------------|-------------|
+      """)
+
+    table_contents =
+      Enum.map_join(route_infos, "\n", fn info ->
+        "| #{info.method}    | #{info.route} | #{Aura.Doc.controller_doc_link("#{info.controller}")} | :#{info.action} |"
+      end)
+
+    """
+    #{header}
+
+    #{table_header}
+    #{table_contents}
+
     """
   end
 
