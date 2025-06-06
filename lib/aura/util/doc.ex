@@ -5,9 +5,12 @@ defmodule Aura.Doc do
     description = render_description(description)
     example = render_example(opts[:example])
     related = render_related(opts[:related])
+    warning = render_warning(opts[:warning])
 
     """
     #{description}
+
+    #{warning}
 
     <!-- tabs-open -->
     #{example}
@@ -25,9 +28,12 @@ defmodule Aura.Doc do
     keys = render_keys(opts[:keys])
     example = render_example(opts[:example])
     related = render_related(opts[:related])
+    warning = render_warning(opts[:warning])
 
     """
     #{description}
+
+    #{warning}
 
     <!-- tabs-open -->
     #{keys}
@@ -45,18 +51,35 @@ defmodule Aura.Doc do
     params = render_params(opts[:params])
     example = render_example(opts[:example])
     related = render_related(opts[:related])
+    warning = render_warning(opts[:warning])
+    success = opts[:success]
+    failure = opts[:failure]
 
     """
     #{description}
 
+    #{warning}
+
     <!-- tabs-open -->
     #{params}
+
+    #{Aura.Doc.returns(success: success, failure: failure)}
 
     #{example}
 
     #{related}
 
     <!-- tabs-close -->
+    """
+  end
+
+  defp render_warning(nil), do: ""
+
+  defp render_warning({heading, message}) do
+    """
+    > #### #{heading} {: .warning}
+    >
+    > #{message}
     """
   end
 
@@ -224,6 +247,8 @@ defmodule Aura.Doc do
     #{related_block}
     """
   end
+
+  def returns(success: nil, failure: nil), do: ""
 
   def returns(success: success, failure: failure) do
     "### ⤵️ Returns
