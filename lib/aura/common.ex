@@ -100,8 +100,8 @@ defmodule Aura.Common do
 
   @doc Aura.Doc.func_doc(
          [
-           "Determines a `t:api_path/0` by investigating **opts** for a `:repo` key, representing a `Aura.Model.HexRepo`.",
-           "If present, **path** will be modified to scope solely to that repo, otherwise the **path** is unmodified."
+           "Determines a `t:api_path/0` by investigating **opts** for a `:repo` or `:org` key, representing a `Aura.Model.HexRepo` or a `Aura.Model.HexOrganization`.",
+           "If present, **path** will be modified to scope solely to that repo or org, otherwise the **path** is unmodified."
          ],
          params: %{opts: "option parameters used to modify requests", path: "`t:api_path/0`"},
          success: "{path, opts}",
@@ -111,12 +111,22 @@ defmodule Aura.Common do
          iex> opts = [repo_url: "http://localhost:4000/api", repo: "hexpm", page: 2, sort: :total_downloads]
          iex> {_path, _opts} = Common.determine_path(opts, "/packages")
          {"/repos/hexpm/packages", [repo_url: "http://localhost:4000/api", page: 2, sort: :total_downloads]}
+         iex> opts = [repo_url: "http://localhost:4000/api", org: "my_org", page: 2]
+         iex> {_path, _opts} = Common.determine_path(opts, "/keys")
+         {"/orgs/my_org/keys", [repo_url: "http://localhost:4000/api", page: 2]}
          """
        )
   @spec determine_path(opts :: [any()], path :: api_path()) :: {api_path(), [any()]}
   def determine_path(opts, path) do
-    if opts[:repo] do
-      {Path.join("/repos/#{opts[:repo]}", path), Keyword.delete(opts, :repo)}
+    {path, opts} =
+      if opts[:repo] do
+        {Path.join("/repos/#{opts[:repo]}", path), Keyword.delete(opts, :repo)}
+      else
+        {path, opts}
+      end
+
+    if opts[:org] do
+      {Path.join("/orgs/#{opts[:org]}", path), Keyword.delete(opts, :org)}
     else
       {path, opts}
     end

@@ -79,7 +79,6 @@ defmodule Aura.Doc do
   defp render_api_details(nil), do: ""
 
   defp render_api_details(m) when is_map(m) do
-    #         api: %{method: :get, route: @base_path, controller: :Package, action: index, repo_scope: true},
     method = m[:method] || :GET
     method = String.upcase("#{method}")
     controller = "#{m.controller}"
@@ -102,7 +101,14 @@ defmodule Aura.Doc do
           %{method: method, action: action, controller: controller, route: Path.join("/repos/`opts[:repo]`", route)}
         ]
       else
-        [%{method: method, action: action, controller: controller, route: route}]
+        if m[:org_scope] do
+          [
+            %{method: method, action: action, controller: controller, route: route},
+            %{method: method, action: action, controller: controller, route: Path.join("/orgs/`opts[:org]`", route)}
+          ]
+        else
+          [%{method: method, action: action, controller: controller, route: route}]
+        end
       end
 
     header = "### 👩‍💻 API Details "
