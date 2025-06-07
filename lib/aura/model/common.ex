@@ -2,6 +2,9 @@
 defmodule Aura.Model.Common do
   @moduledoc Aura.Doc.mod_doc("Common capabilities across all Aura models")
 
+  @typedoc Aura.Doc.type_doc("Whether the repository is a billable entity")
+  @type billing_active :: boolean()
+
   @typedoc Aura.Doc.type_doc("`DateTime` for when the record was inserted into the database",
              example: """
              ~U[2025-05-29 18:15:18.244790Z]

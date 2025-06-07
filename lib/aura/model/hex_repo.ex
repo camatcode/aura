@@ -28,9 +28,6 @@ defmodule Aura.Model.HexRepo do
   @typedoc Aura.Doc.type_doc("Whether the repository is active")
   @type active :: boolean()
 
-  @typedoc Aura.Doc.type_doc("Whether the repository is a billable entity")
-  @type billing_active :: boolean()
-
   @enforce_keys [:name]
 
   defstruct [
@@ -47,7 +44,7 @@ defmodule Aura.Model.HexRepo do
              keys: %{
                public: Aura.Model.HexRepo,
                active: Aura.Model.HexRepo,
-               billing_active: Aura.Model.HexRepo,
+               billing_active: Aura.Model.Common,
                inserted_at: Aura.Model.Common,
                updated_at: Aura.Model.Common
              },
@@ -66,7 +63,7 @@ defmodule Aura.Model.HexRepo do
           name: Aura.Common.repo_name(),
           public: public(),
           active: active(),
-          billing_active: billing_active(),
+          billing_active: Common.billing_active(),
           inserted_at: Common.inserted_at(),
           updated_at: Common.updated_at()
         }
