@@ -2,7 +2,7 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/camatcode/aura/refs/heads/main/assets/aura-logo-dark.png">
     <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/camatcode/aura/refs/heads/main/assets/aura-logo-light.png">
-    <img alt="aura logo" src="https://raw.githubusercontent.com/camatcode/aura/refs/heads/main/assets/aura-logo-light.png" width="320">
+    <img alt="aura logo" src="https://raw.githubusercontent.com/camatcode/aura/refs/heads/main/assets/aura-logo-light.png" width="720">
   </picture>
 </p>
 
