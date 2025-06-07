@@ -47,6 +47,7 @@ defmodule Aura.MixProject do
     [
       Service: [
         Aura.APIKeys,
+        Aura.Orgs,
         Aura.Packages,
         Aura.Releases,
         Aura.Repos,
@@ -55,6 +56,8 @@ defmodule Aura.MixProject do
       Model: [
         Aura.Model.HexAPIKey,
         Aura.Model.HexAuditLog,
+        Aura.Model.HexOrg,
+        Aura.Model.HexOrgMember,
         Aura.Model.HexPackage,
         Aura.Model.HexPackageDownloadStats,
         Aura.Model.HexPackageMeta,

@@ -39,6 +39,14 @@ defmodule Aura.Common do
            )
   @type email :: String.t()
 
+  @typedoc Aura.Doc.type_doc("Name of the Hex organization",
+             example: """
+             "my_org"
+             """,
+             related: [Aura.Orgs]
+           )
+  @type org_name :: String.t()
+
   @typedoc Aura.Doc.type_doc("The version of a release",
              example: """
              "1.2.3"

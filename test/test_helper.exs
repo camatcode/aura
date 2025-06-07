@@ -29,6 +29,7 @@ defmodule TestHelper do
 
     %{
       user: user,
+      password: password,
       other_users: other_users,
       api_key: api_key,
       owned_releases: owned_releases,

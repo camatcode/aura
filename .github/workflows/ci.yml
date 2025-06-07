@@ -27,7 +27,7 @@ jobs:
       # Label used to access the service container
       hex_beefy:
         # Docker Hub image
-        image: camatcode/hex_beefy:latest
+        image: camatcode/hex_beefy:with-test-user
         ports:
           - 4000:4000
 
