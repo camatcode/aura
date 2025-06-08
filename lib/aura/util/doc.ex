@@ -76,6 +76,10 @@ defmodule Aura.Doc do
     """
   end
 
+  def readme do
+    File.read!("README.md")
+  end
+
   defp render_api_details(nil), do: ""
 
   defp render_api_details(m) when is_map(m) do
