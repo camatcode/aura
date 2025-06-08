@@ -77,7 +77,7 @@ defmodule Aura.Doc do
   end
 
   def readme do
-    File.read!("README.md")
+    "README.md" |> File.read!() |> String.replace("(#", "(#module-")
   end
 
   defp render_api_details(nil), do: ""
