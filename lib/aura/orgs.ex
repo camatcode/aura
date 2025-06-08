@@ -42,7 +42,7 @@ defmodule Aura.Orgs do
          failure: "{:error, (some error)}",
          api: %{route: Path.join(@base_path, ":org_name/members"), controller: :OrganizationUser, action: :index}
        )
-  def get_org_members(org_name, opts \\ []) do
+  def list_org_members(org_name, opts \\ []) do
     path = Path.join(@base_path, "#{org_name}/members")
 
     with {:ok, %{body: body}} <- Requester.get(path, opts) do

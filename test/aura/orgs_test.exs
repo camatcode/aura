@@ -32,7 +32,7 @@ defmodule Aura.OrgsTest do
       refute Enum.empty?(audit_logs)
       Enum.each(audit_logs, fn audit_log -> assert audit_log.action end)
 
-      {:ok, members} = Orgs.get_org_members(org.name)
+      {:ok, members} = Orgs.list_org_members(org.name)
       refute Enum.empty?(members)
 
       Enum.each(members, fn member ->

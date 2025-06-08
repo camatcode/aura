@@ -43,6 +43,7 @@
 - [Configuration](#configuration)
 - [Smoke Test](#smoke-test)
 - [Implementation Overview](#implementation-overview)
+    - [Domains](#domains)
 - [Testing](#testing)
 - [FAQ](#faq)
 
@@ -115,7 +116,19 @@ latest_version = package.releases |> hd() |> Map.get(:version)
 
 ## Implementation Overview
 
-🚧 TODO
+### Domains
+
+| Domain       | Hex API Controller                                                                                                          | Aura Equivalant | Implemented Actions                             | Notes                                       |
+|--------------|-----------------------------------------------------------------------------------------------------------------------------|-----------------|-------------------------------------------------|---------------------------------------------|
+| API Key      | [KeyController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/key_controller.ex)                   | `Aura.APIKeys`  | list, get, create, delete, delete all           | Can be scoped to an organization            |
+| Organization | [OrganizationController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/organization_controller.ex) | `Aura.Orgs`     | list, get, audit                                |                                             |
+| -> Org User  | [OrganizationUser](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/organization_user_controller.ex)  | `Aura.Orgs`     | list, get, add, change role, remove             |                                             |
+| Package      | [PackageController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/package_controller.ex)           | `Aura.Packages` | stream packages, get, audit                     | Can be scoped to a repo                     |
+| -> Owner     | [OwnerController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/owner_controller.ex)               | `Aura.Packages` | list, get, add, remove                          | Can be scoped to a repo                     |
+| Release      | [ReleaseController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/release_controller.ex)           | `Aura.Releases` | publish, get, retire, un-retire, delete         | Can be scoped to a repo                     |
+| -> Doc       | [DocsController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/docs_controller.ex)                 | `Aura.Releases` | publish, get, delete                            | Can be scoped to a repo                     |
+| Repository   | [RepositoryController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/repository_controller.ex)     | `Aura.Repos`    | list, get                                       |                                             |
+| User         | [UserController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/user_controller.ex)                 | `Aura.Users`    | create, get, get current, reset password, audit | Read `create` docs carefully for ToS caveat |
 
 ## Testing
 
