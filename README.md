@@ -160,15 +160,15 @@ to http://localhost:4000/api in [Configuration](#configuration).
 
 ## FAQ
 
-> Why not use hex_core?
+> Why?
 
-Fantastic question! I'd say for most cases, you should just use hex_core, or the associated Mix tasks to interact with
-Hex. But here are a couple of motivations for using Aura.
+I started this project while exploring all the Hex API does, had trouble understanding it all, so started documenting things as I found them, and wound up with an entire project.
 
-1. hex_core can be intimidating to folks without a strong erlang background.
-2. Aura is meant to be friendly to Elixir folks.
-3. Aura's aim is to be [documented](https://hexdocs.pm/aura) *to hell and back*.
-4. The maintainer has larger plans that would use Aura as a base.
+Here are some goals and motivations: 
+
+1. Aura is meant to be friendly to Elixir folks.
+2. Aura's aim is to be [documented](https://hexdocs.pm/aura) *to hell and back*.
+3. The maintainer has larger plans that would use Aura as a base.
 
 
 
