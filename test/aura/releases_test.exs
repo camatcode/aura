@@ -37,7 +37,7 @@ defmodule Aura.ReleasesTest do
       doc_tar = Path.join("test/support/data/docs/", "nimble_parsec-1.4.2.tar.gz")
       {:ok, _} = Releases.publish_release_docs(package_name, release_version, doc_tar, repo: repo.name)
 
-      :ok = Releases.delete_release(package_name, release_version)
+      :ok = Releases.delete_release(package_name, release_version, repo: repo.name)
     end)
   end
 

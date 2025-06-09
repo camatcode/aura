@@ -22,6 +22,8 @@ defmodule TestHelper do
     Application.delete_env(:aura, :api_key)
     # Create a user
     {user, other_users} = create_users(repo_url, password)
+    # Add users to org
+    :ok = add_users_to_org([user] ++ other_users)
     # Create an write API key
     api_key = create_api_key(user, password)
     # Generate some package and releases
@@ -69,6 +71,20 @@ defmodule TestHelper do
     {:ok, api_key} = APIKeys.create_api_key(api_key_name, user.username, password, true)
     Application.put_env(:aura, :api_key, api_key.secret)
     api_key
+  end
+
+  defp add_users_to_org(users_to_add) do
+    {:ok, key} = Aura.APIKeys.create_api_key("test_user_key", "test@test.com", "elixir1234", true, org: "test_org")
+    Application.put_env(:aura, :api_key, key.secret)
+    {:ok, orgs} = Aura.Orgs.list_orgs()
+
+    Enum.each(orgs, fn org ->
+      Enum.each(users_to_add, fn user ->
+        {:ok, _} = Aura.Orgs.add_org_member(org.name, user.username, :write)
+      end)
+    end)
+
+    Application.delete_env(:aura, :api_key)
   end
 
   defp create_releases do

@@ -18,12 +18,23 @@ defmodule Aura.Common do
            )
   @type api_path :: String.t()
 
+  @typedoc Aura.Doc.type_doc("Options to modify an audit request",
+             keys: %{
+               repo_url: Aura.Common,
+               page: {Aura.Common, :start_page}
+             }
+           )
+  @type audit_opts :: [repo_url: Aura.Common.repo_url(), page: Aura.Common.start_page()]
+
   @typedoc Aura.Doc.type_doc("Name of the package",
              example: """
              "plug"
              """
            )
   @type package_name :: String.t()
+
+  @typedoc Aura.Doc.type_doc("When streaming, start at this page number. Default: 1")
+  @type start_page :: non_neg_integer()
 
   @typedoc Aura.Doc.type_doc("A unique, human-readable ID for a user",
              example: """
@@ -61,13 +72,21 @@ defmodule Aura.Common do
            )
   @type repo_name :: String.t()
 
+  @typedoc Aura.Doc.type_doc("A Hex compliant API endpoint",
+             example: """
+             "https://hex.pm/api"
+             "http://localhost:4000/api"
+             """
+           )
+  @type repo_url :: URI.t()
+
   @doc Aura.Doc.func_doc("Implements Hex API's pagination mechanism by returning a `Stream.resource/3`",
          params: %{
            path: "`t:api_path/0`",
            build_func: "a function that takes in a map and returns a struct representing what's being paginated",
            opts: "option parameters used to modify requests"
          },
-         success: "a `Stream.resource/3`",
+         success: "Stream.resource/3",
          example: """
          iex> alias Aura.Common
          iex> alias Aura.Model.HexPackage

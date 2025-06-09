@@ -12,14 +12,12 @@ defmodule Aura.Doc do
 
     #{warning}
 
-    <!-- tabs-open -->
     #{example}
 
     #{resources()}
 
     #{related}
 
-    <!-- tabs-close -->
     """
   end
 
@@ -35,49 +33,78 @@ defmodule Aura.Doc do
 
     #{warning}
 
-    <!-- tabs-open -->
     #{keys}
 
     #{example}
 
     #{related}
-
-    <!-- tabs-close -->
+      
     """
   end
 
   def func_doc(description, opts \\ []) do
     description = render_description(description)
-    params = render_params(opts[:params])
     example = render_example(opts[:example])
     related = render_related(opts[:related])
     warning = render_warning(opts[:warning])
     success = opts[:success]
     failure = opts[:failure]
     api_details = render_api_details(opts[:api])
+    signature = render_func_sig(opts[:params], success, failure)
 
     """
     #{description}
 
     #{warning}
 
-    <!-- tabs-open -->
-    #{params}
-
-    #{returns(success: success, failure: failure)}
-
-    #{example}
+    #{signature}
 
     #{api_details}
 
-    #{related}
+    #{example}
 
-    <!-- tabs-close -->
+    #{related}
+      
     """
   end
 
   def readme do
     "README.md" |> File.read!() |> String.replace("(#", "(#module-")
+  end
+
+  defp render_func_sig(params, success, failure) do
+    header = "###  Parameters "
+
+    table_header =
+      String.trim("""
+      | Parameter | Description   |
+      |--------|-----------------------|
+      """)
+
+    table_contents =
+      Enum.map_join(params, "\n", fn {k, v} ->
+        if String.starts_with?("#{k}", "opts") && "#{k}" != "opts" do
+          "| `#{k}`   | #{render_param_value(v)} |"
+        else
+          "| *#{k}*   | #{render_param_value(v)} |"
+        end
+      end)
+
+    _returns =
+      if success && failure do
+        "Returns: <pre>#{success}</pre> or <pre>#{failure}</pre>"
+      else
+        if success, do: "Returns: <pre>#{success}</pre>", else: ""
+      end
+
+    """
+    #{header}
+      
+    #{table_header}
+    #{table_contents}
+
+
+    """
   end
 
   defp render_api_details(nil), do: ""
@@ -115,7 +142,7 @@ defmodule Aura.Doc do
         end
       end
 
-    header = "### 👩‍💻 API Details "
+    header = "### API Details "
 
     table_header =
       String.trim("""
@@ -125,7 +152,7 @@ defmodule Aura.Doc do
 
     table_contents =
       Enum.map_join(route_infos, "\n", fn info ->
-        "| #{info.method}    | #{info.route} | #{controller_doc_link("#{info.controller}")} | :#{info.action} |"
+        "| **#{info.method}**    | #{render_route(info.route)} | #{controller_doc_link("#{info.controller}")} | `:#{info.action}` |"
       end)
 
     """
@@ -135,6 +162,19 @@ defmodule Aura.Doc do
     #{table_contents}
 
     """
+  end
+
+  defp render_route(route) do
+    route
+    |> Path.split()
+    |> Enum.map(fn part ->
+      if String.starts_with?(part, ":") do
+        "`#{part}`"
+      else
+        part
+      end
+    end)
+    |> Path.join()
   end
 
   defp render_warning(nil), do: ""
@@ -147,28 +187,16 @@ defmodule Aura.Doc do
     """
   end
 
-  defp render_params(nil), do: ""
+  defp render_param_value(v) when is_bitstring(v), do: v
 
-  defp render_params(m) when is_map(m) do
-    header = "### 🏷️ Params"
-
-    rendered_params =
-      Enum.map_join(m, "\n", fn {k, v} ->
-        "* **#{k}** :: #{v}"
-      end)
-
-    """
-    #{header}
-
-    #{rendered_params}
-
-    """
+  defp render_param_value(v) do
+    render_key(v)
   end
 
   defp render_keys(nil), do: ""
 
   defp render_keys(m) when is_map(m) do
-    header = "### 🏷️ Keys"
+    header = "### Keys"
 
     rendered_keys =
       Enum.map_join(m, "\n", fn {k, v} ->
@@ -181,6 +209,16 @@ defmodule Aura.Doc do
     #{rendered_keys}
 
     """
+  end
+
+  defp render_key({mod, name, :list}) do
+    cleaned = String.replace("#{mod}", "Elixir.", "")
+    "[`t:#{cleaned}.#{name}/0`]"
+  end
+
+  defp render_key({mod, name}) do
+    cleaned = String.replace("#{mod}", "Elixir.", "")
+    "`t:#{cleaned}.#{name}/0`"
   end
 
   defp render_key(k, {mod, name, :list}) do
@@ -202,7 +240,7 @@ defmodule Aura.Doc do
 
   defp render_example(example) do
     """
-    ### 💻 Examples
+    ### Examples
 
     ```elixir
     #{example}
@@ -231,14 +269,16 @@ defmodule Aura.Doc do
   end
 
   defp resources do
-    "### 📖 Resources
-  * 🐝 Hex
+    "### Resources
+  * Hex
     * #{see_hex_spec()}
     * #{see_hex_core()}
     * #{see_hex_pm()}
   * #{contact_maintainer()}
     * #{maintainer_github()}
+    * #{see_link("Elixir Form: camatcode", "https://elixirforum.com/u/camatcode/", "⚗️")}
     * #{maintainer_fediverse()}
+    * #{see_link("bsky: @ckcook.studiocms.io", "https://bsky.app/profile/ckcook.studiocms.io", "🦋️")}
     "
   end
 
@@ -247,7 +287,7 @@ defmodule Aura.Doc do
   defp maintainer_fediverse,
     do: "🐘 [Fediverse: @scrum_log@maston.social](https://mastodon.social/@scrum_log){:target=\"_blank\"}"
 
-  defp contact_maintainer, do: "💬 Contact the maintainer (he's happy to help!)"
+  defp contact_maintainer, do: "Contact the maintainer (he's happy to help!)"
 
   defp controller_doc_link(controller_name) do
     snaked_name = controller_name |> ProperCase.snake_case() |> String.downcase()
@@ -260,11 +300,11 @@ defmodule Aura.Doc do
   end
 
   defp see_hex_core do
-    see_link("hexpm/hex_core", "https://github.com/hexpm/hex_core", "👾")
+    see_link("Github: hexpm/hex_core", "https://github.com/hexpm/hex_core", "👾")
   end
 
   defp see_hex_pm do
-    see_link("hexpm/hexpm", "https://github.com/hexpm/hexpm", "👾")
+    see_link("Github: hexpm/hexpm", "https://github.com/hexpm/hexpm", "👾")
   end
 
   defp see_link(title, url, emoji \\ "📖") do
@@ -272,7 +312,7 @@ defmodule Aura.Doc do
   end
 
   defp related(related_list) do
-    header = "### 👀 See Also "
+    header = "### See Also "
 
     related_block =
       Enum.map_join(related_list, "\n", fn related ->
@@ -283,34 +323,5 @@ defmodule Aura.Doc do
     #{header}
     #{related_block}
     """
-  end
-
-  defp returns(success: nil, failure: nil), do: ""
-  defp returns(success: success, failure: nil), do: returns(success: success)
-
-  defp returns(success: success, failure: failure) do
-    "### ⤵️ Returns
-
-  **✅ On Success**
-
-  ```elixir
-  #{success}
-  ```
-  **❌ On Failure**
-
-   ```elixir
-  #{failure}
-  ```"
-  end
-
-  defp returns(success: success) do
-    "### ⤵️ Returns
-
-  **✅ On Success**
-
-  ```elixir
-  #{success}
-  ```
-  "
   end
 end

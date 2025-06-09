@@ -13,18 +13,22 @@ defmodule Aura.Users do
 
   @base_path "/users"
 
+  @type user_opts :: [
+          repo_url: Aura.Common.repo_url()
+        ]
+
   @tos_warning """
   If your service is using hex.pm as a backend, you **must** have users to agree to Hex's [Terms of Service](https://hex.pm/policies/termsofservice)
   """
 
   @doc Aura.Doc.func_doc("Requests a hex user be created",
          warning: {"📄 Terms of Service", @tos_warning},
-         params: %{
-           username: "`t:Aura.Common.username/0`",
-           password: "User's password",
-           emails: "[`t:Aura.Common.email/0`]",
-           opts: "option parameters used to modify requests"
-         },
+         params: [
+           {:username, {Aura.Common, :username}},
+           {:password, "User's password"},
+           {:emails, {Aura.Common, :email, :list}},
+           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+         ],
          success: "{:ok, %HexUser{...}}",
          failure: "{:error, (some error)}",
          api: %{method: :post, route: @base_path, controller: :User, action: :create},
@@ -42,7 +46,7 @@ defmodule Aura.Users do
           username :: Common.username(),
           password :: String.t(),
           emails :: [Common.email()],
-          opts :: list()
+          opts :: user_opts()
         ) :: {:ok, HexUser.t()} | {:error, any()}
   def create_user(username, password, emails, opts \\ [])
       when is_bitstring(username) and is_bitstring(password) and is_list(emails) do
@@ -61,10 +65,10 @@ defmodule Aura.Users do
   end
 
   @doc Aura.Doc.func_doc("Grabs a hex user, given their **username_or_email**",
-         params: %{
-           username_or_email: "`t:Aura.Common.username/0` |  `t:Aura.Common.email/0`",
-           opts: "option parameters used to modify requests"
-         },
+         params: [
+           {:username_or_email, "`t:Aura.Common.username/0` or  `t:Aura.Common.email/0`"},
+           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+         ],
          success: "{:ok, %HexUser{...}}",
          failure: "{:error, (some error)}",
          api: %{route: Path.join(@base_path, ":username_or_email"), controller: :User, action: :show},
@@ -76,7 +80,7 @@ defmodule Aura.Users do
        )
   @spec get_user(
           username_or_email :: Common.username() | Common.email(),
-          opts :: list()
+          opts :: user_opts()
         ) :: {:ok, HexUser.t()} | {:error, any()}
   def get_user(username_or_email, opts \\ []) when is_bitstring(username_or_email) do
     path = Path.join(@base_path, username_or_email)
@@ -88,7 +92,9 @@ defmodule Aura.Users do
 
   @doc Aura.Doc.func_doc(
          "Grabs the hex user representing the currently authenticated user",
-         params: %{opts: "option parameters used to modify requests"},
+         params: [
+           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+         ],
          success: "{:ok, %HexUser{...}}",
          failure: "{:error, (some error)}",
          api: %{route: Path.join(@base_path, "me"), controller: :User, action: :me},
@@ -98,7 +104,7 @@ defmodule Aura.Users do
          iex> {:ok, _user} =  Users.get_current_user(opts)
          """
        )
-  @spec get_current_user(opts :: list) :: {:ok, HexUser.t()} | {:error, any()}
+  @spec get_current_user(opts :: user_opts) :: {:ok, HexUser.t()} | {:error, any()}
   def get_current_user(opts \\ []) do
     path = Path.join(@base_path, "me")
 
@@ -107,8 +113,15 @@ defmodule Aura.Users do
     end
   end
 
-  @doc Aura.Doc.func_doc("Streams audit logs, scoped to the current authenticated user",
-         params: %{"opts.page": "start from this page number"},
+  @doc Aura.Doc.func_doc(
+         [
+           "Streams audit logs, scoped to the current authenticated user",
+           "Note that the page size is fixed by the API to be 100 per page."
+         ],
+         params: [
+           {"opts[:repo_url]", {Aura.Common, :repo_url}},
+           {"opts[:page]", {Aura.Common, :start_page}}
+         ],
          success: "Stream.resource/3",
          example: """
          iex> alias Aura.Users
@@ -119,6 +132,7 @@ defmodule Aura.Users do
          """,
          api: %{route: Path.join(@base_path, "me/audit-logs"), controller: :User, action: :audit_logs}
        )
+
   @spec stream_audit_logs(opts :: list()) :: Enumerable.t()
   def stream_audit_logs(opts \\ []) do
     path = Path.join(@base_path, "me/audit-logs")
@@ -126,10 +140,10 @@ defmodule Aura.Users do
   end
 
   @doc Aura.Doc.func_doc("Resets a specified user's password",
-         params: %{
-           username_or_email: "`t:Aura.Common.username/0` |  `t:Aura.Common.email/0`",
-           opts: "option parameters used to modify requests"
-         },
+         params: [
+           {:username_or_email, "`t:Aura.Common.username/0`  or  `t:Aura.Common.email/0`"},
+           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+         ],
          success: ":ok",
          failure: "{:error, (some error)}",
          api: %{route: Path.join(@base_path, ":username_or_email/reset"), controller: :User, action: :reset},
