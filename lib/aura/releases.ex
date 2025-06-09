@@ -15,13 +15,28 @@ defmodule Aura.Releases do
   @typedoc Aura.Doc.type_doc("The reason for retiring a release")
   @type retire_reason :: :renamed | :security | :invalid | :deprecated | :other
 
+  @typedoc Aura.Doc.type_doc("Reporting period for the number of downloads")
+  @type download_period :: :day | :month | :all
+
+  @type rel_opts :: [
+          repo_url: Aura.Common.repo_url(),
+          repo: Aura.Common.repo_name()
+        ]
+
+  @type get_rel_opts :: [
+          repo_url: Aura.Common.repo_url(),
+          repo: Aura.Common.repo_name(),
+          downloads: download_period()
+        ]
+
   @doc Aura.Doc.func_doc("Grabs a released package, given its name and version number",
-         params: %{
-           package_name: "`t:Aura.Common.package_name/0`",
-           version: "`t:Aura.Common.release_version/0`",
-           "opts.repo": "`t:Aura.Common.repo_name/0`",
-           "opts.downloads": "`:day`, `:month`, `:all`"
-         },
+         params: [
+           {:package_name, {Aura.Common, :package_name}},
+           {:version, {Aura.Common, :release_version}},
+           {"opts[:repo]", {Aura.Common, :repo_name}},
+           {"opts[:repo_url]", {Aura.Common, :repo_url}},
+           {"opts[:downloads]", {Aura.Releases, :download_period}}
+         ],
          success: "{:ok, %HexRelease{...}}",
          failure: "{:error, (some error)}",
          api: %{
@@ -41,7 +56,7 @@ defmodule Aura.Releases do
   @spec get_release(
           package_name :: Common.package_name(),
           version :: Common.release_version(),
-          opts :: list()
+          opts :: get_rel_opts()
         ) :: {:ok, HexRelease.t()} | {:error, any()}
   def get_release(package_name, version, opts \\ []) do
     {path, opts} = determine_path(opts, Path.join(@packages_path, "#{package_name}/releases/#{version}"))
@@ -53,11 +68,12 @@ defmodule Aura.Releases do
   end
 
   @doc Aura.Doc.func_doc("Returns the contents of the release's docs **tar.gz**",
-         params: %{
-           package_name: "`t:Aura.Common.package_name/0`",
-           version: "`t:Aura.Common.release_version/0`",
-           "opts.repo": "`t:Aura.Common.repo_name/0`"
-         },
+         params: [
+           {:package_name, {Aura.Common, :package_name}},
+           {:version, {Aura.Common, :release_version}},
+           {"opts[:repo]", {Aura.Common, :repo_name}},
+           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+         ],
          success: "{:ok, [... tar contents ...]}",
          failure: "{:error, (some error)}",
          api: %{
@@ -77,13 +93,13 @@ defmodule Aura.Releases do
   @spec get_release_docs(
           package_name :: Common.package_name(),
           version :: Common.release_version(),
-          opts :: list()
+          opts :: rel_opts()
         ) :: {:ok, list()} | {:error, any()}
   def get_release_docs(package_name, version, opts \\ []) do
     {path, opts} = determine_path(opts, Path.join(@packages_path, "#{package_name}/releases/#{version}/docs"))
 
     # I dislike putting test carve-outs in main
-    # but the local hexpm instance doesn't accurately respond to docs requests
+    # but the test hexpm instance doesn't accurately respond to docs requests
     if Mix.env() == :test do
       :erl_tar.extract("test/support/data/docs/nimble_parsec-1.4.2.tar.gz", [:compressed, :memory])
     else
@@ -94,11 +110,12 @@ defmodule Aura.Releases do
   end
 
   @doc Aura.Doc.func_doc("Permanently deletes a release",
-         params: %{
-           package_name: "`t:Aura.Common.package_name/0`",
-           version: "`t:Aura.Common.release_version/0`",
-           "opts.repo": "`t:Aura.Common.repo_name/0`"
-         },
+         params: [
+           {:package_name, {Aura.Common, :package_name}},
+           {:version, {Aura.Common, :release_version}},
+           {"opts[:repo]", {Aura.Common, :repo_name}},
+           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+         ],
          success: ":ok",
          failure: "{:error, (some error)}",
          api: %{
@@ -122,7 +139,7 @@ defmodule Aura.Releases do
   @spec delete_release(
           package_name :: Common.package_name(),
           version :: Common.release_version(),
-          opts :: list()
+          opts :: rel_opts()
         ) :: :ok | {:error, any()}
   def delete_release(package_name, version, opts \\ []) do
     {path, opts} = determine_path(opts, Path.join(@packages_path, "#{package_name}/releases/#{version}"))
@@ -132,22 +149,30 @@ defmodule Aura.Releases do
     end
   end
 
+  @typedoc Aura.Doc.type_doc("Whether this request is a re-write of a previously published release")
+  @type rewrite? :: boolean()
+
+  @type publish_opts :: [replace: rewrite?(), repo_url: Aura.Common.repo_url(), repo: Aura.Common.repo_name()]
+
   @doc Aura.Doc.func_doc("Publishes a release **.tar** packaged by a build tool to a Hex-compliant repository",
-         params: %{
-           release_code_tar: "path to a code .tar file made by a build tool",
-           "opts.repo": "`t:Aura.Common.repo_name/0`",
-           "opts.replace": "whether to this request is a re-write"
-         },
+         params: [
+           {:release_code_tar, "path to a code .tar file made by a build tool"},
+           {"opts[:repo]", {Aura.Common, :repo_name}},
+           {"opts[:repo_url]", {Aura.Common, :repo_url}},
+           {"opts[:replace]", {Aura.Releases, :rewrite?}}
+         ],
          success: "{:ok, %HexRelease{...}}",
          failure: "{:error, (some error)}",
          api: %{method: :post, route: "/publish", controller: :Release, action: :publish, repo_scope: true}
        )
   @spec publish_release(
           release_code_tar :: String.t(),
-          opts :: list()
+          opts :: publish_opts()
         ) :: {:ok, HexRelease.t()} | {:error, any()}
   def publish_release(release_code_tar, opts \\ []) when is_bitstring(release_code_tar) do
     {path, opts} = determine_path(opts, "/publish")
+    is_rewrite = opts[:replace] == true
+    opts = [qparams: [replace: is_rewrite]] |> Keyword.merge(opts) |> Keyword.delete(:replace)
 
     with {:ok, _streams} <- PackageTarUtil.read_release_tar(release_code_tar) do
       opts = Keyword.merge([body: File.read!(release_code_tar)], opts)
@@ -159,12 +184,13 @@ defmodule Aura.Releases do
   end
 
   @doc Aura.Doc.func_doc("Publishes associated release docs **tar.gz** to a Hex-compliant repository",
-         params: %{
-           package_name: "`t:Aura.Common.package_name/0`",
-           version: "`t:Aura.Common.release_version/0`",
-           doc_tar: "path to a tar.gz of the compiled docs",
-           "opts.repo": "`t:Aura.Common.repo_name/0`"
-         },
+         params: [
+           {:package_name, {Aura.Common, :package_name}},
+           {:version, {Aura.Common, :release_version}},
+           {:doc_tar, "path to a tar.gz of the compiled docs"},
+           {"opts[:repo]", {Aura.Common, :repo_name}},
+           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+         ],
          success: "{:ok, doc_location_url}",
          failure: "{:error, (some error)}",
          api: %{
@@ -193,7 +219,7 @@ defmodule Aura.Releases do
           package_name :: Common.package_name(),
           release_version :: Common.release_version(),
           doc_tar :: String.t(),
-          opts :: list
+          opts :: rel_opts()
         ) :: {:ok, URI.t()} | {:error, any()}
   def publish_release_docs(package_name, release_version, doc_tar, opts \\ []) when is_bitstring(doc_tar) do
     {path, opts} = determine_path(opts, Path.join(@packages_path, "#{package_name}/releases/#{release_version}/docs"))
@@ -208,13 +234,14 @@ defmodule Aura.Releases do
   end
 
   @doc Aura.Doc.func_doc("Marks a release as **retired**, signaling to others that it should not be used",
-         params: %{
-           package_name: "`t:Aura.Common.package_name/0`",
-           version: "`t:Aura.Common.release_version/0`",
-           reason: "`t:retire_reason/0`",
-           message: "Human-readable blurb about the retirement",
-           "opts.repo": "`t:Aura.Common.repo_name/0`"
-         },
+         params: [
+           {:package_name, {Aura.Common, :package_name}},
+           {:version, {Aura.Common, :release_version}},
+           {:reason, {Aura.Releases, :retire_reason}},
+           {:message, "Human-readable blurb about the retirement"},
+           {"opts[:repo]", {Aura.Common, :repo_name}},
+           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+         ],
          success: ":ok",
          failure: "{:error, (some error)}",
          api: %{
@@ -247,7 +274,7 @@ defmodule Aura.Releases do
           version :: Common.release_version(),
           reason :: retire_reason(),
           message :: String.t(),
-          opts :: list()
+          opts :: rel_opts()
         ) :: :ok | {:error, any()}
   def retire_release(package_name, version, reason \\ :other, message, opts \\ []) when is_bitstring(message) do
     reason = validate_reason(reason)
@@ -261,11 +288,12 @@ defmodule Aura.Releases do
 
   @doc Aura.Doc.func_doc(
          "Removes **retirement** from a release, signaling to others that it can still be used",
-         params: %{
-           package_name: "`t:Aura.Common.package_name/0`",
-           version: "`t:Aura.Common.release_version/0`",
-           "opts.repo": "`t:Aura.Common.repo_name/0`"
-         },
+         params: [
+           {:package_name, {Aura.Common, :package_name}},
+           {:version, {Aura.Common, :release_version}},
+           {"opts[:repo]", {Aura.Common, :repo_name}},
+           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+         ],
          success: ":ok",
          failure: "{:error, (some error)}",
          api: %{
@@ -292,7 +320,7 @@ defmodule Aura.Releases do
   @spec undo_retire_release(
           package_name :: Common.package_name(),
           version :: Common.release_version(),
-          opts :: list()
+          opts :: rel_opts()
         ) :: :ok | {:error, any()}
   def undo_retire_release(package_name, version, opts \\ []) do
     {path, opts} = determine_path(opts, Path.join(@packages_path, "#{package_name}/releases/#{version}/retire"))
@@ -303,11 +331,12 @@ defmodule Aura.Releases do
   end
 
   @doc Aura.Doc.func_doc("Permanently deletes associated documentation for a release",
-         params: %{
-           package_name: "`t:Aura.Common.package_name/0`",
-           version: "`t:Aura.Common.release_version/0`",
-           "opts.repo": "`t:Aura.Common.repo_name/0`"
-         },
+         params: [
+           {:package_name, {Aura.Common, :package_name}},
+           {:version, {Aura.Common, :release_version}},
+           {"opts[:repo]", {Aura.Common, :repo_name}},
+           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+         ],
          success: ":ok",
          failure: "{:error, (some error)}",
          api: %{
@@ -334,7 +363,7 @@ defmodule Aura.Releases do
   @spec delete_release_docs(
           package_name :: Common.package_name(),
           version :: Common.release_version(),
-          opts :: list()
+          opts :: rel_opts()
         ) :: :ok | {:error, any()}
   def delete_release_docs(package_name, version, opts \\ []) do
     {path, opts} = determine_path(opts, Path.join(@packages_path, "#{package_name}/releases/#{version}/docs"))
