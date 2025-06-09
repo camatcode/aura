@@ -86,7 +86,7 @@ defmodule Aura.Common do
            build_func: "a function that takes in a map and returns a struct representing what's being paginated",
            opts: "option parameters used to modify requests"
          },
-         success: "a `Stream.resource/3`",
+         success: "Stream.resource/3",
          example: """
          iex> alias Aura.Common
          iex> alias Aura.Model.HexPackage

@@ -66,7 +66,7 @@ defmodule Aura.Users do
 
   @doc Aura.Doc.func_doc("Grabs a hex user, given their **username_or_email**",
          params: [
-           {:username_or_email, "`t:Aura.Common.username/0` |  `t:Aura.Common.email/0`"},
+           {:username_or_email, "`t:Aura.Common.username/0` or  `t:Aura.Common.email/0`"},
            {"opts[:repo_url]", {Aura.Common, :repo_url}}
          ],
          success: "{:ok, %HexUser{...}}",
@@ -132,6 +132,7 @@ defmodule Aura.Users do
          """,
          api: %{route: Path.join(@base_path, "me/audit-logs"), controller: :User, action: :audit_logs}
        )
+
   @spec stream_audit_logs(opts :: list()) :: Enumerable.t()
   def stream_audit_logs(opts \\ []) do
     path = Path.join(@base_path, "me/audit-logs")
@@ -140,7 +141,7 @@ defmodule Aura.Users do
 
   @doc Aura.Doc.func_doc("Resets a specified user's password",
          params: [
-           {:username_or_email, "`t:Aura.Common.username/0` |  `t:Aura.Common.email/0`"},
+           {:username_or_email, "`t:Aura.Common.username/0`  or  `t:Aura.Common.email/0`"},
            {"opts[:repo_url]", {Aura.Common, :repo_url}}
          ],
          success: ":ok",

@@ -48,13 +48,13 @@ defmodule Aura.Doc do
 
   def func_doc(description, opts \\ []) do
     description = render_description(description)
-    params = render_params(opts[:params])
     example = render_example(opts[:example])
     related = render_related(opts[:related])
     warning = render_warning(opts[:warning])
     success = opts[:success]
     failure = opts[:failure]
     api_details = render_api_details(opts[:api])
+    signature = render_func_sig(opts[:params], success, failure)
 
     """
     #{description}
@@ -62,9 +62,7 @@ defmodule Aura.Doc do
     #{warning}
 
     <!-- tabs-open -->
-    #{params}
-
-    #{returns(success: success, failure: failure)}
+    #{signature}
 
     #{example}
 
@@ -78,6 +76,41 @@ defmodule Aura.Doc do
 
   def readme do
     "README.md" |> File.read!() |> String.replace("(#", "(#module-")
+  end
+
+  defp render_func_sig(params, success, failure) do
+    header = "### 📇 Details"
+
+    table_header =
+      String.trim("""
+      | Parameter | Description   |
+      |--------|-----------------------|
+      """)
+
+    table_contents =
+      Enum.map_join(params, "\n", fn {k, v} ->
+        if String.starts_with?("#{k}", "opts") && "#{k}" != "opts" do
+          "| `#{k}`   | #{render_param_value(v)} |"
+        else
+          "| *#{k}*   | #{render_param_value(v)} |"
+        end
+      end)
+
+    _returns =
+      if success && failure do
+        "Returns: <pre>#{success}</pre> or <pre>#{failure}</pre>"
+      else
+        if success, do: "Returns: <pre>#{success}</pre>", else: ""
+      end
+
+    """
+    #{header}
+      
+    #{table_header}
+    #{table_contents}
+
+
+    """
   end
 
   defp render_api_details(nil), do: ""
@@ -125,7 +158,7 @@ defmodule Aura.Doc do
 
     table_contents =
       Enum.map_join(route_infos, "\n", fn info ->
-        "| #{info.method}    | #{info.route} | #{controller_doc_link("#{info.controller}")} | :#{info.action} |"
+        "| **#{info.method}**    | #{render_route(info.route)} | #{controller_doc_link("#{info.controller}")} | `:#{info.action}` |"
       end)
 
     """
@@ -137,6 +170,19 @@ defmodule Aura.Doc do
     """
   end
 
+  defp render_route(route) do
+    route
+    |> Path.split()
+    |> Enum.map(fn part ->
+      if String.starts_with?(part, ":") do
+        "`#{part}`"
+      else
+        part
+      end
+    end)
+    |> Path.join()
+  end
+
   defp render_warning(nil), do: ""
 
   defp render_warning({heading, message}) do
@@ -144,24 +190,6 @@ defmodule Aura.Doc do
     > #### #{heading} {: .warning}
     >
     > #{message}
-    """
-  end
-
-  defp render_params(nil), do: ""
-
-  defp render_params(m) do
-    header = "### 🏷️ Params"
-
-    rendered_params =
-      Enum.map_join(m, "\n", fn {k, v} ->
-        "* **#{k}** :: #{render_param_value(v)}"
-      end)
-
-    """
-    #{header}
-
-    #{rendered_params}
-
     """
   end
 
@@ -301,34 +329,5 @@ defmodule Aura.Doc do
     #{header}
     #{related_block}
     """
-  end
-
-  defp returns(success: nil, failure: nil), do: ""
-  defp returns(success: success, failure: nil), do: returns(success: success)
-
-  defp returns(success: success, failure: failure) do
-    "### ⤵️ Returns
-
-  **✅ On Success**
-
-  ```elixir
-  #{success}
-  ```
-  **❌ On Failure**
-
-   ```elixir
-  #{failure}
-  ```"
-  end
-
-  defp returns(success: success) do
-    "### ⤵️ Returns
-
-  **✅ On Success**
-
-  ```elixir
-  #{success}
-  ```
-  "
   end
 end
