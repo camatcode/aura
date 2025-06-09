@@ -200,14 +200,6 @@ defmodule Aura.Orgs do
     end
   end
 
-  @typedoc Aura.Doc.type_doc("Options to modify an Orgs audit request",
-             keys: %{
-               repo_url: Aura.Common,
-               page: {Aura.Common, :start_page}
-             }
-           )
-  @type org_audit_opts :: [repo_url: Aura.Common.repo_url(), page: Aura.Common.start_page()]
-
   @doc Aura.Doc.func_doc(
          [
            "Streams audit logs, scoped to an organization",
@@ -229,7 +221,7 @@ defmodule Aura.Orgs do
          true
          """
        )
-  @spec stream_audit_logs(org_name :: Aura.Common.org_name(), opts :: org_audit_opts()) :: Enumerable.t()
+  @spec stream_audit_logs(org_name :: Aura.Common.org_name(), opts :: Aura.Common.audit_opts()) :: Enumerable.t()
   def stream_audit_logs(org_name, opts \\ []) do
     path = Path.join(@base_path, "#{org_name}/audit-logs")
     stream_paginate(path, &HexAuditLog.build/1, opts)

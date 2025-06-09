@@ -18,6 +18,14 @@ defmodule Aura.Common do
            )
   @type api_path :: String.t()
 
+  @typedoc Aura.Doc.type_doc("Options to modify an audit request",
+             keys: %{
+               repo_url: Aura.Common,
+               page: {Aura.Common, :start_page}
+             }
+           )
+  @type audit_opts :: [repo_url: Aura.Common.repo_url(), page: Aura.Common.start_page()]
+
   @typedoc Aura.Doc.type_doc("Name of the package",
              example: """
              "plug"

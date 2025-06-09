@@ -254,7 +254,9 @@ defmodule Aura.Doc do
     * #{see_hex_pm()}
   * #{contact_maintainer()}
     * #{maintainer_github()}
+    * #{see_link("Elixir Form: camatcode", "https://elixirforum.com/u/camatcode/", "⚗️")}
     * #{maintainer_fediverse()}
+    * #{see_link("bsky: @ckcook.studiocms.io", "https://bsky.app/profile/ckcook.studiocms.io", "🦋️")}
     "
   end
 
@@ -276,11 +278,11 @@ defmodule Aura.Doc do
   end
 
   defp see_hex_core do
-    see_link("hexpm/hex_core", "https://github.com/hexpm/hex_core", "👾")
+    see_link("Github: hexpm/hex_core", "https://github.com/hexpm/hex_core", "👾")
   end
 
   defp see_hex_pm do
-    see_link("hexpm/hexpm", "https://github.com/hexpm/hexpm", "👾")
+    see_link("Github: hexpm/hexpm", "https://github.com/hexpm/hexpm", "👾")
   end
 
   defp see_link(title, url, emoji \\ "📖") do
