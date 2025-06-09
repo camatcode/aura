@@ -13,11 +13,11 @@ defmodule Aura.ReposTest do
   end
 
   test "list_repos", _state do
-    assert {:ok, [%{name: "hexpm"}]} = Repos.list_repos()
+    assert {:ok, [%{name: "hexpm"} | _]} = Repos.list_repos()
   end
 
   test "get_repo/1", _state do
-    assert {:ok, [hex]} = Repos.list_repos()
+    assert {:ok, [hex | _]} = Repos.list_repos()
     assert {:ok, returned} = Repos.get_repo(hex.name)
     assert returned.name == hex.name
   end

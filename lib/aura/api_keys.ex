@@ -9,20 +9,34 @@ defmodule Aura.APIKeys do
 
   @keys_path "/keys"
 
+  @typedoc Aura.Doc.type_doc("Options to modify a request",
+             keys: %{
+               org: {Aura.Common, :org_name},
+               repo_url: Aura.Common
+             }
+           )
+  @type org_scope_opts :: [org: Aura.Common.org_name(), repo_url: Aura.Common.repo_url()]
+
   @doc Aura.Doc.func_doc("Grabs info about the requester's API key(s)",
-         params: %{"opts.org": "`t:Aura.Common.org_name/0`"},
+         params: [{"opts[:org]", {Aura.Common, :org_name}}, {"opts[:repo_url]", {Aura.Common, :repo_url}}],
          success: "{:ok, [%HexAPIKey{...}]}",
          failure: "{:error, (some error)}",
          api: %{route: @keys_path, controller: :Key, action: :index, org_scope: true},
          example: """
          iex> alias Aura.APIKeys
-         iex> repo_url = "http://localhost:4000/api"
-         iex> {:ok, keys} = APIKeys.list_api_keys(repo_url: repo_url)
+         iex> opts = [repo_url: "http://localhost:4000/api"]
+         iex> {:ok, keys} = APIKeys.list_api_keys(opts)
+         iex> Enum.empty?(keys)
+         false
+
+         # scoped to an organization
+         iex> opts = [repo_url: "http://localhost:4000/api", org: "test_org"]
+         iex> {:ok, keys} = APIKeys.list_api_keys(opts)
          iex> Enum.empty?(keys)
          false
          """
        )
-  @spec list_api_keys(opts :: list()) :: {:ok, [HexAPIKey.t()]} | {:error, any()}
+  @spec list_api_keys(opts :: org_scope_opts) :: {:ok, [HexAPIKey.t()]} | {:error, any()}
   def list_api_keys(opts \\ []) do
     {path, opts} = determine_path(opts, @keys_path)
 
@@ -32,7 +46,11 @@ defmodule Aura.APIKeys do
   end
 
   @doc Aura.Doc.func_doc("Grabs API key information associated with a given **key_name**",
-         params: %{key_name: "`t:Aura.Common.api_key_name/0`", "opts.org": "`t:Aura.Common.org_name/0`"},
+         params: [
+           {:key_name, {Aura.Common, :api_key_name}},
+           {"opts[:org]", {Aura.Common, :org_name}},
+           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+         ],
          success: "{:ok, %HexAPIKey{...}}",
          failure: "{:error, (some error)}",
          api: %{route: Path.join(@keys_path, ":key_name"), controller: :Key, action: :show, org_scope: true},
@@ -41,9 +59,14 @@ defmodule Aura.APIKeys do
          iex> opts = [repo_url: "http://localhost:4000/api"]
          iex> {:ok, keys} = APIKeys.list_api_keys(opts)
          iex> keys |> Enum.map(fn key ->  {:ok, _k} = APIKeys.get_api_key(key.name, opts) end)
+
+         # scoped to an organization
+         iex> opts = [repo_url: "http://localhost:4000/api", org: "test_org"]
+         iex> {:ok, keys} = APIKeys.list_api_keys(opts)
+         iex> keys |> Enum.map(fn key ->  {:ok, _k} = APIKeys.get_api_key(key.name, opts) end)
          """
        )
-  @spec get_api_key(key_name :: Common.api_key_name(), opts :: list()) :: {:ok, HexAPIKey.t()} | {:error, any()}
+  @spec get_api_key(key_name :: Common.api_key_name(), opts :: org_scope_opts()) :: {:ok, HexAPIKey.t()} | {:error, any()}
   def get_api_key(key_name, opts \\ []) do
     path = Path.join(@keys_path, "#{key_name}")
     {path, opts} = determine_path(opts, path)
@@ -54,23 +77,44 @@ defmodule Aura.APIKeys do
   end
 
   @doc Aura.Doc.func_doc("Creates a new API key",
-         params: %{
-           key_name: "`t:Aura.Common.api_key_name/0`",
-           username: "`t:Aura.Common.username/0`",
-           password: "password for this user",
-           allow_write: "whether the key has `write` permissions on the `api` domain. Default: `false`",
-           "opts.org": "`t:Aura.Common.org_name/0`"
-         },
+         params: [
+           {:key_name, {Aura.Common, :api_key_name}},
+           {:username, {Aura.Common, :username}},
+           {:password, "password for this user"},
+           {:allow_write, "whether the key has `write` permissions on the `api` domain. Default: `false`"},
+           {"opts[:org]", {Aura.Common, :org_name}},
+           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+         ],
          success: "{:ok, %HexAPIKey{...}}",
          failure: "{:error, (some error)}",
-         api: %{method: :post, route: @keys_path, controller: :Key, action: :create, org_scope: true}
+         api: %{method: :post, route: @keys_path, controller: :Key, action: :create, org_scope: true},
+         example: """
+         iex> alias Aura.APIKeys
+         iex> key_name = "test_user_key"
+         iex> username = "test@test.com"
+         iex> password = "elixir1234"
+         iex> allow_write = true
+         iex> opts = [repo_url: "http://localhost:4000/api"]
+         iex> {:ok, _key} =
+         ...>  APIKeys.create_api_key(key_name, username, password, allow_write, opts)
+
+         # scoped to an organization
+         iex> alias Aura.APIKeys
+         iex> key_name = "test_user_key"
+         iex> username = "test@test.com"
+         iex> password = "elixir1234"
+         iex> allow_write = true
+         iex> opts = [repo_url: "http://localhost:4000/api", org: "test_org"]
+         iex> {:ok, _key} =
+         ...>  APIKeys.create_api_key(key_name, username, password, allow_write, opts)
+         """
        )
   @spec create_api_key(
           key_name :: Common.api_key_name(),
           username :: Common.username(),
           password :: String.t(),
           allow_write :: boolean(),
-          opts :: list()
+          opts :: org_scope_opts()
         ) :: {:ok, HexAPIKey.t()} | {:error, any()}
   def create_api_key(key_name, username, password, allow_write \\ false, opts \\ []) do
     opts = Keyword.merge([auth: {:basic, "#{username}:#{password}"}], opts)
@@ -85,7 +129,11 @@ defmodule Aura.APIKeys do
   end
 
   @doc Aura.Doc.func_doc("Deletes an API key for the authenticated requester, given a **key_name**",
-         params: %{key_name: "`t:Aura.Common.api_key_name/0`", "opts.org": "`t:Aura.Common.org_name/0`"},
+         params: [
+           {:key_name, {Aura.Common, :api_key_name}},
+           {"opts[:org]", {Aura.Common, :org_name}},
+           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+         ],
          success: ":ok",
          failure: "{:error, (some error)}",
          api: %{
@@ -101,9 +149,16 @@ defmodule Aura.APIKeys do
          iex> {:ok, [key | _]} = APIKeys.list_api_keys(opts)
          iex> APIKeys.delete_api_key(key.name, opts)
          :ok
+
+         # scoped to an organization
+         iex> alias Aura.APIKeys
+         iex> opts = [repo_url: "http://localhost:4000/api", org: "test_org"]
+         iex> {:ok, [key | _]} = APIKeys.list_api_keys(opts)
+         iex> APIKeys.delete_api_key(key.name, opts)
+         :ok
          """
        )
-  @spec delete_api_key(key_name :: Common.api_key_name(), opts :: list()) :: :ok | {:error, any()}
+  @spec delete_api_key(key_name :: Common.api_key_name(), opts :: org_scope_opts()) :: :ok | {:error, any()}
   def delete_api_key(key_name, opts \\ []) do
     path = Path.join(@keys_path, "#{key_name}")
     {path, opts} = determine_path(opts, path)
@@ -114,7 +169,10 @@ defmodule Aura.APIKeys do
   end
 
   @doc Aura.Doc.func_doc("Deletes **all** API keys for the authenticated requester",
-         params: %{opts: "option parameters used to modify requests"},
+         params: [
+           {"opts[:org]", {Aura.Common, :org_name}},
+           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+         ],
          success: ":ok",
          failure: "{:error, (some error)}",
          api: %{method: :delete, route: @keys_path, controller: :Key, action: :delete_all, org_scope: true},
@@ -123,9 +181,15 @@ defmodule Aura.APIKeys do
          iex> opts = [repo_url: "http://localhost:4000/api"]
          iex> APIKeys.delete_all_api_keys(opts)
          :ok
+
+         # scoped to an organization
+         iex> alias Aura.APIKeys
+         iex> opts = [repo_url: "http://localhost:4000/api", org: "test_org"]
+         iex> APIKeys.delete_all_api_keys(opts)
+         :ok
          """
        )
-  @spec delete_all_api_keys(opts :: list()) :: :ok | {:error, any()}
+  @spec delete_all_api_keys(opts :: org_scope_opts()) :: :ok | {:error, any()}
   def delete_all_api_keys(opts \\ []) do
     {path, opts} = determine_path(opts, @keys_path)
 

@@ -149,12 +149,12 @@ defmodule Aura.Doc do
 
   defp render_params(nil), do: ""
 
-  defp render_params(m) when is_map(m) do
+  defp render_params(m) do
     header = "### 🏷️ Params"
 
     rendered_params =
       Enum.map_join(m, "\n", fn {k, v} ->
-        "* **#{k}** :: #{v}"
+        "* **#{k}** :: #{render_param_value(v)}"
       end)
 
     """
@@ -163,6 +163,12 @@ defmodule Aura.Doc do
     #{rendered_params}
 
     """
+  end
+
+  defp render_param_value(v) when is_bitstring(v), do: v
+
+  defp render_param_value(v) do
+    render_key(v)
   end
 
   defp render_keys(nil), do: ""
@@ -181,6 +187,16 @@ defmodule Aura.Doc do
     #{rendered_keys}
 
     """
+  end
+
+  defp render_key({mod, name, :list}) do
+    cleaned = String.replace("#{mod}", "Elixir.", "")
+    "[`t:#{cleaned}.#{name}/0`]"
+  end
+
+  defp render_key({mod, name}) do
+    cleaned = String.replace("#{mod}", "Elixir.", "")
+    "`t:#{cleaned}.#{name}/0`"
   end
 
   defp render_key(k, {mod, name, :list}) do

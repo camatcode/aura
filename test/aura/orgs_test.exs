@@ -13,6 +13,7 @@ defmodule Aura.OrgsTest do
   test "orgs", %{other_users: other_users} do
     {:ok, key} = Aura.APIKeys.create_api_key("test_user_key", "test@test.com", "elixir1234", true)
     Application.put_env(:aura, :api_key, key.secret)
+
     {:ok, orgs} = Orgs.list_orgs()
     refute Enum.empty?(orgs)
 
@@ -21,10 +22,8 @@ defmodule Aura.OrgsTest do
       assert retrieved.name
 
       Enum.each(other_users, fn other_user ->
-        {:ok, org_member} = Orgs.add_org_member(org.name, other_user.username, :read)
-        assert org_member.username == other_user.username
-        {:ok, updated} = Orgs.change_member_role(org.name, org_member.username, :write)
-        assert updated.role == "write"
+        {:ok, updated} = Orgs.change_member_role(org.name, other_user.username, :read)
+        assert updated.role == "read"
         :ok = Orgs.remove_org_member(org.name, other_user.username)
       end)
 

@@ -61,6 +61,14 @@ defmodule Aura.Common do
            )
   @type repo_name :: String.t()
 
+  @typedoc Aura.Doc.type_doc("A Hex compliant API endpoint",
+             example: """
+             "https://hex.pm/api"
+             "http://localhost:4000/api"
+             """
+           )
+  @type repo_url :: URI.t()
+
   @doc Aura.Doc.func_doc("Implements Hex API's pagination mechanism by returning a `Stream.resource/3`",
          params: %{
            path: "`t:api_path/0`",

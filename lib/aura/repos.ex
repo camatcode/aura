@@ -16,7 +16,7 @@ defmodule Aura.Repos do
          example: """
          iex> alias Aura.Repos
          iex> repo_url = "http://localhost:4000/api"
-         iex> {:ok, [hexpm]} = Repos.list_repos(repo_url: repo_url)
+         iex> {:ok, [hexpm |_ ]} = Repos.list_repos(repo_url: repo_url)
          iex> hexpm.name
          "hexpm"
          """
