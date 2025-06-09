@@ -15,7 +15,7 @@ defmodule Aura.APIKeys do
                repo_url: Aura.Common
              }
            )
-  @type org_scope_opts :: [org: Aura.Common.org_name(), repo_url: Aura.Common.repo_url()]
+  @type api_key_opts :: [org: Aura.Common.org_name(), repo_url: Aura.Common.repo_url()]
 
   @doc Aura.Doc.func_doc("Grabs info about the requester's API key(s)",
          params: [{"opts[:org]", {Aura.Common, :org_name}}, {"opts[:repo_url]", {Aura.Common, :repo_url}}],
@@ -36,7 +36,7 @@ defmodule Aura.APIKeys do
          false
          """
        )
-  @spec list_api_keys(opts :: org_scope_opts) :: {:ok, [HexAPIKey.t()]} | {:error, any()}
+  @spec list_api_keys(opts :: api_key_opts) :: {:ok, [HexAPIKey.t()]} | {:error, any()}
   def list_api_keys(opts \\ []) do
     {path, opts} = determine_path(opts, @keys_path)
 
@@ -66,7 +66,7 @@ defmodule Aura.APIKeys do
          iex> keys |> Enum.map(fn key ->  {:ok, _k} = APIKeys.get_api_key(key.name, opts) end)
          """
        )
-  @spec get_api_key(key_name :: Common.api_key_name(), opts :: org_scope_opts()) :: {:ok, HexAPIKey.t()} | {:error, any()}
+  @spec get_api_key(key_name :: Common.api_key_name(), opts :: api_key_opts()) :: {:ok, HexAPIKey.t()} | {:error, any()}
   def get_api_key(key_name, opts \\ []) do
     path = Path.join(@keys_path, "#{key_name}")
     {path, opts} = determine_path(opts, path)
@@ -114,7 +114,7 @@ defmodule Aura.APIKeys do
           username :: Common.username(),
           password :: String.t(),
           allow_write :: boolean(),
-          opts :: org_scope_opts()
+          opts :: api_key_opts()
         ) :: {:ok, HexAPIKey.t()} | {:error, any()}
   def create_api_key(key_name, username, password, allow_write \\ false, opts \\ []) do
     opts = Keyword.merge([auth: {:basic, "#{username}:#{password}"}], opts)
@@ -158,7 +158,7 @@ defmodule Aura.APIKeys do
          :ok
          """
        )
-  @spec delete_api_key(key_name :: Common.api_key_name(), opts :: org_scope_opts()) :: :ok | {:error, any()}
+  @spec delete_api_key(key_name :: Common.api_key_name(), opts :: api_key_opts()) :: :ok | {:error, any()}
   def delete_api_key(key_name, opts \\ []) do
     path = Path.join(@keys_path, "#{key_name}")
     {path, opts} = determine_path(opts, path)
@@ -189,7 +189,7 @@ defmodule Aura.APIKeys do
          :ok
          """
        )
-  @spec delete_all_api_keys(opts :: org_scope_opts()) :: :ok | {:error, any()}
+  @spec delete_all_api_keys(opts :: api_key_opts()) :: :ok | {:error, any()}
   def delete_all_api_keys(opts \\ []) do
     {path, opts} = determine_path(opts, @keys_path)
 

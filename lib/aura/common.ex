@@ -25,6 +25,9 @@ defmodule Aura.Common do
            )
   @type package_name :: String.t()
 
+  @typedoc Aura.Doc.type_doc("When streaming, start at this page number. Default: 1")
+  @type start_page :: non_neg_integer()
+
   @typedoc Aura.Doc.type_doc("A unique, human-readable ID for a user",
              example: """
                "camatcode"
