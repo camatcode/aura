@@ -250,7 +250,8 @@ defmodule Aura.Packages do
     end
   end
 
-  @doc Aura.Doc.func_doc("Streams audit logs, scoped to a package",
+  @doc Aura.Doc.func_doc(
+         ["Streams audit logs, scoped to a package", "Note that the page size is fixed by the API to be 100 per page."],
          params: [
            {:package_name, {Aura.Common, :package_name}},
            {"opts[:repo_url]", {Aura.Common, :repo_url}},
