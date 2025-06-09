@@ -12,14 +12,12 @@ defmodule Aura.Doc do
 
     #{warning}
 
-    <!-- tabs-open -->
     #{example}
 
     #{resources()}
 
     #{related}
 
-    <!-- tabs-close -->
     """
   end
 
@@ -35,14 +33,12 @@ defmodule Aura.Doc do
 
     #{warning}
 
-    <!-- tabs-open -->
     #{keys}
 
     #{example}
 
     #{related}
-
-    <!-- tabs-close -->
+      
     """
   end
 
@@ -61,16 +57,14 @@ defmodule Aura.Doc do
 
     #{warning}
 
-    <!-- tabs-open -->
     #{signature}
-
-    #{example}
 
     #{api_details}
 
-    #{related}
+    #{example}
 
-    <!-- tabs-close -->
+    #{related}
+      
     """
   end
 
@@ -79,7 +73,7 @@ defmodule Aura.Doc do
   end
 
   defp render_func_sig(params, success, failure) do
-    header = "### 📇 Details"
+    header = "###  Parameters "
 
     table_header =
       String.trim("""
@@ -148,7 +142,7 @@ defmodule Aura.Doc do
         end
       end
 
-    header = "### 👩‍💻 API Details "
+    header = "### API Details "
 
     table_header =
       String.trim("""
@@ -202,7 +196,7 @@ defmodule Aura.Doc do
   defp render_keys(nil), do: ""
 
   defp render_keys(m) when is_map(m) do
-    header = "### 🏷️ Keys"
+    header = "### Keys"
 
     rendered_keys =
       Enum.map_join(m, "\n", fn {k, v} ->
@@ -246,7 +240,7 @@ defmodule Aura.Doc do
 
   defp render_example(example) do
     """
-    ### 💻 Examples
+    ### Examples
 
     ```elixir
     #{example}
@@ -275,8 +269,8 @@ defmodule Aura.Doc do
   end
 
   defp resources do
-    "### 📖 Resources
-  * 🐝 Hex
+    "### Resources
+  * Hex
     * #{see_hex_spec()}
     * #{see_hex_core()}
     * #{see_hex_pm()}
@@ -293,7 +287,7 @@ defmodule Aura.Doc do
   defp maintainer_fediverse,
     do: "🐘 [Fediverse: @scrum_log@maston.social](https://mastodon.social/@scrum_log){:target=\"_blank\"}"
 
-  defp contact_maintainer, do: "💬 Contact the maintainer (he's happy to help!)"
+  defp contact_maintainer, do: "Contact the maintainer (he's happy to help!)"
 
   defp controller_doc_link(controller_name) do
     snaked_name = controller_name |> ProperCase.snake_case() |> String.downcase()
@@ -318,7 +312,7 @@ defmodule Aura.Doc do
   end
 
   defp related(related_list) do
-    header = "### 👀 See Also "
+    header = "### See Also "
 
     related_block =
       Enum.map_join(related_list, "\n", fn related ->
