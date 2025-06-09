@@ -2,7 +2,7 @@ defmodule Aura.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/camatcode/aura"
-  @version "0.9.3"
+  @version "1.0.0"
 
   def project do
     [
