@@ -20,6 +20,7 @@ defmodule Aura.Requester do
   @spec request(method :: http_method, path :: Common.api_path(), opts :: list()) ::
           {:ok, Req.Response.t()} | {:error, term()}
   def request(method, path, opts \\ []) do
+    start_time = System.monotonic_time()
     qparams = opts[:qparams]
     is_retry = opts[:is_retry]
     repo_url = find_repo_url(opts)
@@ -36,42 +37,54 @@ defmodule Aura.Requester do
       |> Path.join(path)
       |> handle_qparams(qparams)
 
-    method
-    |> make_request(path, opts)
-    |> case do
-      {:ok,
-       %Req.Response{
-         status: 200,
-         body: _body,
-         headers: headers
-       }} = resp ->
-        respect_limits(headers)
-        resp
-
-      {:ok, %Req.Response{status: status, body: _body, headers: headers}} = resp when status >= 200 and status < 300 ->
-        respect_limits(headers)
-        resp
-
-      {:ok, %Req.Response{status: 429, headers: headers}} ->
-        # coveralls-ignore-start
-        if is_retry do
-          {:error, "Rate limit exceeded"}
-        else
+    result =
+      method
+      |> make_request(path, opts)
+      |> case do
+        {:ok,
+         %Req.Response{
+           status: 200,
+           body: _body,
+           headers: headers
+         }} = resp ->
           respect_limits(headers)
+          resp
 
-          new_opts =
-            opts
-            |> Keyword.put(:is_retry, true)
-            |> Keyword.put(:repo_url, repo_url)
+        {:ok, %Req.Response{status: status, body: _body, headers: headers}} = resp when status >= 200 and status < 300 ->
+          respect_limits(headers)
+          resp
 
-          request(method, path, new_opts)
-        end
+        {:ok, %Req.Response{status: 429, headers: headers}} ->
+          # coveralls-ignore-start
+          if is_retry do
+            {:error, "Rate limit exceeded"}
+          else
+            respect_limits(headers)
 
-      # coveralls-ignore-stop
+            new_opts =
+              opts
+              |> Keyword.put(:is_retry, true)
+              |> Keyword.put(:repo_url, repo_url)
 
-      other ->
-        {:error, other}
-    end
+            request(method, path, new_opts)
+          end
+
+        # coveralls-ignore-stop
+
+        other ->
+          {:error, other}
+      end
+
+    end_time = System.monotonic_time()
+    duration = System.convert_time_unit(end_time - start_time, :native, :millisecond)
+
+    :telemetry.execute(
+      [:aura, :request, :complete],
+      %{duration: duration},
+      %{method: method, path: path, status: elem(result, 1).status}
+    )
+
+    result
   end
 
   @doc """

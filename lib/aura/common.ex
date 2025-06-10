@@ -4,6 +4,8 @@ defmodule Aura.Common do
 
   alias Aura.Requester
 
+  require Logger
+
   @typedoc Aura.Doc.type_doc("A human-readable name for this API key",
              example: """
               "my_computer"
@@ -165,8 +167,10 @@ defmodule Aura.Common do
         {items, next_page}
 
       # coveralls-ignore-start
-      e ->
-        {:halt, {:error, e}}
+      {:error, reason} ->
+        # Log the error for debugging
+        Logger.error("Failed to fetch page #{page}: #{inspect(reason)}")
+        {:halt, {:error, reason}}
     end
 
     # coveralls-ignore-stop
