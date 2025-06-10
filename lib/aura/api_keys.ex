@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 defmodule Aura.APIKeys do
   @moduledoc Aura.Doc.mod_doc("Service module for interacting with Hex API keys")
 

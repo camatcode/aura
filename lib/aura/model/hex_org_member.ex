@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 defmodule Aura.Model.HexOrgMember do
   @moduledoc Aura.Doc.mod_doc("Struct defining a member of a Hex organization",
                example: """
