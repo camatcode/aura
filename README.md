@@ -118,17 +118,17 @@ latest_version = package.releases |> hd() |> Map.get(:version)
 
 ### Domains
 
-| Domain       | Hex API Controller                                                                                                          | Aura Equivalant | Implemented Actions                             | Notes                                       |
-|--------------|-----------------------------------------------------------------------------------------------------------------------------|-----------------|-------------------------------------------------|---------------------------------------------|
-| API Key      | [KeyController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/key_controller.ex)                   | `Aura.APIKeys`  | list, get, create, delete, delete all           | Can be scoped to an organization            |
-| Organization | [OrganizationController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/organization_controller.ex) | `Aura.Orgs`     | list, get, audit                                |                                             |
-| ∟ Org User   | [OrganizationUser](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/organization_user_controller.ex)  | "               | list, get, add, change role, remove             |                                             |
-| Package      | [PackageController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/package_controller.ex)           | `Aura.Packages` | stream packages, get, audit                     | Can be scoped to a repo                     |
-| ∟ Owner      | [OwnerController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/owner_controller.ex)               | "               | list, get, add, remove                          | Can be scoped to a repo                     |
-| Release      | [ReleaseController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/release_controller.ex)           | `Aura.Releases` | publish, get, retire, un-retire, delete         | Can be scoped to a repo                     |
-| ∟ Doc        | [DocsController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/docs_controller.ex)                 | "               | publish, get, delete                            | Can be scoped to a repo                     |
-| Repository   | [RepositoryController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/repository_controller.ex)     | `Aura.Repos`    | list, get                                       |                                             |
-| User         | [UserController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/user_controller.ex)                 | `Aura.Users`    | create, get, get current, reset password, audit | Read `create` docs carefully for ToS caveat |
+| Domain       | Hex API Controller                                                                                                                   | Aura Equivalant | Implemented Actions                             | Notes                                       |
+|--------------|--------------------------------------------------------------------------------------------------------------------------------------|-----------------|-------------------------------------------------|---------------------------------------------|
+| API Key      | [KeyController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/key_controller.ex)                            | `Aura.APIKeys`  | list, get, create, delete, delete all           | Can be scoped to an organization            |
+| Organization | [OrganizationController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/organization_controller.ex)          | `Aura.Orgs`     | list, get, audit                                |                                             |
+| ∟ Org User   | [OrganizationUserController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/organization_user_controller.ex) | "               | list, get, add, change role, remove             |                                             |
+| Package      | [PackageController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/package_controller.ex)                    | `Aura.Packages` | stream packages, get, audit                     | Can be scoped to a repo                     |
+| ∟ Owner      | [OwnerController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/owner_controller.ex)                        | "               | list, get, add, remove                          | Can be scoped to a repo                     |
+| Release      | [ReleaseController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/release_controller.ex)                    | `Aura.Releases` | publish, get, retire, un-retire, delete         | Can be scoped to a repo                     |
+| ∟ Doc        | [DocsController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/docs_controller.ex)                          | "               | publish, get, delete                            | Can be scoped to a repo                     |
+| Repository   | [RepositoryController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/repository_controller.ex)              | `Aura.Repos`    | list, get                                       |                                             |
+| User         | [UserController](https://github.com/hexpm/hexpm/blob/main/lib/hexpm_web/controllers/api/user_controller.ex)                          | `Aura.Users`    | create, get, get current, reset password, audit | Read `create` docs carefully for ToS caveat |
 
 ## Testing
 
@@ -162,9 +162,10 @@ to http://localhost:4000/api in [Configuration](#configuration).
 
 > Why?
 
-I started this project while exploring all the Hex API does, had trouble understanding it all, so started documenting things as I found them, and wound up with an entire project.
+I started this project while exploring all the Hex API does, had trouble understanding it all, so started documenting
+things as I found them, and wound up with an entire project.
 
-Here are some goals and motivations: 
+Here are some goals and motivations:
 
 1. Aura is meant to be friendly to Elixir folks.
 2. Aura's aim is to be [documented](https://hexdocs.pm/aura) *to hell and back*.
