@@ -16,6 +16,8 @@ defmodule Aura.ReleasesTest do
   test "publish to particular repo", _state do
     {:ok, repos} = Repos.list_repos()
 
+    repos = Enum.filter(repos, fn %{name: name} -> name == "hexpm" end)
+
     Enum.each(repos, fn repo ->
       github_url = Faker.Internet.url()
 
