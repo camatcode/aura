@@ -20,7 +20,6 @@ defmodule Aura.Requester do
   @spec request(method :: http_method, path :: Common.api_path(), opts :: list()) ::
           {:ok, Req.Response.t()} | {:error, term()}
   def request(method, path, opts \\ []) do
-    start_time = System.monotonic_time()
     qparams = opts[:qparams]
     is_retry = opts[:is_retry]
     repo_url = find_repo_url(opts)
@@ -74,15 +73,6 @@ defmodule Aura.Requester do
         other ->
           {:error, other}
       end
-
-    end_time = System.monotonic_time()
-    duration = System.convert_time_unit(end_time - start_time, :native, :millisecond)
-
-    :telemetry.execute(
-      [:aura, :request, :complete],
-      %{duration: duration},
-      %{method: method, path: path, status: elem(result, 1).status}
-    )
 
     result
   end
