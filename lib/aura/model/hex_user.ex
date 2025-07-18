@@ -23,9 +23,9 @@ defmodule Aura.Model.HexUser do
              keys: %{
                username: Aura.Common,
                email: Aura.Common,
-               inserted_at: Aura.Model.Common,
-               updated_at: Aura.Model.Common,
-               url: Aura.Model.Common
+               inserted_at: Common,
+               updated_at: Common,
+               url: Common
              },
              example: """
              %Aura.Model.HexUser{

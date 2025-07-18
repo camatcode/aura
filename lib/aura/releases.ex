@@ -19,22 +19,22 @@ defmodule Aura.Releases do
   @type download_period :: :day | :month | :all
 
   @type rel_opts :: [
-          repo_url: Aura.Common.repo_url(),
-          repo: Aura.Common.repo_name()
+          repo_url: Common.repo_url(),
+          repo: Common.repo_name()
         ]
 
   @type get_rel_opts :: [
-          repo_url: Aura.Common.repo_url(),
-          repo: Aura.Common.repo_name(),
+          repo_url: Common.repo_url(),
+          repo: Common.repo_name(),
           downloads: download_period()
         ]
 
   @doc Aura.Doc.func_doc("Grabs a released package, given its name and version number",
          params: [
-           {:package_name, {Aura.Common, :package_name}},
-           {:version, {Aura.Common, :release_version}},
-           {"opts[:repo]", {Aura.Common, :repo_name}},
-           {"opts[:repo_url]", {Aura.Common, :repo_url}},
+           {:package_name, {Common, :package_name}},
+           {:version, {Common, :release_version}},
+           {"opts[:repo]", {Common, :repo_name}},
+           {"opts[:repo_url]", {Common, :repo_url}},
            {"opts[:downloads]", {Aura.Releases, :download_period}}
          ],
          success: "{:ok, %HexRelease{...}}",
@@ -69,10 +69,10 @@ defmodule Aura.Releases do
 
   @doc Aura.Doc.func_doc("Returns the contents of the release's docs **tar.gz**",
          params: [
-           {:package_name, {Aura.Common, :package_name}},
-           {:version, {Aura.Common, :release_version}},
-           {"opts[:repo]", {Aura.Common, :repo_name}},
-           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+           {:package_name, {Common, :package_name}},
+           {:version, {Common, :release_version}},
+           {"opts[:repo]", {Common, :repo_name}},
+           {"opts[:repo_url]", {Common, :repo_url}}
          ],
          success: "{:ok, [... tar contents ...]}",
          failure: "{:error, (some error)}",
@@ -111,10 +111,10 @@ defmodule Aura.Releases do
 
   @doc Aura.Doc.func_doc("Permanently deletes a release",
          params: [
-           {:package_name, {Aura.Common, :package_name}},
-           {:version, {Aura.Common, :release_version}},
-           {"opts[:repo]", {Aura.Common, :repo_name}},
-           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+           {:package_name, {Common, :package_name}},
+           {:version, {Common, :release_version}},
+           {"opts[:repo]", {Common, :repo_name}},
+           {"opts[:repo_url]", {Common, :repo_url}}
          ],
          success: ":ok",
          failure: "{:error, (some error)}",
@@ -152,13 +152,13 @@ defmodule Aura.Releases do
   @typedoc Aura.Doc.type_doc("Whether this request is a re-write of a previously published release")
   @type rewrite? :: boolean()
 
-  @type publish_opts :: [replace: rewrite?(), repo_url: Aura.Common.repo_url(), repo: Aura.Common.repo_name()]
+  @type publish_opts :: [replace: rewrite?(), repo_url: Common.repo_url(), repo: Common.repo_name()]
 
   @doc Aura.Doc.func_doc("Publishes a release **.tar** packaged by a build tool to a Hex-compliant repository",
          params: [
            {:release_code_tar, "path to a code .tar file made by a build tool"},
-           {"opts[:repo]", {Aura.Common, :repo_name}},
-           {"opts[:repo_url]", {Aura.Common, :repo_url}},
+           {"opts[:repo]", {Common, :repo_name}},
+           {"opts[:repo_url]", {Common, :repo_url}},
            {"opts[:replace]", {Aura.Releases, :rewrite?}}
          ],
          success: "{:ok, %HexRelease{...}}",
@@ -185,11 +185,11 @@ defmodule Aura.Releases do
 
   @doc Aura.Doc.func_doc("Publishes associated release docs **tar.gz** to a Hex-compliant repository",
          params: [
-           {:package_name, {Aura.Common, :package_name}},
-           {:version, {Aura.Common, :release_version}},
+           {:package_name, {Common, :package_name}},
+           {:version, {Common, :release_version}},
            {:doc_tar, "path to a tar.gz of the compiled docs"},
-           {"opts[:repo]", {Aura.Common, :repo_name}},
-           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+           {"opts[:repo]", {Common, :repo_name}},
+           {"opts[:repo_url]", {Common, :repo_url}}
          ],
          success: "{:ok, doc_location_url}",
          failure: "{:error, (some error)}",
@@ -235,12 +235,12 @@ defmodule Aura.Releases do
 
   @doc Aura.Doc.func_doc("Marks a release as **retired**, signaling to others that it should not be used",
          params: [
-           {:package_name, {Aura.Common, :package_name}},
-           {:version, {Aura.Common, :release_version}},
+           {:package_name, {Common, :package_name}},
+           {:version, {Common, :release_version}},
            {:reason, {Aura.Releases, :retire_reason}},
            {:message, "Human-readable blurb about the retirement"},
-           {"opts[:repo]", {Aura.Common, :repo_name}},
-           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+           {"opts[:repo]", {Common, :repo_name}},
+           {"opts[:repo_url]", {Common, :repo_url}}
          ],
          success: ":ok",
          failure: "{:error, (some error)}",
@@ -289,10 +289,10 @@ defmodule Aura.Releases do
   @doc Aura.Doc.func_doc(
          "Removes **retirement** from a release, signaling to others that it can still be used",
          params: [
-           {:package_name, {Aura.Common, :package_name}},
-           {:version, {Aura.Common, :release_version}},
-           {"opts[:repo]", {Aura.Common, :repo_name}},
-           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+           {:package_name, {Common, :package_name}},
+           {:version, {Common, :release_version}},
+           {"opts[:repo]", {Common, :repo_name}},
+           {"opts[:repo_url]", {Common, :repo_url}}
          ],
          success: ":ok",
          failure: "{:error, (some error)}",
@@ -332,10 +332,10 @@ defmodule Aura.Releases do
 
   @doc Aura.Doc.func_doc("Permanently deletes associated documentation for a release",
          params: [
-           {:package_name, {Aura.Common, :package_name}},
-           {:version, {Aura.Common, :release_version}},
-           {"opts[:repo]", {Aura.Common, :repo_name}},
-           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+           {:package_name, {Common, :package_name}},
+           {:version, {Common, :release_version}},
+           {"opts[:repo]", {Common, :repo_name}},
+           {"opts[:repo_url]", {Common, :repo_url}}
          ],
          success: ":ok",
          failure: "{:error, (some error)}",

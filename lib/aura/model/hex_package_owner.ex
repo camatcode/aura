@@ -61,12 +61,12 @@ defmodule Aura.Model.HexPackageOwner do
   @typedoc Aura.Doc.type_doc("Type describing an owner of a `Aura.Model.HexPackage`",
              keys: %{
                email: Aura.Common,
-               full_name: Aura.Model.HexPackageOwner,
-               handles: {Aura.Model.HexPackageOwner, :social_handles},
-               inserted_at: Aura.Model.Common,
-               level: Aura.Model.HexPackageOwner,
-               updated_at: Aura.Model.Common,
-               url: Aura.Model.Common,
+               full_name: HexPackageOwner,
+               handles: {HexPackageOwner, :social_handles},
+               inserted_at: Common,
+               level: HexPackageOwner,
+               updated_at: Common,
+               url: Common,
                username: Aura.Common
              },
              example: """

@@ -17,10 +17,10 @@ defmodule Aura.Model.HexOrg do
 
   @typedoc Aura.Doc.type_doc("Type describing a Hex organization",
              keys: %{
-               billing_active: Aura.Model.Common,
+               billing_active: Common,
                name: {Aura.Common, :org_name},
-               inserted_at: Aura.Model.Common,
-               updated_at: Aura.Model.Common
+               inserted_at: Common,
+               updated_at: Common
              },
              example: """
              %Aura.Model.HexOrg{

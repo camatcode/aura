@@ -118,7 +118,7 @@ defmodule Aura.Orgs do
          params: [
            {:org_name, {Aura.Common, :org_name}},
            {:username, {Aura.Common, :username}},
-           {:role, {Aura.Model.HexOrgMember, :role}},
+           {:role, {HexOrgMember, :role}},
            {"opts[:repo_url]", {Aura.Common, :repo_url}}
          ],
          success: "{:ok, %HexOrgMember{...}}",
@@ -133,7 +133,7 @@ defmodule Aura.Orgs do
   @spec add_org_member(
           org_name :: Aura.Common.org_name(),
           username :: Aura.Common.username(),
-          role :: Aura.Model.HexOrgMember.role(),
+          role :: HexOrgMember.role(),
           opts :: org_opts()
         ) :: {:ok, HexOrgMember.t()} | {:error, any()}
   def add_org_member(org_name, username, role, opts \\ []) do
@@ -149,7 +149,7 @@ defmodule Aura.Orgs do
          params: [
            {:org_name, {Aura.Common, :org_name}},
            {:username, {Aura.Common, :username}},
-           {:new_role, {Aura.Model.HexOrgMember, :role}},
+           {:new_role, {HexOrgMember, :role}},
            {"opts[:repo_url]", {Aura.Common, :repo_url}}
          ],
          success: "{:ok, %HexOrgMember{...}}",
@@ -164,7 +164,7 @@ defmodule Aura.Orgs do
   @spec change_member_role(
           org_name :: Aura.Common.org_name(),
           username :: Aura.Common.username(),
-          new_role :: Aura.Model.HexOrgMember.role(),
+          new_role :: HexOrgMember.role(),
           opts :: org_opts
         ) :: {:ok, HexOrgMember.t()} | {:error, any()}
   def change_member_role(org_name, username, new_role, opts \\ []) do

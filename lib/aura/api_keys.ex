@@ -12,14 +12,14 @@ defmodule Aura.APIKeys do
 
   @typedoc Aura.Doc.type_doc("Options to modify a request",
              keys: %{
-               org: {Aura.Common, :org_name},
-               repo_url: Aura.Common
+               org: {Common, :org_name},
+               repo_url: Common
              }
            )
-  @type api_key_opts :: [org: Aura.Common.org_name(), repo_url: Aura.Common.repo_url()]
+  @type api_key_opts :: [org: Common.org_name(), repo_url: Common.repo_url()]
 
   @doc Aura.Doc.func_doc("Grabs info about the requester's API key(s)",
-         params: [{"opts[:org]", {Aura.Common, :org_name}}, {"opts[:repo_url]", {Aura.Common, :repo_url}}],
+         params: [{"opts[:org]", {Common, :org_name}}, {"opts[:repo_url]", {Common, :repo_url}}],
          success: "{:ok, [%HexAPIKey{...}]}",
          failure: "{:error, (some error)}",
          api: %{route: @keys_path, controller: :Key, action: :index, org_scope: true},
@@ -48,9 +48,9 @@ defmodule Aura.APIKeys do
 
   @doc Aura.Doc.func_doc("Grabs API key information associated with a given **key_name**",
          params: [
-           {:key_name, {Aura.Common, :api_key_name}},
-           {"opts[:org]", {Aura.Common, :org_name}},
-           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+           {:key_name, {Common, :api_key_name}},
+           {"opts[:org]", {Common, :org_name}},
+           {"opts[:repo_url]", {Common, :repo_url}}
          ],
          success: "{:ok, %HexAPIKey{...}}",
          failure: "{:error, (some error)}",
@@ -79,12 +79,12 @@ defmodule Aura.APIKeys do
 
   @doc Aura.Doc.func_doc("Creates a new API key",
          params: [
-           {:key_name, {Aura.Common, :api_key_name}},
-           {:username, {Aura.Common, :username}},
+           {:key_name, {Common, :api_key_name}},
+           {:username, {Common, :username}},
            {:password, "password for this user"},
            {:allow_write, "whether the key has `write` permissions on the `api` domain. Default: `false`"},
-           {"opts[:org]", {Aura.Common, :org_name}},
-           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+           {"opts[:org]", {Common, :org_name}},
+           {"opts[:repo_url]", {Common, :repo_url}}
          ],
          success: "{:ok, %HexAPIKey{...}}",
          failure: "{:error, (some error)}",
@@ -131,9 +131,9 @@ defmodule Aura.APIKeys do
 
   @doc Aura.Doc.func_doc("Deletes an API key for the authenticated requester, given a **key_name**",
          params: [
-           {:key_name, {Aura.Common, :api_key_name}},
-           {"opts[:org]", {Aura.Common, :org_name}},
-           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+           {:key_name, {Common, :api_key_name}},
+           {"opts[:org]", {Common, :org_name}},
+           {"opts[:repo_url]", {Common, :repo_url}}
          ],
          success: ":ok",
          failure: "{:error, (some error)}",
@@ -171,8 +171,8 @@ defmodule Aura.APIKeys do
 
   @doc Aura.Doc.func_doc("Deletes **all** API keys for the authenticated requester",
          params: [
-           {"opts[:org]", {Aura.Common, :org_name}},
-           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+           {"opts[:org]", {Common, :org_name}},
+           {"opts[:repo_url]", {Common, :repo_url}}
          ],
          success: ":ok",
          failure: "{:error, (some error)}",
