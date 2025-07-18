@@ -74,7 +74,7 @@ defmodule TestHelper do
   end
 
   defp add_users_to_org(users_to_add) do
-    {:ok, key} = Aura.APIKeys.create_api_key("test_user_key", "test@test.com", "elixir1234", true, org: "test_org")
+    {:ok, key} = APIKeys.create_api_key("test_user_key", "test@test.com", "elixir1234", true, org: "test_org")
     Application.put_env(:aura, :api_key, key.secret)
     {:ok, orgs} = Aura.Orgs.list_orgs()
 

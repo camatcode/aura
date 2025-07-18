@@ -37,7 +37,7 @@ defmodule Aura.Model.HexOrgMember do
              """,
              related: [Aura.Orgs]
            )
-  @type t :: %Aura.Model.HexOrgMember{
+  @type t :: %HexOrgMember{
           username: Aura.Common.username(),
           email: Aura.Common.email(),
           url: Common.url(),

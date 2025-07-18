@@ -52,15 +52,15 @@ defmodule Aura.Model.HexPackage do
              keys: %{
                name: {Aura.Common, :package_name},
                repository: {Aura.Common, :repo_name},
-               private: {Aura.Model.HexPackage, :private?},
-               meta: {Aura.Model.HexPackageMeta, :t},
-               downloads: {Aura.Model.HexPackageDownloadStats, :t},
-               releases: {Aura.Model.HexRelease, :t, :list},
-               inserted_at: Aura.Model.Common,
-               updated_at: Aura.Model.Common,
-               url: Aura.Model.Common,
-               html_url: Aura.Model.Common,
-               docs_html_url: Aura.Model.Common
+               private: {HexPackage, :private?},
+               meta: {HexPackageMeta, :t},
+               downloads: {HexPackageDownloadStats, :t},
+               releases: {HexRelease, :t, :list},
+               inserted_at: Common,
+               updated_at: Common,
+               url: Common,
+               html_url: Common,
+               docs_html_url: Common
              },
              example: """
              %Aura.Model.HexPackage{

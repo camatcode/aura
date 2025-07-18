@@ -52,9 +52,9 @@ defmodule Aura.Model.HexPackageMeta do
   @typedoc Aura.Doc.type_doc("Type describing additional metadata about a `Aura.Model.HexPackage`",
              keys: %{
                maintainers: {Aura.Common, :username, :list},
-               links: {Aura.Model.HexPackageMeta, :additional_links},
-               licenses: {Aura.Model.HexPackageMeta, :software_license, :list},
-               description: {Aura.Model.HexPackageMeta, :package_description}
+               links: {HexPackageMeta, :additional_links},
+               licenses: {HexPackageMeta, :software_license, :list},
+               description: {HexPackageMeta, :package_description}
              },
              example: """
              %Aura.Model.HexPackageMeta{

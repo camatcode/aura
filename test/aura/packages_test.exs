@@ -6,7 +6,7 @@ defmodule Aura.PackagesTest do
   alias Aura.Packages
 
   @moduletag :capture_log
-  doctest Aura.Packages
+  doctest Packages
 
   setup do
     TestHelper.setup_state()

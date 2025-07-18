@@ -72,9 +72,9 @@ defmodule Aura.Model.HexAuditLog do
 
   @typedoc Aura.Doc.type_doc("Type describing an auditable action coming from a Hex-compliant API.",
              keys: %{
-               action: {Aura.Model.HexAuditLog, :audit_action},
-               params: {Aura.Model.HexAuditLog, :audit_params},
-               user_agent: Aura.Model.HexAuditLog
+               action: {HexAuditLog, :audit_action},
+               params: {HexAuditLog, :audit_params},
+               user_agent: HexAuditLog
              },
              example: """
               %Aura.Model.HexAuditLog{

@@ -9,12 +9,12 @@ defmodule Aura.Repos do
   @repos_path "/repos"
 
   @type repo_opts :: [
-          repo_url: Aura.Common.repo_url()
+          repo_url: Common.repo_url()
         ]
 
   @doc Aura.Doc.func_doc("Grabs hex repos that the user can see",
          params: [
-           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+           {"opts[:repo_url]", {Common, :repo_url}}
          ],
          success: "{:ok, [%HexRepo{...}]}",
          failure: "{:error, (some error)}",
@@ -37,8 +37,8 @@ defmodule Aura.Repos do
   @doc Aura.Doc.func_doc(
          "Grabs a hex repo associated with a given **repo_name**",
          params: [
-           {:repo_name, {Aura.Common, :repo_name}},
-           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+           {:repo_name, {Common, :repo_name}},
+           {"opts[:repo_url]", {Common, :repo_url}}
          ],
          api: %{route: Path.join(@repos_path, ":repo_name"), controller: :Repository, action: :show},
          example: """

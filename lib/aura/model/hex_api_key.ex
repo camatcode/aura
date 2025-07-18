@@ -47,7 +47,7 @@ defmodule Aura.Model.HexAPIKey do
   @type resource :: String.t()
 
   @typedoc Aura.Doc.type_doc("A permission realm belonging to this API key",
-             keys: %{domain: Aura.Model.HexAPIKey, resource: Aura.Model.HexAPIKey},
+             keys: %{domain: HexAPIKey, resource: HexAPIKey},
              example: """
                %{domain: "api", resource: "read"}
                %{domain: "api", resource: "write"}
@@ -66,14 +66,14 @@ defmodule Aura.Model.HexAPIKey do
 
   @typedoc Aura.Doc.type_doc("Type describing an API key coming from a Hex-compliant API.",
              keys: %{
-               authing_key: Aura.Model.HexAPIKey,
-               secret: Aura.Model.HexAPIKey,
-               inserted_at: Aura.Model.Common,
+               authing_key: HexAPIKey,
+               secret: HexAPIKey,
+               inserted_at: Common,
                name: {Aura.Common, :api_key_name},
-               permissions: {Aura.Model.HexAPIKey, :api_permission, :list},
-               revoked_at: {Aura.Model.HexAPIKey, :revoked_date_time},
-               updated_at: Aura.Model.Common,
-               url: Aura.Model.Common
+               permissions: {HexAPIKey, :api_permission, :list},
+               revoked_at: {HexAPIKey, :revoked_date_time},
+               updated_at: Common,
+               url: Common
              },
              example: """
               %Aura.Model.HexAPIKey{

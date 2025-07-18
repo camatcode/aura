@@ -14,7 +14,7 @@ defmodule Aura.Users do
   @base_path "/users"
 
   @type user_opts :: [
-          repo_url: Aura.Common.repo_url()
+          repo_url: Common.repo_url()
         ]
 
   @tos_warning """
@@ -24,10 +24,10 @@ defmodule Aura.Users do
   @doc Aura.Doc.func_doc("Requests a hex user be created",
          warning: {"📄 Terms of Service", @tos_warning},
          params: [
-           {:username, {Aura.Common, :username}},
+           {:username, {Common, :username}},
            {:password, "User's password"},
-           {:emails, {Aura.Common, :email, :list}},
-           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+           {:emails, {Common, :email, :list}},
+           {"opts[:repo_url]", {Common, :repo_url}}
          ],
          success: "{:ok, %HexUser{...}}",
          failure: "{:error, (some error)}",
@@ -67,7 +67,7 @@ defmodule Aura.Users do
   @doc Aura.Doc.func_doc("Grabs a hex user, given their **username_or_email**",
          params: [
            {:username_or_email, "`t:Aura.Common.username/0` or  `t:Aura.Common.email/0`"},
-           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+           {"opts[:repo_url]", {Common, :repo_url}}
          ],
          success: "{:ok, %HexUser{...}}",
          failure: "{:error, (some error)}",
@@ -93,7 +93,7 @@ defmodule Aura.Users do
   @doc Aura.Doc.func_doc(
          "Grabs the hex user representing the currently authenticated user",
          params: [
-           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+           {"opts[:repo_url]", {Common, :repo_url}}
          ],
          success: "{:ok, %HexUser{...}}",
          failure: "{:error, (some error)}",
@@ -119,8 +119,8 @@ defmodule Aura.Users do
            "Note that the page size is fixed by the API to be 100 per page."
          ],
          params: [
-           {"opts[:repo_url]", {Aura.Common, :repo_url}},
-           {"opts[:page]", {Aura.Common, :start_page}}
+           {"opts[:repo_url]", {Common, :repo_url}},
+           {"opts[:page]", {Common, :start_page}}
          ],
          success: "Stream.resource/3",
          example: """
@@ -142,7 +142,7 @@ defmodule Aura.Users do
   @doc Aura.Doc.func_doc("Resets a specified user's password",
          params: [
            {:username_or_email, "`t:Aura.Common.username/0`  or  `t:Aura.Common.email/0`"},
-           {"opts[:repo_url]", {Aura.Common, :repo_url}}
+           {"opts[:repo_url]", {Common, :repo_url}}
          ],
          success: ":ok",
          failure: "{:error, (some error)}",

@@ -23,9 +23,9 @@ defmodule Aura.Model.HexPackageDownloadStats do
 
   @typedoc Aura.Doc.type_doc("Type describing the number of downloads for a `Aura.Model.HexPackage`",
              keys: %{
-               all: {Aura.Model.HexPackageDownloadStats, :all_time},
-               week: {Aura.Model.HexPackageDownloadStats, :this_week},
-               day: {Aura.Model.HexPackageDownloadStats, :today}
+               all: {HexPackageDownloadStats, :all_time},
+               week: {HexPackageDownloadStats, :this_week},
+               day: {HexPackageDownloadStats, :today}
              },
              example: """
              %Aura.Model.HexPackageDownloadStats{all: 196, week: 49, day: 49}

@@ -42,11 +42,11 @@ defmodule Aura.Model.HexRepo do
   @typedoc Aura.Doc.type_doc(
              "Type describing a repository from a Hex-compliant API.",
              keys: %{
-               public: Aura.Model.HexRepo,
-               active: Aura.Model.HexRepo,
-               billing_active: Aura.Model.Common,
-               inserted_at: Aura.Model.Common,
-               updated_at: Aura.Model.Common
+               public: HexRepo,
+               active: HexRepo,
+               billing_active: Common,
+               inserted_at: Common,
+               updated_at: Common
              },
              example: """
              %Aura.Model.HexRepo{
