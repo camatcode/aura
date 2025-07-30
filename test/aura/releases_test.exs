@@ -57,7 +57,7 @@ defmodule Aura.ReleasesTest do
       version = package.releases |> hd() |> Map.get(:version)
       assert {:ok, release} = Releases.get_release(package.name, version)
       refute Enum.empty?(release.requirements)
-      assert Enum.member?(owned_releases, release)
+      assert release in owned_releases
     end)
   end
 

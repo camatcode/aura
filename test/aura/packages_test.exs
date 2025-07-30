@@ -46,7 +46,7 @@ defmodule Aura.PackagesTest do
       assert package.name
       assert package.repository
       assert package.url
-      refute Enum.member?(first_2k, package)
+      refute package in first_2k
     end)
   end
 
