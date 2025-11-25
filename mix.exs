@@ -115,7 +115,7 @@ defmodule Aura.MixProject do
       {:junit_formatter, "~> 3.1", only: [:test]},
       {:req, "~> 0.5"},
       {:proper_case, "~> 1.3"},
-      {:date_time_parser, "~> 1.2.0"}
+      {:date_time_parser, "~> 1.3.0"}
     ]
   end
 
