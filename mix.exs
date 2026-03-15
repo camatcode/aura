@@ -8,18 +8,11 @@ defmodule Aura.MixProject do
     [
       app: :aura,
       version: @version,
-      elixir: "~> 1.18",
+      elixir: "~> 1.19",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       elixirc_paths: elixirc_paths(Mix.env()),
       test_coverage: [tool: ExCoveralls],
-      preferred_cli_env: [
-        coveralls: :test,
-        "coveralls.detail": :test,
-        "coveralls.post": :test,
-        "coveralls.html": :test,
-        "coveralls.cobertura": :test
-      ],
       # Hex
       package: package(),
       description: """
@@ -98,6 +91,18 @@ defmodule Aura.MixProject do
   def application do
     [
       extra_applications: [:logger]
+    ]
+  end
+
+  def cli do
+    [
+      preferred_envs: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test,
+        "coveralls.cobertura": :test
+      ]
     ]
   end
 

@@ -279,7 +279,7 @@ defmodule Aura.Doc do
     * #{maintainer_github()}
     * #{see_link("Elixir Form: camatcode", "https://elixirforum.com/u/camatcode/", "⚗️")}
     * #{maintainer_fediverse()}
-    * #{see_link("bsky: @ckcook.studiocms.io", "https://bsky.app/profile/ckcook.studiocms.io", "🦋️")}
+    * #{see_link("bsky: @elixir.blog", "https://bsky.app/profile/elixir.blog", "🦋️")}
     "
   end
 
